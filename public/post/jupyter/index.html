@@ -170,7 +170,7 @@
     "name": "Meghan Hall",
     "logo": {
       "@type": "ImageObject",
-      "url": "/img/icon-512.png"
+      "url": "img/icon-512.png"
     }
   },
   "description": "Learn how to blog in Academic using Jupyter notebooks"
@@ -481,65 +481,37 @@
   <div class="article-container">
 
     <div class="article-style">
-      
-
-<pre><code class="language-python">from IPython.core.display import Image
-Image('https://www.python.org/static/community_logos/python-logo-master-v3-TM-flattened.png')
+      <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> IPython.core.display <span style="color:#f92672">import</span> Image
+Image(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">https://www.python.org/static/community_logos/python-logo-master-v3-TM-flattened.png</span><span style="color:#e6db74">&#39;</span>)
+</code></pre></div><p><img src="./index_1_0.png" alt="png"></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">print</span>(<span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Welcome to Academic!</span><span style="color:#e6db74">&#34;</span>)
+</code></pre></div><pre><code>Welcome to Academic!
 </code></pre>
-
-<p><img src="./index_1_0.png" alt="png" /></p>
-
-<pre><code class="language-python">print(&quot;Welcome to Academic!&quot;)
-</code></pre>
-
-<pre><code>Welcome to Academic!
-</code></pre>
-
 <h2 id="install-python-and-jupyterlab">Install Python and JupyterLab</h2>
-
-<p><a href="https://www.anaconda.com/distribution/#download-section" target="_blank">Install Anaconda</a> which includes Python 3 and JupyterLab.</p>
-
+<p><a href="https://www.anaconda.com/distribution/#download-section">Install Anaconda</a> which includes Python 3 and JupyterLab.</p>
 <p>Alternatively, install JupyterLab with <code>pip3 install jupyterlab</code>.</p>
-
 <h2 id="create-or-upload-a-jupyter-notebook">Create or upload a Jupyter notebook</h2>
-
 <p>Run the following commands in your Terminal, substituting <code>&lt;MY-WEBSITE-FOLDER&gt;</code> and <code>&lt;SHORT-POST-TITLE&gt;</code> with the file path to your Academic website folder and a short title for your blog post (use hyphens instead of spaces), respectively:</p>
-
-<pre><code class="language-bash">mkdir -p &lt;MY-WEBSITE-FOLDER&gt;/content/post/&lt;SHORT-POST-TITLE&gt;/
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mkdir -p &lt;MY-WEBSITE-FOLDER&gt;/content/post/&lt;SHORT-POST-TITLE&gt;/
 cd &lt;MY-WEBSITE-FOLDER&gt;/content/post/&lt;SHORT-POST-TITLE&gt;/
 jupyter lab index.ipynb
-</code></pre>
-
-<p>The <code>jupyter</code> command above will launch the JupyterLab editor, allowing us to add Academic metadata and write the content.</p>
-
+</code></pre></div><p>The <code>jupyter</code> command above will launch the JupyterLab editor, allowing us to add Academic metadata and write the content.</p>
 <h2 id="edit-your-post-metadata">Edit your post metadata</h2>
-
-<p>The first cell of your Jupter notebook will contain your post metadata (<a href="https://sourcethemes.com/academic/docs/front-matter/" target="_blank">front matter</a>).</p>
-
+<p>The first cell of your Jupter notebook will contain your post metadata (<a href="https://sourcethemes.com/academic/docs/front-matter/">front matter</a>).</p>
 <p>In Jupter, choose <em>Markdown</em> as the type of the first cell and wrap your Academic metadata in three dashes, indicating that it is YAML front matter:</p>
-
 <pre><code>---
 title: My post's title
 date: 2019-09-01
 
 # Put any other Academic metadata here...
 ---
-</code></pre>
-
-<p>Edit the metadata of your post, using the <a href="https://sourcethemes.com/academic/docs/managing-content" target="_blank">documentation</a> as a guide to the available options.</p>
-
-<p>To set a <a href="https://sourcethemes.com/academic/docs/managing-content/#featured-image" target="_blank">featured image</a>, place an image named <code>featured</code> into your post&rsquo;s folder.</p>
-
-<p>For other tips, such as using math, see the guide on <a href="https://sourcethemes.com/academic/docs/writing-markdown-latex/" target="_blank">writing content with Academic</a>.</p>
-
+</code></pre><p>Edit the metadata of your post, using the <a href="https://sourcethemes.com/academic/docs/managing-content">documentation</a> as a guide to the available options.</p>
+<p>To set a <a href="https://sourcethemes.com/academic/docs/managing-content/#featured-image">featured image</a>, place an image named <code>featured</code> into your post's folder.</p>
+<p>For other tips, such as using math, see the guide on <a href="https://sourcethemes.com/academic/docs/writing-markdown-latex/">writing content with Academic</a>.</p>
 <h2 id="convert-notebook-to-markdown">Convert notebook to Markdown</h2>
-
-<pre><code class="language-bash">jupyter nbconvert index.ipynb --to markdown --NbConvertApp.output_files_dir=.
-</code></pre>
-
-<h2 id="example">Example</h2>
-
-<p>This post was created with Jupyter. The orginal files can be found at <a href="https://github.com/gcushen/hugo-academic/tree/master/exampleSite/content/post/jupyter" target="_blank">https://github.com/gcushen/hugo-academic/tree/master/exampleSite/content/post/jupyter</a></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">jupyter nbconvert index.ipynb --to markdown --NbConvertApp.output_files_dir<span style="color:#f92672">=</span>.
+</code></pre></div><h2 id="example">Example</h2>
+<p>This post was created with Jupyter. The orginal files can be found at <a href="https://github.com/gcushen/hugo-academic/tree/master/exampleSite/content/post/jupyter">https://github.com/gcushen/hugo-academic/tree/master/exampleSite/content/post/jupyter</a></p>
 
     </div>
 
@@ -670,7 +642,7 @@ date: 2019-09-01
     
 
     <div class="media-body">
-      <h5 class="card-title"><a href="/">Meghan Hall</a></h5>
+      <h5 class="card-title"><a href="">Meghan Hall</a></h5>
       <h6 class="card-subtitle">Hockey Analyst</h6>
       
       <ul class="network-icon" aria-hidden="true">
@@ -723,6 +695,23 @@ date: 2019-09-01
     <li>
       <a href="https://github.com/meghall06" target="_blank" rel="noopener">
         <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://public.tableau.com/profile/balls.and.sticks#!/" target="_blank" rel="noopener">
+        <i class="fas fa-chart-bar"></i>
       </a>
     </li>
   

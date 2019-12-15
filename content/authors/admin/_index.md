@@ -22,6 +22,10 @@ social:
 - icon: github
   icon_pack: fab
   link: https://github.com/meghall06
+- icon: chart-bar
+  icon_pack: fas
+  link: https://public.tableau.com/profile/balls.and.sticks#!/
+
 superuser: true
 user_groups:
 
