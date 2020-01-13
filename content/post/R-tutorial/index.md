@@ -6,7 +6,7 @@ image:
   placement: 3
 markup: mmark
 math: true
-title: An Introduction to R With Hockey Data
+title: An Introduction to R2 With Hockey Data
 ---
 
 [*From Hockey-Graphs*](https://hockey-graphs.com/)
