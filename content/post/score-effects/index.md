@@ -9,7 +9,8 @@ math: true
 title: Examining Score Effects on Special Teams
 ---
 
-Score effects in hockey are well-known, whether you're watching the game or looking at numbers: teams that are losing tend to generate a greater share of the shot attempts. Micah Blake McCurdy developed [an adjustment method](https://www.hockeyviz.com/txt/senstats){target="_blank"} for 5v5 events that is currently used to create the score- and venue-adjusted shot attempt metrics available at hockey stats websites like [Natural Stat Trick](http://www.naturalstattrick.com/) and [Evolving Hockey](https://evolving-hockey.com/).
+Score effects in hockey are well-known, whether you're watching the game or looking at numbers: teams that are losing tend to generate a greater share of the shot attempts. Micah Blake McCurdy developed [an adjustment method](https://www.hockeyviz.com/txt/senstats){target="_blank"} for 5v5 events that is currently used to create the score- and venue-adjusted shot attempt metrics available at hockey stats websites like <a href="http://www.naturalstattrick.com/" target="_blank">Natural Stat Trick</a>
+and [Evolving Hockey](https://evolving-hockey.com/).
 
 Since I spend a lot of time looking at special teams data, I have long been curious as to whether score effects might also be a factor for power plays. Here, I've modified Micah's method to investigate score effects at 5v4: I created the weights, compared them to the 5v5 weights, and examined the repetability and predictivity of the adjusted values compared to the raw ones. Investigating this problem taught me a lot of new R skills, so I've included all code and will go through the process step-by-step. (So if you're only interested in the conclusion, just scroll past the code and look at the graphs!)
 
