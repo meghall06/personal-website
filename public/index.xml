@@ -5,7 +5,7 @@
     <link>/</link>
       <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <description>Meghan Hall</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Wed, 11 Dec 2019 00:00:00 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sat, 08 Feb 2020 00:00:00 +0000</lastBuildDate>
     <image>
       <url>img/icon-192.png</url>
       <title>Meghan Hall</title>
@@ -55,7 +55,567 @@
     </item>
     
     <item>
-      <title>An Introduction to R2 With Hockey Data</title>
+      <title>The Anatomy of a Power Kill</title>
+      <link>/talk/cbjhac/</link>
+      <pubDate>Sat, 08 Feb 2020 00:00:00 +0000</pubDate>
+      <guid>/talk/cbjhac/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Examining Score Effects on Special Teams</title>
+      <link>/post/score-effects/</link>
+      <pubDate>Wed, 15 Jan 2020 00:00:00 +0000</pubDate>
+      <guid>/post/score-effects/</guid>
+      <description>&lt;p&gt;Score effects in hockey are well-known, whether you&#39;re watching the game or looking at numbers: teams that are losing tend to generate a greater share of the shot attempts. Micah Blake McCurdy developed &lt;a href=&#34;https://www.hockeyviz.com/txt/senstats&#34;&gt;an adjustment method&lt;/a&gt; for 5v5 events that is currently used to create the score- and venue-adjusted shot attempt metrics available at hockey stats websites like &lt;a href=&#34;http://www.naturalstattrick.com/&#34;&gt;Natural Stat Trick&lt;/a&gt; and &lt;a href=&#34;https://evolving-hockey.com/&#34;&gt;Evolving Hockey&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Since I spend a lot of time looking at special teams data, I have long been curious as to whether score effects might also be a factor for power plays. Here, I&#39;ve modified Micah&#39;s method to investigate score effects at 5v4: I created the weights, compared them to the 5v5 weights, and examined the repetability and predictivity of the adjusted values compared to the raw ones. Investigating this problem taught me a lot of new R skills, so I&#39;ve included all code and will go through the process step-by-step. (So if you&#39;re only interested in the conclusion, just scroll past the code and look at the graphs!)&lt;/p&gt;
+
+&lt;h3 id=&#34;get-and-prepare-the-data&#34;&gt;Get and prepare the data&lt;/h3&gt;
+
+&lt;p&gt;To start, I used the play-by-play query tool available at &lt;a href=&#34;https://evolving-hockey.com/&#34;&gt;Evolving Hockey&lt;/a&gt; to collect all power play events from the past 10 seasons. (This was much quicker than scraping full seasons of data, and if you&#39;d like access to the tool, support them on &lt;a href=&#34;https://www.patreon.com/evolvinghockey/&#34;&gt;Patreon&lt;/a&gt;.) With all of the files in the same folder, instead of reading them in one-by-one, some functions from the plyr package make it easier to read them all in and combine them into one file.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;library&lt;/span&gt;(plyr)
+&lt;span style=&#34;color:#a6e22e&#34;&gt;library&lt;/span&gt;(readr)
+&lt;span style=&#34;color:#a6e22e&#34;&gt;library&lt;/span&gt;(tidyverse)
+&lt;span style=&#34;color:#a6e22e&#34;&gt;library&lt;/span&gt;(infer)
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# All 10 of my csv files (one for each season) are in a folder in my wd called &amp;#34;score_adj&amp;#34;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# This will ID all the files and read them in as one file (score_adj_5v4_raw)&lt;/span&gt;
+
+mydir &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;score_adj&amp;#34;&lt;/span&gt;
+myfiles &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;list.files&lt;/span&gt;(path&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;mydir, pattern&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;*.csv&amp;#34;&lt;/span&gt;, full.names&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;TRUE&lt;/span&gt;)
+myfiles
+
+score_adj_5v4_raw &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ldply&lt;/span&gt;(myfiles, read_csv)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;I filtered down to only the events that I want (all unblocked shot attempts as well as any events with time, so I can create rates) and created some new variables. Per Micah&#39;s method, all leads over 2 and below -2 were grouped.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# We&amp;#39;ll filter down to only unblocked shot attempts and time events (to get fenwick &amp;amp; rates)&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# And also create variables to get the home lead and an indicator whether the event is home or away&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# For home lead, everything above 2 and below -2 will be grouped together&lt;/span&gt;
+
+score_adj_5v4 &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; score_adj_5v4_raw &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;filter&lt;/span&gt;(event_type &lt;span style=&#34;color:#f92672&#34;&gt;%in%&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;SHOT&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;GOAL&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;MISS&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; event_length &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;mutate&lt;/span&gt;(home_lead &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; home_score &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; away_score,
+         home_lead &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ifelse&lt;/span&gt;(home_lead &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;-3&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;-3&lt;/span&gt;,
+                            &lt;span style=&#34;color:#a6e22e&#34;&gt;ifelse&lt;/span&gt;(home_lead &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;, home_lead)),
+         home_away &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ifelse&lt;/span&gt;(event_team &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; home_team, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;home&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;away&amp;#34;&lt;/span&gt;),
+         fenwick &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ifelse&lt;/span&gt;(event_type &lt;span style=&#34;color:#f92672&#34;&gt;%in%&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;SHOT&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;GOAL&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;MISS&amp;#34;&lt;/span&gt;), &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;),
+         goal &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ifelse&lt;/span&gt;(event_type &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;GOAL&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;),
+         PP_team &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ifelse&lt;/span&gt;(game_strength_state &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;5v4&amp;#34;&lt;/span&gt;, home_team, away_team),
+         type &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ifelse&lt;/span&gt;(fenwick &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt; PP_team &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; event_team, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;PP&amp;#34;&lt;/span&gt;, 
+                       &lt;span style=&#34;color:#a6e22e&#34;&gt;ifelse&lt;/span&gt;(fenwick &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;PK&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;NA&lt;/span&gt;)),
+         PP_fenwick &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ifelse&lt;/span&gt;(type &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;PP&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt; fenwick &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;),
+         f &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ifelse&lt;/span&gt;(PP_fenwick &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Y&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;NA&lt;/span&gt;)) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;select&lt;/span&gt;(type, PP_fenwick, f, game_strength_state, home_team, away_team, PP_team, event_team, &lt;span style=&#34;color:#a6e22e&#34;&gt;everything&lt;/span&gt;())
+  &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3 id=&#34;create-the-weights&#34;&gt;Create the weights&lt;/h3&gt;
+
+&lt;p&gt;The first step is to determine what the weights should be. In our raw data, all unblocked shot attempts count the same: as one. But they are not all truly equal since we know that trailing teams generate more shot attempts. If the team that is currently winning by two goals generates a shot attempt, for example, that should count as &lt;em&gt;more than one&lt;/em&gt; shot attempt because it&#39;s more difficult. And vice versa for the team that is currently losing. We can calculate how much these shot attempts should be boosted or penalized by comparing the actual values to the average values (i.e., if there was no difference).&lt;/p&gt;
+
+&lt;p&gt;The first data frame below, &lt;code&gt;score_adj_f&lt;/code&gt;, just sums the unblocked shot attempts for each state to give us the raw values. (You&#39;ll see that the lockout-shortened season is filtered out, we&#39;ll discuss why later.) The second data frame &lt;code&gt;score_adj_f_avg&lt;/code&gt; sums unblocked shot attempts for each &lt;em&gt;score state&lt;/em&gt; only. Those average values get joined back into the first data frame, and then we can create a weight by dividing the true value by the average. &lt;code&gt;score_adj_f_reshape&lt;/code&gt; just uses the &lt;code&gt;pivot_wider&lt;/code&gt; function to reshape the values to make them more readable.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# We filter by power play fenwick events only, then&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# group by home_away and home_lead&lt;/span&gt;
+
+score_adj_f &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; score_adj_5v4 &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;filter&lt;/span&gt;(PP_fenwick &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;filter&lt;/span&gt;(season &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;20122013&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;group_by&lt;/span&gt;(home_lead, home_away, f) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;summarize&lt;/span&gt;(fenwick &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt;(PP_fenwick))
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# Group by home_lead to get the average fenwicks&lt;/span&gt;
+
+score_adj_f_avg &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; score_adj_f &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;group_by&lt;/span&gt;(home_lead) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;summarize&lt;/span&gt;(avg &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;mean&lt;/span&gt;(fenwick))
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# Join the average back into the previous data frame&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# and create the adjusted score by dividing the average by the raw fenwick&lt;/span&gt;
+
+score_adj_f &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; score_adj_f &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;left_join&lt;/span&gt;(score_adj_f_avg, by &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;home_lead&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;mutate&lt;/span&gt;(fenwick_adj &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; avg &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; fenwick)
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# Reshape to get the numbers in a more readable format&lt;/span&gt;
+
+score_adj_f_reshape &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; score_adj_f &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;select&lt;/span&gt;(&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(avg, fenwick)) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;pivot_wider&lt;/span&gt;(names_from &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; home_away, values_from &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; fenwick_adj) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;select&lt;/span&gt;(home_lead, home, away)
+  &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This is what the &lt;code&gt;score_adj_f&lt;/code&gt; data frame looks like before we reshape it for easier analysis. &lt;code&gt;fenwick&lt;/code&gt; has the raw values, &lt;code&gt;avg&lt;/code&gt; has the average values, and &lt;code&gt;fenwick_adj&lt;/code&gt; has the weights (found by dividing &lt;code&gt;avg&lt;/code&gt; by &lt;code&gt;fenwick&lt;/code&gt;).&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;adj_avg.png&#34; &gt;
+&lt;img src=&#34;adj_avg.png&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+&lt;p&gt;And this is what it looks like after.&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;adj.png&#34; &gt;
+&lt;img src=&#34;adj.png&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+&lt;h3 id=&#34;compare-to-5v5-weights&#34;&gt;Compare to 5v5 weights&lt;/h3&gt;
+
+&lt;p&gt;Now that we have our weights (shown above), we can compare to Micah&#39;s established weights for 5v5 events.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Read in Micah&amp;#39;s 5v5 values&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# And join to compare&lt;/span&gt;
+
+score_adj_5v5 &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;read_csv&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;score_adj_5v5_MBM.csv&amp;#34;&lt;/span&gt;)
+
+score_adj_f_reshape_compare &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; score_adj_f_reshape &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;left_join&lt;/span&gt;(score_adj_5v5, by &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;home_lead&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;mutate&lt;/span&gt;(diff_home &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; home &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; home_5v5,
+         diff_away &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; away &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; away_5v5)
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# Create simple bar graphs to compare&lt;/span&gt;
+
+&lt;span style=&#34;color:#a6e22e&#34;&gt;ggplot&lt;/span&gt;(data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; score_adj_f_reshape_compare, 
+       &lt;span style=&#34;color:#a6e22e&#34;&gt;aes&lt;/span&gt;(x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;as.factor&lt;/span&gt;(home_lead), y &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; diff_home)) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;geom_bar&lt;/span&gt;(stat &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;identity&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;labs&lt;/span&gt;(title &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Home Event Weights, 5v4 vs 5v5&amp;#34;&lt;/span&gt;, x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Home Lead&amp;#34;&lt;/span&gt;, y &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Difference From 5v5 Weight&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;theme_linedraw&lt;/span&gt;() &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;theme&lt;/span&gt;(axis.ticks &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;element_blank&lt;/span&gt;())
+
+&lt;span style=&#34;color:#a6e22e&#34;&gt;ggplot&lt;/span&gt;(data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; score_adj_f_reshape_compare, 
+       &lt;span style=&#34;color:#a6e22e&#34;&gt;aes&lt;/span&gt;(x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;as.factor&lt;/span&gt;(home_lead), y &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; diff_away)) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;geom_bar&lt;/span&gt;(stat &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;identity&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;labs&lt;/span&gt;(title &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Away Event Weights, 5v4 vs 5v5&amp;#34;&lt;/span&gt;, x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Home Lead&amp;#34;&lt;/span&gt;, y &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Difference From 5v5 Weight&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;theme_linedraw&lt;/span&gt;() &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;theme&lt;/span&gt;(axis.ticks &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;element_blank&lt;/span&gt;())
+  
+for_comparison &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; score_adj_f_reshape_compare &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;select&lt;/span&gt;(&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(diff_home&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;diff_away)) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;rename&lt;/span&gt;(home_5v4 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; home,
+         away_5v4 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; away) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;pivot_longer&lt;/span&gt;(home_5v4&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;away_5v5, names_to &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;type&amp;#34;&lt;/span&gt;, values_to &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;value&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;mutate&lt;/span&gt;(home_away &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;substr&lt;/span&gt;(type, &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;),
+         state &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;substr&lt;/span&gt;(type, &lt;span style=&#34;color:#ae81ff&#34;&gt;6&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt;))
+
+for_comparison &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;filter&lt;/span&gt;(home_away &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;home&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;ggplot&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;aes&lt;/span&gt;(fill &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; state, x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;as.character&lt;/span&gt;(home_lead), y &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; value)) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;geom_bar&lt;/span&gt;(stat &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;identity&amp;#34;&lt;/span&gt;, position &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;dodge&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;labs&lt;/span&gt;(title &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Home Event Weights, 5v4 vs 5v5&amp;#34;&lt;/span&gt;, x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Home Lead&amp;#34;&lt;/span&gt;, 
+       y &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Weight&amp;#34;&lt;/span&gt;, fill &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;State?&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;theme_linedraw&lt;/span&gt;() &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;theme&lt;/span&gt;(axis.ticks &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;element_blank&lt;/span&gt;()) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;geom_hline&lt;/span&gt;(yintercept &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;scale_fill_manual&lt;/span&gt;(values &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;#CF8BA8&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;#DDDDDD&amp;#34;&lt;/span&gt;))
+
+for_comparison &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;filter&lt;/span&gt;(home_away &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;away&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;ggplot&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;aes&lt;/span&gt;(fill &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; state, x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;as.character&lt;/span&gt;(home_lead), y &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; value)) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;geom_bar&lt;/span&gt;(stat &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;identity&amp;#34;&lt;/span&gt;, position &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;dodge&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;labs&lt;/span&gt;(title &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Away Event Weights, 5v4 vs 5v5&amp;#34;&lt;/span&gt;, x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Home Lead&amp;#34;&lt;/span&gt;, 
+       y &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Weight&amp;#34;&lt;/span&gt;, fill &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;State?&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;theme_linedraw&lt;/span&gt;() &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;theme&lt;/span&gt;(axis.ticks &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;element_blank&lt;/span&gt;()) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;geom_hline&lt;/span&gt;(yintercept &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;scale_fill_manual&lt;/span&gt;(values &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;#CF8BA8&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;#DDDDDD&amp;#34;&lt;/span&gt;))
+  &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;score_adj_compare_away.png&#34; &gt;
+&lt;img src=&#34;score_adj_compare_away.png&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;score_adj_compare_home.png&#34; &gt;
+&lt;img src=&#34;score_adj_compare_home.png&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;compare_home.png&#34; &gt;
+&lt;img src=&#34;compare_home.png&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;compare_away.png&#34; &gt;
+&lt;img src=&#34;compare_away.png&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+&lt;p&gt;We can see from these comparisons that overall, the magnitude of these 5v4 weights is not too different from those at 5v5. The largest difference is when the home team is trailing by one: the 5v5 weight for the away team is 1.103. At 5v4, the weight for the away team is 1.221. (Interestingly, when the home team is &lt;em&gt;leading&lt;/em&gt; by one, the weights are nearly identical.) This difference fits the overall pattern that you can see in the graphs: the weights for the away team at 5v4 are consistently higher than they are at 5v5, regardless of the score state, and vice versa for the home team. This could suggest that events for the home team are slightly easier to generate at 5v4, regardless of score state, and therefore the away team gets more &amp;quot;credit&amp;quot; (i.e., a higher weight) for their events.&lt;/p&gt;
+
+&lt;p&gt;Our last step, before we can test the repeatability and prediction of the weights, is to join these adjusted values back into the raw event data so we can use them for comparison.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Join the adjusted values back into the raw data&lt;/span&gt;
+
+score_adj_5v4_w_values &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; score_adj_5v4 &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;left_join&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;select&lt;/span&gt;(score_adj_f, home_lead, home_away, fenwick_adj, f), by &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;home_lead&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;home_away&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;f&amp;#34;&lt;/span&gt;))&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3 id=&#34;testing-repeatability-and-prediction&#34;&gt;Testing repeatability and prediction&lt;/h3&gt;
+
+&lt;p&gt;To examine these adjusted values in comparison to the raw ones, we&#39;ll look at both &lt;em&gt;repeatability&lt;/em&gt; and &lt;em&gt;prediction&lt;/em&gt;. Repeatability is measured by how well the unblocked shot attempts in one sample of a season correlate to those in another sample, and prediction looks at how well the unblocked shot attempts in one sample correlate to &lt;em&gt;goals&lt;/em&gt; in another.  Our metric of interest in both cases will be R&lt;sup&gt;2&lt;/sup&gt;, and we&#39;re curious to see whether those R&lt;sup&gt;2&lt;/sup&gt; values are &lt;em&gt;higher&lt;/em&gt; for the adjusted values.&lt;/p&gt;
+
+&lt;p&gt;The first step is to create the data set, &lt;code&gt;sampling_team&lt;/code&gt; that we&#39;ll use for sampling purposes. (Again, we&#39;ll filter out the lockout-shortened season.) We&#39;ll group by &lt;code&gt;game_id&lt;/code&gt; as well as &lt;code&gt;PP_team&lt;/code&gt; and summarize the raw fenwick values, adjusted fenwick values, goals, and total TOI. We&#39;ll also create a unique identifier of &lt;code&gt;team_season&lt;/code&gt; that will be important for sampling purposes.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Testing repeatability and prediction----&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# We&amp;#39;ll test repeatability of the adjusted values, compared to the raw ones&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# But we&amp;#39;ll be removing the shortened season&lt;/span&gt;
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# Group by game, season, and team; sum values&lt;/span&gt;
+
+sampling_team &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; score_adj_5v4_w_values &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;select&lt;/span&gt;(game_id, season, PP_team, PP_fenwick, fenwick_adj, event_length, goal) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;filter&lt;/span&gt;(season &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;20122013&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;group_by&lt;/span&gt;(season, game_id, PP_team) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;summarize&lt;/span&gt;(fenwick &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt;(PP_fenwick, na.rm &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;TRUE&lt;/span&gt;),
+            fen_adj &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt;(fenwick_adj, na.rm &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;TRUE&lt;/span&gt;),
+            goals &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt;(goal),
+            TOI &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt;(event_length) &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;60&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;unite&lt;/span&gt;(team_season, season, PP_team, sep &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;-&amp;#34;&lt;/span&gt;, remove &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;FALSE&lt;/span&gt;)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;That &lt;code&gt;sampling_team&lt;/code&gt; data frame will be the starting point for the sampling function I wrote that&#39;s based on the &lt;code&gt;rep_sample_n&lt;/code&gt; function in the &lt;code&gt;infer&lt;/code&gt; package. In a nutshell, the function below will do the following: filter the &lt;code&gt;sampling_team&lt;/code&gt; data frame to a specific &lt;code&gt;team_season&lt;/code&gt;; take a sample of &lt;code&gt;x&lt;/code&gt; number of games; split that sample into two groups; sum the unblocked shot attempts (both raw and adjusted), goals, and TOI in each group; and repeat 1000 times. The &lt;code&gt;pivot_wider&lt;/code&gt; function at the end will just reshape the data into a format that&#39;s easier to use later.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# The function below will filter by teamseason, sample a specified amount of games, &lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# split into two groups, sum fenwick and fen_adj, repeat 1000 times per season&lt;/span&gt;
+
+sampling_fn &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;function&lt;/span&gt;(value, samplesize) {
+  
+  sampling_team_done &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; sampling_team &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;filter&lt;/span&gt;(team_season &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; value) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;rep_sample_n&lt;/span&gt;(size &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; samplesize, replace &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;FALSE&lt;/span&gt;, reps &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1000&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;group_by&lt;/span&gt;(replicate, team_season) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;mutate&lt;/span&gt;(game_no &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;row_number&lt;/span&gt;()) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;mutate&lt;/span&gt;(group &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; game_no &lt;span style=&#34;color:#f92672&#34;&gt;%%&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;mutate&lt;/span&gt;(samplesize &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; samplesize) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;group_by&lt;/span&gt;(replicate, group, team_season, samplesize) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;summarize&lt;/span&gt;(fenwick &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt;(fenwick, na.rm &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;TRUE&lt;/span&gt;),
+              fen_adj &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt;(fen_adj, na.rm &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;TRUE&lt;/span&gt;),
+              TOI &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt;(TOI),
+              goals &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt;(goals)) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;mutate&lt;/span&gt;(f_60 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; fenwick &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;60&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; TOI,
+           f_adj_60 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; fen_adj &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;60&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; TOI,
+           goal_60 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; goals &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;60&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; TOI) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;pivot_wider&lt;/span&gt;(names_from &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; group, values_from &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(fenwick, fen_adj, TOI, f_60, f_adj_60,
+                                                    goals, goal_60))
+  
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Once the function is written, we need to apply it! You can see that our &lt;code&gt;sampling_fn&lt;/code&gt; function requires two arguments to be supplied: &lt;code&gt;value&lt;/code&gt; and &lt;code&gt;samplesize&lt;/code&gt;. The &lt;code&gt;value&lt;/code&gt; is each individual team season, since we want the function to run over each one separately. And I was curious to see how the results vary by the sample size chosen, so the code below will run separately for sample sizes of 40, 50, 60, and 70 games. Micah&#39;s 5v5 method was tested with sample sizes of 40 games, but since 5v4 time is comparatively much more rare, I wanted to test larger sample sizes as well. (This is why we eliminated the lockout-shortened season, which only had 48 games.)&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;lapply&lt;/code&gt; is a very useful function that will perform the &lt;code&gt;sampling_fn&lt;/code&gt;, with the selected &lt;code&gt;samplesize&lt;/code&gt;, over each unique value of &lt;code&gt;team_season&lt;/code&gt; from the &lt;code&gt;sampling_team&lt;/code&gt; data frame. And the &lt;code&gt;bind_rows&lt;/code&gt; function will collect all of the function results into one data frame.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Run the function for the various sample sizes&lt;/span&gt;
+
+summary_team &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;lapply&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;unique&lt;/span&gt;(sampling_team&lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt;team_season), sampling_fn, samplesize &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;40&lt;/span&gt;)
+sampling_team_40 &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;bind_rows&lt;/span&gt;(summary_team, .id &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;column_label&amp;#34;&lt;/span&gt;)
+
+summary_team &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;lapply&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;unique&lt;/span&gt;(sampling_team&lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt;team_season), sampling_fn, samplesize &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;50&lt;/span&gt;)
+sampling_team_50 &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;bind_rows&lt;/span&gt;(summary_team, .id &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;column_label&amp;#34;&lt;/span&gt;)
+
+summary_team &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;lapply&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;unique&lt;/span&gt;(sampling_team&lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt;team_season), sampling_fn, samplesize &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;60&lt;/span&gt;)
+sampling_team_60 &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;bind_rows&lt;/span&gt;(summary_team, .id &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;column_label&amp;#34;&lt;/span&gt;)
+
+summary_team &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;lapply&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;unique&lt;/span&gt;(sampling_team&lt;span style=&#34;color:#f92672&#34;&gt;$&lt;/span&gt;team_season), sampling_fn, samplesize &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;70&lt;/span&gt;)
+sampling_team_70 &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;bind_rows&lt;/span&gt;(summary_team, .id &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;column_label&amp;#34;&lt;/span&gt;)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;I will end up with four data frames, &lt;code&gt;sampling_team_40&lt;/code&gt; through &lt;code&gt;sampling_team_70&lt;/code&gt; that are all the same size. Here is a sample:&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;sampling_team.png&#34; &gt;
+&lt;img src=&#34;sampling_team.png&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+&lt;p&gt;&lt;code&gt;replicate&lt;/code&gt; indicates which sample it is (each individual &lt;code&gt;team_season&lt;/code&gt; has 1000) and the &lt;code&gt;_0&lt;/code&gt; and &lt;code&gt;_1&lt;/code&gt; appended to each metric show the two separate groups. For example, the first row here is one sample of 40 games from the Bruins&#39; 2009-10 season. Those 40 games were divided into two groups: the first group had 111 total unblocked shot attempts, and the second group had 132. Having the data structured this way will allow us to easily calculate the correlations.&lt;/p&gt;
+
+&lt;p&gt;We&#39;ll create another function to do so, called &lt;code&gt;correlations&lt;/code&gt;, and use the &lt;code&gt;lapply&lt;/code&gt; function again to apply that function over our four data frames.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;correlations &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;function&lt;/span&gt;(df) {
+  
+  correlation &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; df &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;group_by&lt;/span&gt;(samplesize) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;summarize&lt;/span&gt;(raw_f &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;cor&lt;/span&gt;(fenwick_0, fenwick_1) ^ &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;,
+            adj_f &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;cor&lt;/span&gt;(fen_adj_0, fen_adj_1) ^ &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;,
+            raw_rate &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;cor&lt;/span&gt;(f_60_0, f_60_1) ^ &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;,
+            adj_rate &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;cor&lt;/span&gt;(f_adj_60_0, f_adj_60_1) ^ &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;,
+            raw_f_pred &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;cor&lt;/span&gt;(fenwick_0, goals_1) ^ &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;,
+            adj_f_pred &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;cor&lt;/span&gt;(fen_adj_0, goals_1) ^ &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;,
+            raw_rate_pred &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;cor&lt;/span&gt;(f_60_0, goal_60_1) ^ &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;,
+            adj_rate_pred &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;cor&lt;/span&gt;(f_adj_60_0, goal_60_1) ^ &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;)
+  
+}
+
+cor_all &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;lapply&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;list&lt;/span&gt;(sampling_team_40, sampling_team_50, sampling_team_60, sampling_team_70), correlations)
+cor &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;bind_rows&lt;/span&gt;(cor_all)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;That will result in a very simple data frame that looks like this:&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;correlations.png&#34; &gt;
+&lt;img src=&#34;correlations.png&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+&lt;p&gt;And we can reshape that data to more easily create some graphs.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Create graphs to compare----&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Reshape data to make it easier&lt;/span&gt;
+
+cor_reshape &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; cor &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;pivot_longer&lt;/span&gt;(raw_f&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;adj_rate_pred, names_to &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;metric&amp;#34;&lt;/span&gt;, values_to &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;R2&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;mutate&lt;/span&gt;(type &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;substr&lt;/span&gt;(metric, &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;)) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;arrange&lt;/span&gt;(type) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;mutate&lt;/span&gt;(type &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;factor&lt;/span&gt;(type, levels&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;raw&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;adj&amp;#34;&lt;/span&gt;)))
+
+cor_reshape &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;filter&lt;/span&gt;(metric &lt;span style=&#34;color:#f92672&#34;&gt;%in%&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;raw_f&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;adj_f&amp;#34;&lt;/span&gt;)) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;ggplot&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;aes&lt;/span&gt;(fill &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; type, x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; samplesize, y &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; R2)) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;geom_bar&lt;/span&gt;(stat &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;identity&amp;#34;&lt;/span&gt;, position &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;dodge&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;labs&lt;/span&gt;(title &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Repeatability: Unblocked Shot Attempts&amp;#34;&lt;/span&gt;, x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Sample Size&amp;#34;&lt;/span&gt;, 
+       y &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;R-Squared&amp;#34;&lt;/span&gt;, fill &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Adjusted?&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;theme_linedraw&lt;/span&gt;() &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;theme&lt;/span&gt;(axis.ticks &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;element_blank&lt;/span&gt;()) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;geom_text&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;aes&lt;/span&gt;(label &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;round&lt;/span&gt;(R2, &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;)), position &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;position_dodge&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;),  vjust &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;-0.5&lt;/span&gt;, size &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;scale_fill_manual&lt;/span&gt;(values &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;#DDDDDD&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;#CF8BA8&amp;#34;&lt;/span&gt;))
+
+cor_reshape &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;filter&lt;/span&gt;(metric &lt;span style=&#34;color:#f92672&#34;&gt;%in%&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;raw_rate&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;adj_rate&amp;#34;&lt;/span&gt;)) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;ggplot&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;aes&lt;/span&gt;(fill &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; type, x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; samplesize, y &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; R2)) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;geom_bar&lt;/span&gt;(stat &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;identity&amp;#34;&lt;/span&gt;, position &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;dodge&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;labs&lt;/span&gt;(title &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Repeatability: Unblocked Shot Attempt Rate&amp;#34;&lt;/span&gt;, x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Sample Size&amp;#34;&lt;/span&gt;, 
+       y &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;R-Squared&amp;#34;&lt;/span&gt;, fill &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Adjusted?&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;theme_linedraw&lt;/span&gt;() &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;theme&lt;/span&gt;(axis.ticks &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;element_blank&lt;/span&gt;()) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;geom_text&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;aes&lt;/span&gt;(label &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;round&lt;/span&gt;(R2, &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;)), position &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;position_dodge&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;),  vjust &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;-0.5&lt;/span&gt;, size &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;scale_fill_manual&lt;/span&gt;(values &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;#DDDDDD&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;#CF8BA8&amp;#34;&lt;/span&gt;))
+
+cor_reshape &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;filter&lt;/span&gt;(metric &lt;span style=&#34;color:#f92672&#34;&gt;%in%&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;raw_rate_pred&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;adj_rate_pred&amp;#34;&lt;/span&gt;)) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;ggplot&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;aes&lt;/span&gt;(fill &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; type, x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; samplesize, y &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; R2)) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;geom_bar&lt;/span&gt;(stat &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;identity&amp;#34;&lt;/span&gt;, position &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;dodge&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;labs&lt;/span&gt;(title &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Predictivity: Unblocked Shot Attempt Rate&amp;#34;&lt;/span&gt;, x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Sample Size&amp;#34;&lt;/span&gt;, 
+       y &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;R-Squared&amp;#34;&lt;/span&gt;, fill &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Adjusted?&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;theme_linedraw&lt;/span&gt;() &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;theme&lt;/span&gt;(axis.ticks &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;element_blank&lt;/span&gt;()) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;geom_text&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;aes&lt;/span&gt;(label &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;round&lt;/span&gt;(R2, &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;)), position &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;position_dodge&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;),  vjust &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;-0.5&lt;/span&gt;, size &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;scale_fill_manual&lt;/span&gt;(values &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;#DDDDDD&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;#CF8BA8&amp;#34;&lt;/span&gt;))&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;repeat_raw.png&#34; &gt;
+&lt;img src=&#34;repeat_raw.png&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;repeat_rate.png&#34; &gt;
+&lt;img src=&#34;repeat_rate.png&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;pred_rate.png&#34; &gt;
+&lt;img src=&#34;pred_rate.png&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+&lt;p&gt;&lt;a href=&#34;https://hockey-graphs.com/&#34;&gt;&lt;em&gt;From Hockey-Graphs&lt;/em&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;I have written a couple articles over the past few months on using R with hockey data (see here and here), but both of those articles were focused on intermediate techniques and presumed beginner knowledge of R. In contrast, this article is for the complete beginner. We’ll go through the steps of downloading and setting up R and then, with the use of a sample hockey data set, learn the very basics of R for exploring and visualizing data.&lt;/p&gt;
+
+&lt;div class=&#34;alert alert-note&#34;&gt;
+  &lt;div&gt;
+    Click &lt;a href=&#34;https://hockey-graphs.com/2019/12/11/an-introduction-to-r-with-hockey-data/&#34;&gt;&lt;strong&gt;here&lt;/strong&gt;&lt;/a&gt; to read the rest of this article on Hockey-Graphs and &lt;a href=&#34;https://github.com/hockey-graphs/HG_intro_tutorial/blob/master/HG_tutorial_code.R&#34;&gt;&lt;strong&gt;here&lt;/strong&gt;&lt;/a&gt; to see the code on Github.
+  &lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>An Introduction to R With Hockey Data</title>
       <link>/post/r-tutorial/</link>
       <pubDate>Wed, 11 Dec 2019 00:00:00 +0000</pubDate>
       <guid>/post/r-tutorial/</guid>
