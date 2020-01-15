@@ -12,7 +12,7 @@ title: Examining Score Effects on Special Teams
 Score effects in hockey are well-known, whether you're watching the game or looking at numbers: teams that are losing tend to generate a greater share of the shot attempts. Micah Blake McCurdy developed <a href="https://www.hockeyviz.com/txt/senstats" target="_blank">an adjustment method</a> for 5v5 events that is currently used to create the score- and venue-adjusted shot attempt metrics available at hockey stats websites like <a href="http://www.naturalstattrick.com/" target="_blank">Natural Stat Trick</a>
 and <a href="https://evolving-hockey.com/" target="_blank">Evolving Hockey</a>.
 
-Since I spend a lot of time looking at special teams data, I have long been curious as to whether score effects might also be a factor for power plays. Here, I've modified Micah's method to investigate score effects at 5v4: I created the weights, compared them to the 5v5 weights, and examined the repetability and predictivity of the adjusted values compared to the raw ones. Investigating this problem taught me a lot of new R skills, so I've included all code and will go through the process step-by-step. (So if you're only interested in the conclusion, just scroll past the code and look at the graphs!)
+Since I spend a lot of time looking at special teams data, I have long been curious as to whether score effects might also be a factor for power plays. Here, I've modified Micah's method to investigate score effects at 5v4: I created the weights, compared them to the 5v5 weights, and examined the repeatability and predictivity of the adjusted values compared to the raw ones. Investigating this problem taught me a lot of new R skills, so I've included all code and will go through the process step-by-step. (So if you're only interested in the conclusion, just scroll past the code and look at the graphs!)
 
 ### Get and prepare the data
 
@@ -197,7 +197,7 @@ score_adj_5v4_w_values <- score_adj_5v4 %>%
 
 To examine these adjusted values in comparison to the raw ones, we'll look at both *repeatability* and *prediction*. Repeatability is measured by how well the unblocked shot attempts in one sample of a season correlate to those in another sample, and prediction looks at how well the unblocked shot attempts in one sample correlate to *goals* in another.  Our metric of interest in both cases will be R<sup>2</sup>, and we're curious to see whether those R<sup>2</sup> values are *higher* for the adjusted values.
 
-The first step is to create the data set, `sampling_team` that we'll use for sampling purposes. (Again, we'll filter out the lockout-shortened season.) We'll group by `game_id` as well as `PP_team` and summarize the raw fenwick values, adjusted fenwick values, goals, and total TOI. We'll also create a unique identifier of `team_season` that will be important for sampling purposes. 
+The first step is to create the data set, `sampling_team`, that we'll use for sampling purposes. (Again, we'll filter out the lockout-shortened season.) We'll group by `game_id` as well as `PP_team` and summarize the raw fenwick values, adjusted fenwick values, goals, and total TOI. We'll also create a unique identifier of `team_season` that will be important for sampling purposes. 
 
 ```r
 
@@ -365,10 +365,8 @@ Also as expected, the R<sup>2</sup> value is much smaller when we look at predic
 
 {{< figure src="pred_rate.png" lightbox="true" >}}
 
-[*From Hockey-Graphs*](https://hockey-graphs.com/)
-
-I have written a couple articles over the past few months on using R with hockey data (see here and here), but both of those articles were focused on intermediate techniques and presumed beginner knowledge of R. In contrast, this article is for the complete beginner. We’ll go through the steps of downloading and setting up R and then, with the use of a sample hockey data set, learn the very basics of R for exploring and visualizing data.
+My personal conclusion is that there appears to be some value from adjusting for score effects at 5v4 but likely not quite enough to recommend it as common practice. For context, I'd also like to explore further into how score effects might affect the rate of drawing or taking penalties.
 
 {{% alert note %}}
-Click [**here**](https://hockey-graphs.com/2019/12/11/an-introduction-to-r-with-hockey-data/) to read the rest of this article on Hockey-Graphs and [**here**](https://github.com/hockey-graphs/HG_intro_tutorial/blob/master/HG_tutorial_code.R) to see the code on Github.
+Click [**here**](https://twitter.com/MeghanMHall) to follow me on Twitter.
 {{% /alert %}}
