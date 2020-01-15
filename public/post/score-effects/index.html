@@ -448,14 +448,14 @@ Since I spend a lot of time looking at special teams data, I have long been curi
   <div class="article-container">
 
     <div class="article-style">
-      <p>Score effects in hockey are well-known, whether you're watching the game or looking at numbers: teams that are losing tend to generate a greater share of the shot attempts. Micah Blake McCurdy developed <a href="https://www.hockeyviz.com/txt/senstats">an adjustment method</a> for 5v5 events that is currently used to create the score- and venue-adjusted shot attempt metrics available at hockey stats websites like <a href="http://www.naturalstattrick.com/" target="_blank">Natural Stat Trick</a>
-and <a href="https://evolving-hockey.com/">Evolving Hockey</a>.</p>
+      <p>Score effects in hockey are well-known, whether you're watching the game or looking at numbers: teams that are losing tend to generate a greater share of the shot attempts. Micah Blake McCurdy developed <a href="https://www.hockeyviz.com/txt/senstats" target="_blank">an adjustment method</a> for 5v5 events that is currently used to create the score- and venue-adjusted shot attempt metrics available at hockey stats websites like <a href="http://www.naturalstattrick.com/" target="_blank">Natural Stat Trick</a>
+and <a href="https://evolving-hockey.com/" target="_blank">Evolving Hockey</a>.</p>
 
 <p>Since I spend a lot of time looking at special teams data, I have long been curious as to whether score effects might also be a factor for power plays. Here, I've modified Micah's method to investigate score effects at 5v4: I created the weights, compared them to the 5v5 weights, and examined the repetability and predictivity of the adjusted values compared to the raw ones. Investigating this problem taught me a lot of new R skills, so I've included all code and will go through the process step-by-step. (So if you're only interested in the conclusion, just scroll past the code and look at the graphs!)</p>
 
-<h3 id="get-and-prepare-the-data" target="_blank">Get and prepare the data</h3>
+<h3 id="get-and-prepare-the-data">Get and prepare the data</h3>
 
-<p>To start, I used the play-by-play query tool available at <a href="https://evolving-hockey.com/">Evolving Hockey</a> to collect all power play events from the past 10 seasons. (This was much quicker than scraping full seasons of data, and if you'd like access to the tool, support them on <a href="https://www.patreon.com/evolvinghockey/">Patreon</a>.) With all of the files in the same folder, instead of reading them in one-by-one, some functions from the plyr package make it easier to read them all in and combine them into one file.</p>
+<p>To start, I used the play-by-play query tool available at <a href="https://evolving-hockey.com/" target="_blank">Evolving Hockey</a> to collect all power play events from the past 10 seasons. (This was much quicker than scraping full seasons of data, and if you'd like access to the tool, support them on <a href="https://www.patreon.com/evolvinghockey/" target="_blank">Patreon</a>.) With all of the files in the same folder, instead of reading them in one-by-one, some functions from the plyr package make it easier to read them all in and combine them into one file.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(plyr)
 <span style="color:#a6e22e">library</span>(readr)
 <span style="color:#a6e22e">library</span>(tidyverse)
@@ -912,6 +912,8 @@ cor_reshape <span style="color:#f92672">%&gt;%</span>
   <span style="color:#a6e22e">theme</span>(axis.ticks <span style="color:#f92672">=</span> <span style="color:#a6e22e">element_blank</span>()) <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">geom_text</span>(<span style="color:#a6e22e">aes</span>(label <span style="color:#f92672">=</span> <span style="color:#a6e22e">round</span>(R2, <span style="color:#ae81ff">3</span>)), position <span style="color:#f92672">=</span> <span style="color:#a6e22e">position_dodge</span>(<span style="color:#ae81ff">10</span>),  vjust <span style="color:#f92672">=</span> <span style="color:#ae81ff">-0.5</span>, size <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>) <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">scale_fill_manual</span>(values <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">#DDDDDD&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">#CF8BA8&#34;</span>))</code></pre></div>
+<p>The two figures below show the R<sup>2</sup> values for raw and adjusted values, by sample size, for the unblocked shot attempts and the unblocked shot attempt <em>rate</em>, respectively. As expected, the correlation increases along with the sample size. And although none of the R<sup>2</sup> values are particularly large, they are consistently higher for the adjusted values. (As a comparison, Micah found a R<sup>2</sup> value of 0.530 for a similar test with 5v5 adjusted values.)</p>
+
 
 
 
@@ -959,6 +961,8 @@ cor_reshape <span style="color:#f92672">%&gt;%</span>
 
 </figure>
 
+
+<p>Also as expected, the R<sup>2</sup> value is much smaller when we look at prediction: how the unblocked shot attempt rate in one group predicts the goal rate in another group. Again as comparison: Micah used goal percentage instead for his prediction test and found a R<sup>2</sup> value of 0.113.</p>
 
 
 

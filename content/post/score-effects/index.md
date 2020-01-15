@@ -9,14 +9,14 @@ math: true
 title: Examining Score Effects on Special Teams
 ---
 
-Score effects in hockey are well-known, whether you're watching the game or looking at numbers: teams that are losing tend to generate a greater share of the shot attempts. Micah Blake McCurdy developed [an adjustment method](https://www.hockeyviz.com/txt/senstats){target="_blank"} for 5v5 events that is currently used to create the score- and venue-adjusted shot attempt metrics available at hockey stats websites like <a href="http://www.naturalstattrick.com/" target="_blank">Natural Stat Trick</a>
-and [Evolving Hockey](https://evolving-hockey.com/).
+Score effects in hockey are well-known, whether you're watching the game or looking at numbers: teams that are losing tend to generate a greater share of the shot attempts. Micah Blake McCurdy developed <a href="https://www.hockeyviz.com/txt/senstats" target="_blank">an adjustment method</a> for 5v5 events that is currently used to create the score- and venue-adjusted shot attempt metrics available at hockey stats websites like <a href="http://www.naturalstattrick.com/" target="_blank">Natural Stat Trick</a>
+and <a href="https://evolving-hockey.com/" target="_blank">Evolving Hockey</a>.
 
 Since I spend a lot of time looking at special teams data, I have long been curious as to whether score effects might also be a factor for power plays. Here, I've modified Micah's method to investigate score effects at 5v4: I created the weights, compared them to the 5v5 weights, and examined the repetability and predictivity of the adjusted values compared to the raw ones. Investigating this problem taught me a lot of new R skills, so I've included all code and will go through the process step-by-step. (So if you're only interested in the conclusion, just scroll past the code and look at the graphs!)
 
 ### Get and prepare the data
 
-To start, I used the play-by-play query tool available at [Evolving Hockey](https://evolving-hockey.com/) to collect all power play events from the past 10 seasons. (This was much quicker than scraping full seasons of data, and if you'd like access to the tool, support them on [Patreon](https://www.patreon.com/evolvinghockey/).) With all of the files in the same folder, instead of reading them in one-by-one, some functions from the plyr package make it easier to read them all in and combine them into one file.
+To start, I used the play-by-play query tool available at <a href="https://evolving-hockey.com/" target="_blank">Evolving Hockey</a> to collect all power play events from the past 10 seasons. (This was much quicker than scraping full seasons of data, and if you'd like access to the tool, support them on <a href="https://www.patreon.com/evolvinghockey/" target="_blank">Patreon</a>.) With all of the files in the same folder, instead of reading them in one-by-one, some functions from the plyr package make it easier to read them all in and combine them into one file.
 
 ```r
 
@@ -355,9 +355,13 @@ cor_reshape %>%
 
 ```
 
+The two figures below show the R<sup>2</sup> values for raw and adjusted values, by sample size, for the unblocked shot attempts and the unblocked shot attempt *rate*, respectively. As expected, the correlation increases along with the sample size. And although none of the R<sup>2</sup> values are particularly large, they are consistently higher for the adjusted values. (As a comparison, Micah found a R<sup>2</sup> value of 0.530 for a similar test with 5v5 adjusted values.)
+
 {{< figure src="repeat_raw.png" lightbox="true" >}}
 
 {{< figure src="repeat_rate.png" lightbox="true" >}}
+
+Also as expected, the R<sup>2</sup> value is much smaller when we look at prediction: how the unblocked shot attempt rate in one group predicts the goal rate in another group. Again as comparison: Micah used goal percentage instead for his prediction test and found a R<sup>2</sup> value of 0.113. 
 
 {{< figure src="pred_rate.png" lightbox="true" >}}
 

@@ -67,14 +67,14 @@
       <link>/post/score-effects/</link>
       <pubDate>Wed, 15 Jan 2020 00:00:00 +0000</pubDate>
       <guid>/post/score-effects/</guid>
-      <description>&lt;p&gt;Score effects in hockey are well-known, whether you&#39;re watching the game or looking at numbers: teams that are losing tend to generate a greater share of the shot attempts. Micah Blake McCurdy developed &lt;a href=&#34;https://www.hockeyviz.com/txt/senstats&#34;&gt;an adjustment method&lt;/a&gt; for 5v5 events that is currently used to create the score- and venue-adjusted shot attempt metrics available at hockey stats websites like &lt;a href=&#34;http://www.naturalstattrick.com/&#34; target=&#34;_blank&#34;&gt;Natural Stat Trick&lt;/a&gt;
-and &lt;a href=&#34;https://evolving-hockey.com/&#34;&gt;Evolving Hockey&lt;/a&gt;.&lt;/p&gt;
+      <description>&lt;p&gt;Score effects in hockey are well-known, whether you&#39;re watching the game or looking at numbers: teams that are losing tend to generate a greater share of the shot attempts. Micah Blake McCurdy developed &lt;a href=&#34;https://www.hockeyviz.com/txt/senstats&#34; target=&#34;_blank&#34;&gt;an adjustment method&lt;/a&gt; for 5v5 events that is currently used to create the score- and venue-adjusted shot attempt metrics available at hockey stats websites like &lt;a href=&#34;http://www.naturalstattrick.com/&#34; target=&#34;_blank&#34;&gt;Natural Stat Trick&lt;/a&gt;
+and &lt;a href=&#34;https://evolving-hockey.com/&#34; target=&#34;_blank&#34;&gt;Evolving Hockey&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;Since I spend a lot of time looking at special teams data, I have long been curious as to whether score effects might also be a factor for power plays. Here, I&#39;ve modified Micah&#39;s method to investigate score effects at 5v4: I created the weights, compared them to the 5v5 weights, and examined the repetability and predictivity of the adjusted values compared to the raw ones. Investigating this problem taught me a lot of new R skills, so I&#39;ve included all code and will go through the process step-by-step. (So if you&#39;re only interested in the conclusion, just scroll past the code and look at the graphs!)&lt;/p&gt;
 
-&lt;h3 id=&#34;get-and-prepare-the-data&#34; target=&#34;_blank&#34;&gt;Get and prepare the data&lt;/h3&gt;
+&lt;h3 id=&#34;get-and-prepare-the-data&#34;&gt;Get and prepare the data&lt;/h3&gt;
 
-&lt;p&gt;To start, I used the play-by-play query tool available at &lt;a href=&#34;https://evolving-hockey.com/&#34;&gt;Evolving Hockey&lt;/a&gt; to collect all power play events from the past 10 seasons. (This was much quicker than scraping full seasons of data, and if you&#39;d like access to the tool, support them on &lt;a href=&#34;https://www.patreon.com/evolvinghockey/&#34;&gt;Patreon&lt;/a&gt;.) With all of the files in the same folder, instead of reading them in one-by-one, some functions from the plyr package make it easier to read them all in and combine them into one file.&lt;/p&gt;
+&lt;p&gt;To start, I used the play-by-play query tool available at &lt;a href=&#34;https://evolving-hockey.com/&#34; target=&#34;_blank&#34;&gt;Evolving Hockey&lt;/a&gt; to collect all power play events from the past 10 seasons. (This was much quicker than scraping full seasons of data, and if you&#39;d like access to the tool, support them on &lt;a href=&#34;https://www.patreon.com/evolvinghockey/&#34; target=&#34;_blank&#34;&gt;Patreon&lt;/a&gt;.) With all of the files in the same folder, instead of reading them in one-by-one, some functions from the plyr package make it easier to read them all in and combine them into one file.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;library&lt;/span&gt;(plyr)
 &lt;span style=&#34;color:#a6e22e&#34;&gt;library&lt;/span&gt;(readr)
 &lt;span style=&#34;color:#a6e22e&#34;&gt;library&lt;/span&gt;(tidyverse)
@@ -531,6 +531,8 @@ cor_reshape &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
   &lt;span style=&#34;color:#a6e22e&#34;&gt;theme&lt;/span&gt;(axis.ticks &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;element_blank&lt;/span&gt;()) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
   &lt;span style=&#34;color:#a6e22e&#34;&gt;geom_text&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;aes&lt;/span&gt;(label &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;round&lt;/span&gt;(R2, &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;)), position &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;position_dodge&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;),  vjust &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;-0.5&lt;/span&gt;, size &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
   &lt;span style=&#34;color:#a6e22e&#34;&gt;scale_fill_manual&lt;/span&gt;(values &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;#DDDDDD&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;#CF8BA8&amp;#34;&lt;/span&gt;))&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The two figures below show the R&lt;sup&gt;2&lt;/sup&gt; values for raw and adjusted values, by sample size, for the unblocked shot attempts and the unblocked shot attempt &lt;em&gt;rate&lt;/em&gt;, respectively. As expected, the correlation increases along with the sample size. And although none of the R&lt;sup&gt;2&lt;/sup&gt; values are particularly large, they are consistently higher for the adjusted values. (As a comparison, Micah found a R&lt;sup&gt;2&lt;/sup&gt; value of 0.530 for a similar test with 5v5 adjusted values.)&lt;/p&gt;
+
 
 
 
@@ -578,6 +580,8 @@ cor_reshape &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
 
 &lt;/figure&gt;
 
+
+&lt;p&gt;Also as expected, the R&lt;sup&gt;2&lt;/sup&gt; value is much smaller when we look at prediction: how the unblocked shot attempt rate in one group predicts the goal rate in another group. Again as comparison: Micah used goal percentage instead for his prediction test and found a R&lt;sup&gt;2&lt;/sup&gt; value of 0.113.&lt;/p&gt;
 
 
 
