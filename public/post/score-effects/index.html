@@ -452,7 +452,7 @@ Since I spend a lot of time looking at special teams data, I have long been curi
 
 <p>Since I spend a lot of time looking at special teams data, I have long been curious as to whether score effects might also be a factor for power plays. Here, I've modified Micah's method to investigate score effects at 5v4: I created the weights, compared them to the 5v5 weights, and examined the repetability and predictivity of the adjusted values compared to the raw ones. Investigating this problem taught me a lot of new R skills, so I've included all code and will go through the process step-by-step. (So if you're only interested in the conclusion, just scroll past the code and look at the graphs!)</p>
 
-<h3 id="get-and-prepare-the-data">Get and prepare the data</h3>
+<h3 id="get-and-prepare-the-data" target="_blank">Get and prepare the data</h3>
 
 <p>To start, I used the play-by-play query tool available at <a href="https://evolving-hockey.com/">Evolving Hockey</a> to collect all power play events from the past 10 seasons. (This was much quicker than scraping full seasons of data, and if you'd like access to the tool, support them on <a href="https://www.patreon.com/evolvinghockey/">Patreon</a>.) With all of the files in the same folder, instead of reading them in one-by-one, some functions from the plyr package make it easier to read them all in and combine them into one file.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(plyr)
