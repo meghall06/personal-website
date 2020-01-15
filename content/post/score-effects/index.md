@@ -365,8 +365,4 @@ Also as expected, the R<sup>2</sup> value is much smaller when we look at predic
 
 {{< figure src="pred_rate.png" lightbox="true" >}}
 
-My personal conclusion is that there appears to be some value from adjusting for score effects at 5v4 but likely not quite enough to recommend it as common practice. For context, I'd also like to explore further into how score effects might affect the rate of drawing or taking penalties.
-
-{{% alert note %}}
-Click [**here**](https://twitter.com/MeghanMHall) to follow me on Twitter.
-{{% /alert %}}
+My personal conclusion is that there appears to be some value from adjusting for score effects at 5v4, but I'm not sure it's enough to recommend score adjustment as common practice. For context, I'd also like to explore further into how score effects might affect the rate of drawing or taking penalties.
