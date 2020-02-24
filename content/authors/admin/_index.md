@@ -33,4 +33,4 @@ user_groups:
 
 Meghan Hall is a higher education data professional by day and an amateur hockey analyst by night. She contributes to Hockey-Graphs and has written for Nightingale, the publication of the Data Visualization Society. 
 
-She presented at the Seattle Hockey Analytics Conference in March 2019 on league-wide trends in goalie pulling and twice presented on features of the penalty kill, both at the Rochester Institute of Technology Sports Analytics Conference in August 2019 and the Ottawa Hockey Analytics Conference in November 2019. She will be presenting on the penalty kill *yet again* at the Columbus Blue Jackets Hockey Analytics Conference in February 2020, with Alison Lukan.
+She presented at the Seattle Hockey Analytics Conference in March 2019 on league-wide trends in goalie pulling and has presented on features of the penalty kill three times, at the Rochester Institute of Technology Sports Analytics Conference in August 2019, the Ottawa Hockey Analytics Conference in November 2019, and the Columbus Blue Jackets Hockey Analytics Conference (with Alison Lukan) in February 2020.

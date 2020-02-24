@@ -22,14 +22,10 @@ links:
 #   icon_pack: fab
 #   name: Follow
 #   url: https://twitter.com/meghanmhall
-- icon: chart-bar
-  icon_pack: fas
-  name: Data
-  url: 
 - icon: file-pdf
   icon_pack: fas
   name: Slides
-  url: 
+  url: https://drive.google.com/file/d/18IyQvNgp-MK0V0-Gul-3OwOasFuuppiK/view
 location: Columbus Blue Jackets Hockey Analytics Conference
 math: true
 projects:
