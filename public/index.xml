@@ -5,7 +5,7 @@
     <link>/</link>
       <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <description>Meghan Hall</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Mon, 24 Feb 2020 00:00:00 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Mon, 09 Mar 2020 00:00:00 +0000</lastBuildDate>
     <image>
       <url>img/icon-192.png</url>
       <title>Meghan Hall</title>
@@ -51,6 +51,706 @@
 &lt;p&gt;Cras aliquam rhoncus ipsum, in hendrerit nunc mattis vitae. Duis vitae efficitur metus, ac tempus leo. Cras nec fringilla lacus. Quisque sit amet risus at ipsum pharetra commodo. Sed aliquam mauris at consequat eleifend. Praesent porta, augue sed viverra bibendum, neque ante euismod ante, in vehicula justo lorem ac eros. Suspendisse augue libero, venenatis eget tincidunt ut, malesuada at lorem. Donec vitae bibendum arcu. Aenean maximus nulla non pretium iaculis. Quisque imperdiet, nulla in pulvinar aliquet, velit quam ultrices quam, sit amet fringilla leo sem vel nunc. Mauris in lacinia lacus.&lt;/p&gt;
 &lt;p&gt;Suspendisse a tincidunt lacus. Curabitur at urna sagittis, dictum ante sit amet, euismod magna. Sed rutrum massa id tortor commodo, vitae elementum turpis tempus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean purus turpis, venenatis a ullamcorper nec, tincidunt et massa. Integer posuere quam rutrum arcu vehicula imperdiet. Mauris ullamcorper quam vitae purus congue, quis euismod magna eleifend. Vestibulum semper vel augue eget tincidunt. Fusce eget justo sodales, dapibus odio eu, ultrices lorem. Duis condimentum lorem id eros commodo, in facilisis mauris scelerisque. Morbi sed auctor leo. Nullam volutpat a lacus quis pharetra. Nulla congue rutrum magna a ornare.&lt;/p&gt;
 &lt;p&gt;Aliquam in turpis accumsan, malesuada nibh ut, hendrerit justo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Quisque sed erat nec justo posuere suscipit. Donec ut efficitur arcu, in malesuada neque. Nunc dignissim nisl massa, id vulputate nunc pretium nec. Quisque eget urna in risus suscipit ultricies. Pellentesque odio odio, tincidunt in eleifend sed, posuere a diam. Nam gravida nisl convallis semper elementum. Morbi vitae felis faucibus, vulputate orci placerat, aliquet nisi. Aliquam erat volutpat. Maecenas sagittis pulvinar purus, sed porta quam laoreet at.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Exploring tidymodels With Hockey Data</title>
+      <link>/post/tidymodels-intro/</link>
+      <pubDate>Mon, 09 Mar 2020 00:00:00 +0000</pubDate>
+      <guid>/post/tidymodels-intro/</guid>
+      <description>&lt;p&gt;Before we start, an important disclaimer: this is &lt;em&gt;not&lt;/em&gt; a tutorial on how to thoughtfully build and thoroughly evaluate models. This is a gentle introduction to the &lt;code&gt;tidymodels&lt;/code&gt; package (which, like the &lt;code&gt;tidyverse&lt;/code&gt;, is actually a collection of packages), and in order to examine various functions and capabilities of those packages, we&#39;ll build two very simple models, using easily available NHL data, and go over a few ways to evaluate them.&lt;/p&gt;
+
+&lt;p&gt;The &lt;code&gt;tidymodels&lt;/code&gt; package, which is fairly new, was designed to make it easier to create your model framework in a tidy way and consists of, among others, &lt;code&gt;recipes&lt;/code&gt; (prepping models), &lt;code&gt;parsnip&lt;/code&gt; (executing models), and &lt;code&gt;yardstick&lt;/code&gt; (evaluating models). Here, we&#39;ll build two simple models to predict whether an NHL player is a forward or a defenseman.&lt;/p&gt;
+
+&lt;h3 id=&#34;find-and-prepare-the-data&#34;&gt;Find and prepare the data&lt;/h3&gt;
+
+&lt;p&gt;First, let&#39;s get our data prepped—we&#39;re using 2018-19 data so we can have a full season. We&#39;ll get the position data by downloading from &lt;a href=&#34;http://www.naturalstattrick.com/playerteams.php?fromseason=20182019&amp;thruseason=20182019&amp;stype=2&amp;sit=5v5&amp;score=all&amp;stdoi=bio&amp;rate=n&amp;team=ALL&amp;pos=S&amp;loc=B&amp;toi=0&amp;gpfilt=none&amp;fd=&amp;td=&amp;tgp=410&amp;lines=single&amp;draftteam=ALL&#34; target=&#34;_blank&#34;&gt;Natural Stat Trick&lt;/a&gt;, and we&#39;ll create our statistics from the raw play-by-play data, available via the &lt;a href=&#34;https://twitter.com/EvolvingWild/status/1163503829993828353&#34; target=&#34;_blank&#34;&gt;Evolving Wild scraper&lt;/a&gt;. (Could you download all these summary statistics from NST instead? Definitely. But this is about learning, and it&#39;s great R practice [pRactice?] to generate them yourself from the play-by-play data.)&lt;/p&gt;
+
+&lt;div class=&#34;alert alert-note&#34;&gt;
+  &lt;div&gt;
+    One of the &lt;code&gt;tidymodels&lt;/code&gt; packages called &lt;code&gt;dials&lt;/code&gt; has a &lt;code&gt;margin()&lt;/code&gt; function that will mask the &lt;code&gt;margin()&lt;/code&gt; function in &lt;code&gt;ggplot2&lt;/code&gt;. If you use the &lt;code&gt;margin()&lt;/code&gt; function in your &lt;code&gt;ggplot2&lt;/code&gt; custom theme like I do, just load &lt;code&gt;tidymodels&lt;/code&gt; before &lt;code&gt;tidyverse&lt;/code&gt; and you should be fine.
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;library&lt;/span&gt;(tidymodels)
+&lt;span style=&#34;color:#a6e22e&#34;&gt;library&lt;/span&gt;(tidyverse)
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# Read in files (pbp from Evolving Hockey, bios from Natural Stat Trick)&lt;/span&gt;
+
+pbp &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;read_csv&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;pbp_20182019_all.csv&amp;#34;&lt;/span&gt;)
+bios &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;read_csv&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;bios_1819.csv&amp;#34;&lt;/span&gt;)
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# Find player TOI and games played&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# To do so, you must pivot the data so there is one row per player&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# (instead of one row per event)&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# We don&amp;#39;t care about the ice time for the goalies (sorry, goalies)&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# so they will be filtered out&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# We also do some name changes to make things easier later&lt;/span&gt;
+
+player_TOI &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; pbp &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;filter&lt;/span&gt;(event_length &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;select&lt;/span&gt;(game_id, event_length, home_on_1&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;away_goalie) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;pivot_longer&lt;/span&gt;(home_on_1&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;away_on_6, names_to &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;variable&amp;#34;&lt;/span&gt;, values_to &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;player&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;filter&lt;/span&gt;(&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;is.na&lt;/span&gt;(player)) &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt; player &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; home_goalie &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt; player &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; away_goalie) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;mutate&lt;/span&gt;(player &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;case_when&lt;/span&gt;(
+    player &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;COLIN.WHITE2&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;~&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;COLIN.WHITE&amp;#34;&lt;/span&gt;,
+    player &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;ERIK.GUSTAFSSON2&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;~&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;ERIK.GUSTAFSSON&amp;#34;&lt;/span&gt;,
+    player &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;PATRICK.MAROON&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;~&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;PAT.MAROON&amp;#34;&lt;/span&gt;,
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;TRUE&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;~&lt;/span&gt; player
+  )) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;group_by&lt;/span&gt;(player) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;summarize&lt;/span&gt;(games &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;n_distinct&lt;/span&gt;(game_id),
+            TOI &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt;(event_length) &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;60&lt;/span&gt;)
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# Find basic player stats&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# To find individual stats, we again need to pivot the data to one row per player&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# but we&amp;#39;re using the event_players only (not the on ice players)&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# You&amp;#39;ll notice we&amp;#39;re filtering out the shootout (which is game_period 5) because&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# those goals don&amp;#39;t count&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# We&amp;#39;ll sum up blocked shots (event_player_2 is the player who blocked the shot,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# event_player_1 is the one who generated it), total points, shots, unblocked shots,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# hits (both give nand received)&lt;/span&gt;
+
+player_stats &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; pbp &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;filter&lt;/span&gt;(event_type &lt;span style=&#34;color:#f92672&#34;&gt;%in%&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;HIT&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;BLOCK&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;SHOT&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;MISS&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;GOAL&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt; game_period &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;select&lt;/span&gt;(game_id, event_type, event_player_1&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;event_player_3) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;pivot_longer&lt;/span&gt;(event_player_1&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;event_player_3, names_to &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;number&amp;#34;&lt;/span&gt;, values_to &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;player&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;filter&lt;/span&gt;(&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;is.na&lt;/span&gt;(player))) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;mutate&lt;/span&gt;(block &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ifelse&lt;/span&gt;(event_type &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;BLOCK&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt; number &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;event_player_2&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;),
+         point &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ifelse&lt;/span&gt;(event_type &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;GOAL&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;),
+         shot &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ifelse&lt;/span&gt;(number &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;event_player_1&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt; event_type &lt;span style=&#34;color:#f92672&#34;&gt;%in%&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;SHOT&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;GOAL&amp;#34;&lt;/span&gt;), &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;),
+         fenwick &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ifelse&lt;/span&gt;(number &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;event_player_1&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt; event_type &lt;span style=&#34;color:#f92672&#34;&gt;%in%&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;SHOT&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;GOAL&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;MISS&amp;#34;&lt;/span&gt;), &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;),
+         hit &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ifelse&lt;/span&gt;(number &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;event_player_1&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt; event_type &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;HIT&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;),
+         hit_rec &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ifelse&lt;/span&gt;(number &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;event_player_2&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt; event_type &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;HIT&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;),
+         player &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;case_when&lt;/span&gt;(
+           player &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;COLIN.WHITE2&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;~&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;COLIN.WHITE&amp;#34;&lt;/span&gt;,
+           player &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;ERIK.GUSTAFSSON2&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;~&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;ERIK.GUSTAFSSON&amp;#34;&lt;/span&gt;,
+           player &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;PATRICK.MAROON&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;~&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;PAT.MAROON&amp;#34;&lt;/span&gt;,
+           &lt;span style=&#34;color:#66d9ef&#34;&gt;TRUE&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;~&lt;/span&gt; player
+         )) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;group_by&lt;/span&gt;(player) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;summarize&lt;/span&gt;(blocks &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt;(block),
+            points &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt;(point),
+            shots &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt;(shot),
+            fenwick &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt;(fenwick),
+            hits &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt;(hit),
+            hits_rec &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt;(hit_rec))
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# Join stats into TOI data frame and create rates&lt;/span&gt;
+
+player_TOI_stats &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; player_TOI &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;left_join&lt;/span&gt;(player_stats, by &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;player&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;mutate&lt;/span&gt;(points_60 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; points &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;60&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; TOI,
+         shots_60 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; shots &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;60&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; TOI,
+         fenwick_60 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; fenwick &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;60&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; TOI,
+         hits_60 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; hits &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;60&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; TOI,
+         hits_rec_60 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; hits_rec &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;60&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; TOI,
+         blocks_60 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; blocks &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;60&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; TOI,
+         TOI_game &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; TOI &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; games) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;select&lt;/span&gt;(&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(blocks&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;hits_rec))
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# Clean up the biographical data&lt;/span&gt;
+
+bios &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; bios &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;mutate&lt;/span&gt;(player &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;str_to_upper&lt;/span&gt;(Player),
+         player &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;str_replace&lt;/span&gt;(player, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; &amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;.&amp;#34;&lt;/span&gt;),
+         defense &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ifelse&lt;/span&gt;(Position &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;D&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;D&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;F&amp;#34;&lt;/span&gt;)) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;rename&lt;/span&gt;(height &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;`Height &lt;/span&gt;(in)`,
+         weight = `&lt;span style=&#34;color:#a6e22e&#34;&gt;Weight &lt;/span&gt;(lbs)`) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;select&lt;/span&gt;(player, defense, height, weight) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;mutate&lt;/span&gt;(player &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;str_replace_all&lt;/span&gt;(player, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;ALEXANDER&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;ALEX&amp;#34;&lt;/span&gt;),
+         player &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;str_replace_all&lt;/span&gt;(player, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;ALEXANDRE&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;ALEX&amp;#34;&lt;/span&gt;),
+         player &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;case_when&lt;/span&gt;(
+           player &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;CHRISTOPHER.TANEV&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;~&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;CHRIS.TANEV&amp;#34;&lt;/span&gt;,
+           player &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;DANNY.O&amp;#39;REGAN&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;~&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;DANIEL.O&amp;#39;REGAN&amp;#34;&lt;/span&gt;,
+           player &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;EVGENII.DADONOV&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;~&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;EVGENY.DADONOV&amp;#34;&lt;/span&gt;,
+           player &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;MATTHEW.BENNING&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;~&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;MATT.BENNING&amp;#34;&lt;/span&gt;,
+           player &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;MITCHELL.MARNER&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;~&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;MITCH.MARNER&amp;#34;&lt;/span&gt;,
+           &lt;span style=&#34;color:#66d9ef&#34;&gt;TRUE&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;~&lt;/span&gt; player
+         ))
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# Join biographical data into stats data&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Filter to only keep players who played at least 20 games&lt;/span&gt;
+
+final_data &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; player_TOI_stats &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;left_join&lt;/span&gt;(bios, by &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;player&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;filter&lt;/span&gt;(games &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;19&lt;/span&gt;)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;These stats are the ones that we&#39;re going to use in our model to predict whether a given player is a forward or a defenseman. Let&#39;s create at a few graphs, just to see how some of these data look.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# The code for these four graphs is nearly the same, just change the x&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# and the title/labels&lt;/span&gt;
+
+final_data &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;ggplot&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;aes&lt;/span&gt;(x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; weight, fill &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; defense)) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;geom_density&lt;/span&gt;(alpha &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0.7&lt;/span&gt;, color &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;NA&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;scale_fill_manual&lt;/span&gt;(values &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;#0d324d&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;#a188a6&amp;#34;&lt;/span&gt;)) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;labs&lt;/span&gt;(
+    y &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Density&amp;#34;&lt;/span&gt;,
+    x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Weight (lbs)&amp;#34;&lt;/span&gt;,
+    fill &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;NULL&lt;/span&gt;,
+    title &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Weight by Position&amp;#34;&lt;/span&gt;,
+    subtitle &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;2018-19 NHL Season, 20+ Games Played Only&amp;#34;&lt;/span&gt;,
+    caption &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Source: Natural Stat Trick&amp;#34;&lt;/span&gt;
+  ) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;meg_theme&lt;/span&gt;() &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; 
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;theme&lt;/span&gt;(legend.position &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;0.9&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;0.9&lt;/span&gt;))&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;weight_by_position.png&#34; &gt;
+&lt;img src=&#34;weight_by_position.png&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;scoring_rate.png&#34; &gt;
+&lt;img src=&#34;scoring_rate.png&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;TOI_by_position.png&#34; &gt;
+&lt;img src=&#34;TOI_by_position.png&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;blocked_shots.png&#34; &gt;
+&lt;img src=&#34;blocked_shots.png&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+&lt;p&gt;We can spot some differences here by position: defensemen tend to score at a lower rate and block shots at a higher rate than forwards do. They also tend to spend more time on the ice (by necessity, since there are generally half the number of defensemen as forwards on a dressed roster), which is one of the most well-known differences in the positions. In order to try to predict whether a given player is a forward or a defenseman, we&#39;re going to build two logistic regression models. One will have the average time on ice as its sole predictor variable, while the other will have all of these variables (average time on ice, height, weight, points per 60, shots per 60, unblocked shots per 60, hits per 60, hits received per 60, and blocked shots per 60) as predictor variables.&lt;/p&gt;
+
+&lt;h3 id=&#34;get-data-ready-for-modeling&#34;&gt;Get data ready for modeling&lt;/h3&gt;
+
+&lt;p&gt;Our &lt;code&gt;final_data&lt;/code&gt; data frame from above will be the base of our &lt;code&gt;model_data&lt;/code&gt; (we&#39;re just removing two unnecessary variables), and we&#39;ll use &lt;code&gt;set.seed()&lt;/code&gt; to create reproducible samples.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Rearrange our model data&lt;/span&gt;
+
+model_data &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; final_data &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;select&lt;/span&gt;(player, defense, &lt;span style=&#34;color:#a6e22e&#34;&gt;everything&lt;/span&gt;(), &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(games, TOI))
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# Set the seed (very useful for reproducible samples!)&lt;/span&gt;
+
+&lt;span style=&#34;color:#a6e22e&#34;&gt;set.seed&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;1234&lt;/span&gt;)
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# Split into training and testing data&lt;/span&gt;
+
+split_data &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;initial_split&lt;/span&gt;(model_data, prop &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0.6&lt;/span&gt;, strata &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; defense)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The last line of code above, which created a list called &lt;code&gt;split_data&lt;/code&gt;, uses the helpful &lt;code&gt;initial_split&lt;/code&gt; function from the &lt;code&gt;rsample&lt;/code&gt; package. This allows us to create a training data set and a testing data set, an essential step when modeling. We will &lt;em&gt;train&lt;/em&gt; the data on one data set and then &lt;em&gt;test&lt;/em&gt; the models on a separate data set. You can set the proportion on your own, of how many observations will go to the training data, but it will default to 0.75 without a different specification. And why did I include &lt;code&gt;defense&lt;/code&gt; as an optional strata argument?&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;count.png&#34; &gt;
+&lt;img src=&#34;count.png&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+&lt;p&gt;As you can see above, our data set has nearly twice the amount of forwards as defensemen. By using the &lt;code&gt;strata&lt;/code&gt; option, we can ensure that there&#39;s a similar proportion of forwards to defensemen in both our training and our testing data sets.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Create our testing and training data sets&lt;/span&gt;
+
+training_data &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;training&lt;/span&gt;(split_data)
+testing_data &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;testing&lt;/span&gt;(split_data)
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# Write the recipe for our small TOI_only model&lt;/span&gt;
+
+recipe_TOI_only &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; training_data &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;recipe&lt;/span&gt;(defense &lt;span style=&#34;color:#f92672&#34;&gt;~&lt;/span&gt; TOI_game) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;step_center&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;all_predictors&lt;/span&gt;()) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;step_scale&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;all_predictors&lt;/span&gt;()) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;prep&lt;/span&gt;()
+
+recipe_TOI_only&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;In the code above, we can create our basic training and test data sets and then move onto the useful functions of the &lt;code&gt;recipes&lt;/code&gt; package. This package allows you to create a &lt;em&gt;recipe&lt;/em&gt; in order to organize all of your processing steps for your model(s). You specify the arguments with the &lt;code&gt;recipe()&lt;/code&gt; function and then specify processing steps with the various functions that begin with step_. &lt;a href=&#34;https://cran.r-project.org/web/packages/recipes/vignettes/Simple_Example.html&#34; target=&#34;_blank&#34;&gt;There are dozens of these&lt;/a&gt; that will perform all sorts of functions (e.g., create dummy variables, input various values, take the log), but here we&#39;re just using &lt;code&gt;step_center()&lt;/code&gt; and &lt;code&gt;step_scale()&lt;/code&gt; to show you how to normalize variables. In order to specify variables for these step_ functions, you can use standard &lt;code&gt;dplyr::select&lt;/code&gt; variables (e.g., &lt;code&gt;starts_with()&lt;/code&gt;, &lt;code&gt;ends_with()&lt;/code&gt;) or select by role (e.g., &lt;code&gt;all_predictors()&lt;/code&gt;, &lt;code&gt;all_outcomes()&lt;/code&gt;) or select by data type (e.g., &lt;code&gt;all_numeric()&lt;/code&gt;). And you can of course select by variable name, as well.&lt;/p&gt;
+
+&lt;p&gt;We now have a recipe called &lt;code&gt;recipe_TOI_only&lt;/code&gt; that looks like this.&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;recipe_TOI.png&#34; &gt;
+&lt;img src=&#34;recipe_TOI.png&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+&lt;h3 id=&#34;run-our-models&#34;&gt;Run our models&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Extract our prepped training data &lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# and &amp;#34;bake&amp;#34; our testing data&lt;/span&gt;
+
+training_baked_TOI &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;juice&lt;/span&gt;(recipe_TOI_only)
+
+testing_baked_TOI &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; recipe_TOI_only &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;bake&lt;/span&gt;(testing_data) 
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# Run the model with our training data&lt;/span&gt;
+
+logistic_glm_TOI &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;logistic_reg&lt;/span&gt;(mode &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;classification&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;set_engine&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;glm&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;fit&lt;/span&gt;(defense &lt;span style=&#34;color:#f92672&#34;&gt;~&lt;/span&gt; ., data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; training_baked_TOI)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now that we have our recipe, we can apply it to our training and testing data. Since the training data was the base of the recipe, we can use the &lt;code&gt;juice()&lt;/code&gt; function to extract it. And the &lt;code&gt;bake()&lt;/code&gt; function will prep the test data. Then, we can actually run the model with functions from the &lt;code&gt;parsnip&lt;/code&gt; package. The package handles many different kind of models, but here we&#39;re running a simple logistic regression and training it on our baked data.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Find the class predictions from our testing data&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# And add back in the true values from testing data&lt;/span&gt;
+
+predictions_class_TOI &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; logistic_glm_TOI &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;predict&lt;/span&gt;(new_data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; testing_baked_TOI) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;bind_cols&lt;/span&gt;(testing_baked_TOI &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;select&lt;/span&gt;(defense))
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# Find the probability predictions&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# And add all together&lt;/span&gt;
+
+predictions_TOI &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; logistic_glm_TOI &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;predict&lt;/span&gt;(testing_baked_TOI, type &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;prob&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;bind_cols&lt;/span&gt;(predictions_class_TOI)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now that the model has been trained, we can apply it to the testing data. The data frame we just created, &lt;code&gt;predictions_TOI&lt;/code&gt;, looks like this. For each observation in our test data set, we have the predicted position and the probability that drove that prediction. We also brought in the &lt;code&gt;defense&lt;/code&gt; variable from the test data set.&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;TOI_example.png&#34; &gt;
+&lt;img src=&#34;TOI_example.png&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+&lt;p&gt;Just for fun, we can bring the &lt;code&gt;player&lt;/code&gt; variable back from the original test data set and look at who was predicted the &lt;em&gt;most&lt;/em&gt; incorrectly.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Look at who was predicted the most incorrectly&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# (Just for fun)&lt;/span&gt;
+
+most_wrong_TOI &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; predictions_TOI &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;bind_cols&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;select&lt;/span&gt;(testing_data, player, TOI_game)) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;mutate&lt;/span&gt;(incorrect &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; .pred_class &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; defense) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;filter&lt;/span&gt;(incorrect &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;TRUE&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;mutate&lt;/span&gt;(prob_actual &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ifelse&lt;/span&gt;(defense &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;D&amp;#34;&lt;/span&gt;, .pred_D, .pred_F)) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;arrange&lt;/span&gt;(prob_actual)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;incorrect_TOI.png&#34; &gt;
+&lt;img src=&#34;incorrect_TOI.png&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+&lt;p&gt;As to be expected with such a simple model that&#39;s based solely on TOI, the predictions aren&#39;t so good for defensemen who don&#39;t play a lot of minutes or forwards who do. Let&#39;s move on to our kitchen sink model that includes all the variables.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Do the same process for our kitchen sink model&lt;/span&gt;
+
+recipe_kitchen_sink &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; training_data &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;recipe&lt;/span&gt;(defense &lt;span style=&#34;color:#f92672&#34;&gt;~&lt;/span&gt; weight &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; height &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; points_60 &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; shots_60 &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; fenwick_60 &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; hits_60 &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; hits_rec_60 &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; blocks_60 &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; TOI_game) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;step_corr&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;all_predictors&lt;/span&gt;(), threshold &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0.8&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;step_center&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;all_predictors&lt;/span&gt;()) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;step_scale&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;all_predictors&lt;/span&gt;()) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;prep&lt;/span&gt;()
+
+recipe_kitchen_sink
+
+training_baked_KS &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;juice&lt;/span&gt;(recipe_kitchen_sink)
+
+testing_baked_KS &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; recipe_kitchen_sink &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;bake&lt;/span&gt;(testing_data) 
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# Run the model with our training data&lt;/span&gt;
+
+logistic_glm_KS &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;logistic_reg&lt;/span&gt;(mode &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;classification&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;set_engine&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;glm&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;fit&lt;/span&gt;(defense &lt;span style=&#34;color:#f92672&#34;&gt;~&lt;/span&gt; ., data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; training_baked_KS)
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# Find the class predictions from our testing data&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# And add back in the true values from testing data&lt;/span&gt;
+
+predictions_class_KS &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; logistic_glm_KS &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;predict&lt;/span&gt;(new_data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; testing_baked_KS) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;bind_cols&lt;/span&gt;(testing_baked_KS &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;select&lt;/span&gt;(defense))
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# Find the probability predictions&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# And add all together&lt;/span&gt;
+
+predictions_KS &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; logistic_glm_KS &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;predict&lt;/span&gt;(testing_baked_KS, type &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;prob&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;bind_cols&lt;/span&gt;(predictions_class_KS)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The code above looks very similar to the code from before, except we added an extra step in our recipe. The &lt;code&gt;step_corr()&lt;/code&gt; function will study all the correlations among variables you specify and remove offenders, as it often isn&#39;t a good idea to have variables in your model that are highly correlated with each other. The default threshold for exclusion is 0.9, but you can specify whatever value you want. As you can see in the recipe below, our recipe automatically removed the &lt;code&gt;shots_60&lt;/code&gt; variable, which is (obviously) very highly correlated to the unblocked shot attempt variable, &lt;code&gt;fenwick_60&lt;/code&gt;.&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;recipe_KS.png&#34; &gt;
+&lt;img src=&#34;recipe_KS.png&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+&lt;h3 id=&#34;evaluate-our-models&#34;&gt;Evaluate our models&lt;/h3&gt;
+
+&lt;p&gt;In this section, I&#39;m only going to show the code for one model (though we&#39;re evaluating two), but of course you would use the same code for both. (And if you were working with multiple models that you want to compare, it&#39;d be a good idea to create functions to do these steps so that you aren&#39;t copying and pasting.)&lt;/p&gt;
+
+&lt;p&gt;First we can create a confusion matrix, which simply plots the predicted values against the actual values.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Create a confusion matrix&lt;/span&gt;
+
+predictions_TOI &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;conf_mat&lt;/span&gt;(defense, .pred_class) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;pluck&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;as_tibble&lt;/span&gt;() &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;ggplot&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;aes&lt;/span&gt;(Prediction, Truth, alpha &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; n)) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;geom_tile&lt;/span&gt;(show.legend &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;FALSE&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;geom_text&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;aes&lt;/span&gt;(label &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; n), colour &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;white&amp;#34;&lt;/span&gt;, alpha &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, size &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;meg_theme&lt;/span&gt;() &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;theme&lt;/span&gt;(panel.grid.major &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;element_blank&lt;/span&gt;()) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;labs&lt;/span&gt;(
+    y &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Actual Position&amp;#34;&lt;/span&gt;,
+    x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Predicted Position&amp;#34;&lt;/span&gt;,
+    fill &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;NULL&lt;/span&gt;,
+    title &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Confusion Matrix&amp;#34;&lt;/span&gt;,
+    subtitle &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;TOI Only Model&amp;#34;&lt;/span&gt;
+  )&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;conf_matrix_TOI.png&#34; &gt;
+&lt;img src=&#34;conf_matrix_TOI.png&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;conf_mat_KS.png&#34; &gt;
+&lt;img src=&#34;conf_mat_KS.png&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+&lt;p&gt;Just from a brief look at this, the kitchen sink model clearly has higher accuracy (calculated as the number of correct predictions divided by the number of total predictions) than the TOI only model.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Find the accuracy&lt;/span&gt;
+
+predictions_TOI &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;accuracy&lt;/span&gt;(defense, .pred_class) 
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# Find the logloss&lt;/span&gt;
+
+predictions_TOI &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;mn_log_loss&lt;/span&gt;(defense, .pred_D)
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# Find the area under the ROC curve (AUC)&lt;/span&gt;
+
+predictions_TOI &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;roc_auc&lt;/span&gt;(defense, .pred_D)
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# Create a tibble that holds all the evaluation metrics&lt;/span&gt;
+
+TOI_metrics &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;tibble&lt;/span&gt;(
+  &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;log_loss&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; 
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;mn_log_loss&lt;/span&gt;(predictions_TOI, defense, .pred_D) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;select&lt;/span&gt;(.estimate),
+  &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;accuracy&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; 
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;accuracy&lt;/span&gt;(predictions_TOI, defense, .pred_class) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;select&lt;/span&gt;(.estimate),
+  &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;auc&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; 
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;roc_auc&lt;/span&gt;(predictions_TOI, defense, .pred_D) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;select&lt;/span&gt;(.estimate)
+) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;unnest&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;everything&lt;/span&gt;()) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;pivot_longer&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;everything&lt;/span&gt;(), names_to &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;metric&amp;#34;&lt;/span&gt;, values_to &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;value&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;mutate&lt;/span&gt;(model &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;TOI_only&amp;#34;&lt;/span&gt;)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The &lt;code&gt;yardstick&lt;/code&gt; package is what holds a lot of these functions that are useful for model evaulation. We just defined accuracy, which you can calculate on your own from the confusion matrix and is also available via the &lt;code&gt;accuracy()&lt;/code&gt; function. That&#39;s useful for determining how good the model is in a binary sense, while log loss (from the &lt;code&gt;mn_log_loss()&lt;/code&gt; function) uses the probabilities to quantify how correct the predictions are. As an example, let&#39;s go back to our TOI only model and see that Aleksander Barkov (a forward) was given a 0.75 probability of being a defenseman. That&#39;s obviously incorrect. It&#39;s counted as an incorrect prediction for the accuracy metric, but log loss also takes into account that the prediction was &lt;em&gt;quite&lt;/em&gt; wrong. If the prediction had instead given him a 0.51 probability of being a defenseman, the penalty would be less.&lt;/p&gt;
+
+&lt;p&gt;We can also create a tibble (a type of data frame) to hold all of these metrics. We&#39;ll use it to compare both models in a minute. The last metric included is the area under the ROC curve, known as AUC. The ROC curve graphs the false positive rate against the true positive rate and in a nutshell, quantifies how good the model is at distinguishing the groups.&lt;/p&gt;
+
+&lt;p&gt;The &lt;code&gt;yardstick&lt;/code&gt; package also makes it really easy to graph the curve itself.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Look at the ROC curve&lt;/span&gt;
+
+predictions_TOI &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;roc_curve&lt;/span&gt;(defense, .pred_D) &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;ggplot&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;aes&lt;/span&gt;(x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; specificity, y &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; sensitivity)) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;geom_path&lt;/span&gt;() &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;geom_abline&lt;/span&gt;(lty &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;coord_equal&lt;/span&gt;() &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;meg_theme&lt;/span&gt;() &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;labs&lt;/span&gt;(
+    y &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;True Positive Rate (Sensitivity)&amp;#34;&lt;/span&gt;,
+    x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;False Positive Rate&amp;#34;&lt;/span&gt;,
+    fill &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;NULL&lt;/span&gt;,
+    title &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;ROC Curve&amp;#34;&lt;/span&gt;,
+    subtitle &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;TOI Only Model&amp;#34;&lt;/span&gt;
+  )&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;ROC_TOi.png&#34; &gt;
+&lt;img src=&#34;ROC_TOi.png&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;ROC_KS.png&#34; &gt;
+&lt;img src=&#34;ROC_KS.png&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+&lt;p&gt;The ideal ROC curve is one that goes high up into the top left corner (as to maximize the area underneath it), so again, it appears that our kitchen sink model is performing better here. Lastly, let&#39;s use the tibbles we created to hold the evaulation metrics and graph to compare.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;metrics_compare &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;-&lt;/span&gt; TOI_metrics &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;bind_rows&lt;/span&gt;(KS_metrics)
+  
+metrics_compare &lt;span style=&#34;color:#f92672&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;ggplot&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;aes&lt;/span&gt;(fill &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; model, y &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; value, x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; metric)) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; 
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;geom_bar&lt;/span&gt;(position &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;dodge&amp;#34;&lt;/span&gt;, stat &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;identity&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;scale_fill_manual&lt;/span&gt;(values &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;#7A8B99&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;#A9DDD6&amp;#34;&lt;/span&gt;)) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;meg_theme&lt;/span&gt;() &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;labs&lt;/span&gt;(
+    y &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Value&amp;#34;&lt;/span&gt;,
+    x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Metric&amp;#34;&lt;/span&gt;,
+    fill &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;NULL&lt;/span&gt;,
+    title &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Comparing Our Models&amp;#34;&lt;/span&gt;,
+    subtitle &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Higher is Better: Accuracy and AUC\nLower is Better: Log Loss&amp;#34;&lt;/span&gt;
+  ) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; 
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;geom_text&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;aes&lt;/span&gt;(label &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;round&lt;/span&gt;(value, &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;)), vjust &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;-0.5&lt;/span&gt;, size &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;, position &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;position_dodge&lt;/span&gt;(width&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0.9&lt;/span&gt;)) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;theme&lt;/span&gt;(legend.position &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;c&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;0.86&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;0.9&lt;/span&gt;))&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;compare.png&#34; &gt;
+&lt;img src=&#34;compare.png&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+&lt;p&gt;We saw previously from the confusion matrices that the accuracy for the kitchen sink model is higher, and this tells us that the AUC is higher, as well, while the log loss is lower (which is good). Thanks to the evaluation metrics of the &lt;code&gt;yardstick&lt;/code&gt; package (and there are many more than the few we viewed!), we have evidence that compared to the TOI only model, the kitchen sink model makes more accurate predictions and is better at distinguishing between the groups.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;tidymodels&lt;/code&gt; is a pretty neat set of packages, and I hope this little tutorial was useful in introducing some of the many features. Here are a handful of other resources I have found helpful as I continue to learn more about this package:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://juliasilge.com/blog/intro-tidymodels/&#34;&gt;https://juliasilge.com/blog/intro-tidymodels/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://towardsdatascience.com/modelling-with-tidymodels-and-parsnip-bae2c01c131c&#34;&gt;https://towardsdatascience.com/modelling-with-tidymodels-and-parsnip-bae2c01c131c&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.benjaminsorensen.me/post/modeling-with-parsnip-and-tidymodels/&#34;&gt;https://www.benjaminsorensen.me/post/modeling-with-parsnip-and-tidymodels/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://rviews.rstudio.com/2019/06/19/a-gentle-intro-to-tidymodels/&#34;&gt;https://rviews.rstudio.com/2019/06/19/a-gentle-intro-to-tidymodels/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 </description>
     </item>
     

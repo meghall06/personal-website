@@ -1,0 +1,1541 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 4.6.1">
+
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Meghan Hall">
+
+  
+  
+  
+    
+  
+  <meta name="description" content="Before we start, an important disclaimer: this is not a tutorial on how to thoughtfully build and thoroughly evaluate models. This is a gentle introduction to the tidymodels package (which, like the tidyverse, is actually a collection of packages), and in order to examine various functions and capabilities of those packages, we&#39;ll build two very simple models, using easily available NHL data, and go over a few ways to evaluate them.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="/post/tidymodels-intro/">
+
+  
+
+
+  
+  
+  
+  <meta name="theme-color" content="#3f51b5">
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/github.min.css" crossorigin="anonymous" title="hl-light">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+        
+      
+    
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.css" integrity="sha256-SHMGCYmST46SoyGgo4YR/9AlK1vf3ff84Aq9yK4hdqM=" crossorigin="anonymous">
+    
+
+    
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700%7CRoboto:400,400italic,700%7CRoboto+Mono&display=swap">
+  
+
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/academic.css">
+
+  
+
+
+
+
+  
+
+
+  
+
+  <link rel="manifest" href="/index.webmanifest">
+  <link rel="icon" type="image/png" href="/img/icon-32.png">
+  <link rel="apple-touch-icon" type="image/png" href="/img/icon-192.png">
+
+  <link rel="canonical" href="/post/tidymodels-intro/">
+
+  
+  
+  
+  
+    
+    
+  
+  
+  <meta property="twitter:card" content="summary">
+  
+  <meta property="twitter:site" content="@MeghanMHall">
+  <meta property="twitter:creator" content="@MeghanMHall">
+  
+  <meta property="og:site_name" content="Meghan Hall">
+  <meta property="og:url" content="/post/tidymodels-intro/">
+  <meta property="og:title" content="Exploring tidymodels With Hockey Data | Meghan Hall">
+  <meta property="og:description" content="Before we start, an important disclaimer: this is not a tutorial on how to thoughtfully build and thoroughly evaluate models. This is a gentle introduction to the tidymodels package (which, like the tidyverse, is actually a collection of packages), and in order to examine various functions and capabilities of those packages, we&#39;ll build two very simple models, using easily available NHL data, and go over a few ways to evaluate them."><meta property="og:image" content="img/icon-192.png">
+  <meta property="twitter:image" content="img/icon-192.png"><meta property="og:locale" content="en-us">
+  
+    
+      <meta property="article:published_time" content="2020-03-09T00:00:00&#43;00:00">
+    
+    <meta property="article:modified_time" content="2020-03-09T00:00:00&#43;00:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "/post/tidymodels-intro/"
+  },
+  "headline": "Exploring tidymodels With Hockey Data",
+  
+  "datePublished": "2020-03-09T00:00:00Z",
+  "dateModified": "2020-03-09T00:00:00Z",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Meghan Hall"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Meghan Hall",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "img/icon-512.png"
+    }
+  },
+  "description": "Before we start, an important disclaimer: this is not a tutorial on how to thoughtfully build and thoroughly evaluate models. This is a gentle introduction to the tidymodels package (which, like the tidyverse, is actually a collection of packages), and in order to examine various functions and capabilities of those packages, we'll build two very simple models, using easily available NHL data, and go over a few ways to evaluate them."
+}
+</script>
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+
+  <title>Exploring tidymodels With Hockey Data | Meghan Hall</title>
+
+</head>
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" >
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+    
+    
+      <a class="navbar-brand" href="/">Meghan Hall</a>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#talks"><span>Talks</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#posts"><span>Posts</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#contact"><span>Contact</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+      
+      <li class="nav-item">
+        <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+      </li>
+      
+
+      
+
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+  <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>Exploring tidymodels With Hockey Data</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    Mar 9, 2020
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    14 min read
+  </span>
+  
+
+  
+  
+  
+
+  
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      <p>Before we start, an important disclaimer: this is <em>not</em> a tutorial on how to thoughtfully build and thoroughly evaluate models. This is a gentle introduction to the <code>tidymodels</code> package (which, like the <code>tidyverse</code>, is actually a collection of packages), and in order to examine various functions and capabilities of those packages, we'll build two very simple models, using easily available NHL data, and go over a few ways to evaluate them.</p>
+
+<p>The <code>tidymodels</code> package, which is fairly new, was designed to make it easier to create your model framework in a tidy way and consists of, among others, <code>recipes</code> (prepping models), <code>parsnip</code> (executing models), and <code>yardstick</code> (evaluating models). Here, we'll build two simple models to predict whether an NHL player is a forward or a defenseman.</p>
+
+<h3 id="find-and-prepare-the-data">Find and prepare the data</h3>
+
+<p>First, let's get our data prepped—we're using 2018-19 data so we can have a full season. We'll get the position data by downloading from <a href="http://www.naturalstattrick.com/playerteams.php?fromseason=20182019&thruseason=20182019&stype=2&sit=5v5&score=all&stdoi=bio&rate=n&team=ALL&pos=S&loc=B&toi=0&gpfilt=none&fd=&td=&tgp=410&lines=single&draftteam=ALL" target="_blank">Natural Stat Trick</a>, and we'll create our statistics from the raw play-by-play data, available via the <a href="https://twitter.com/EvolvingWild/status/1163503829993828353" target="_blank">Evolving Wild scraper</a>. (Could you download all these summary statistics from NST instead? Definitely. But this is about learning, and it's great R practice [pRactice?] to generate them yourself from the play-by-play data.)</p>
+
+<div class="alert alert-note">
+  <div>
+    One of the <code>tidymodels</code> packages called <code>dials</code> has a <code>margin()</code> function that will mask the <code>margin()</code> function in <code>ggplot2</code>. If you use the <code>margin()</code> function in your <code>ggplot2</code> custom theme like I do, just load <code>tidymodels</code> before <code>tidyverse</code> and you should be fine.
+  </div>
+</div>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(tidymodels)
+<span style="color:#a6e22e">library</span>(tidyverse)
+
+<span style="color:#75715e"># Read in files (pbp from Evolving Hockey, bios from Natural Stat Trick)</span>
+
+pbp <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">read_csv</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">pbp_20182019_all.csv&#34;</span>)
+bios <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">read_csv</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">bios_1819.csv&#34;</span>)
+
+<span style="color:#75715e"># Find player TOI and games played</span>
+<span style="color:#75715e"># To do so, you must pivot the data so there is one row per player</span>
+<span style="color:#75715e"># (instead of one row per event)</span>
+<span style="color:#75715e"># We don&#39;t care about the ice time for the goalies (sorry, goalies)</span>
+<span style="color:#75715e"># so they will be filtered out</span>
+<span style="color:#75715e"># We also do some name changes to make things easier later</span>
+
+player_TOI <span style="color:#f92672">&lt;-</span> pbp <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">filter</span>(event_length <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">select</span>(game_id, event_length, home_on_1<span style="color:#f92672">:</span>away_goalie) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">pivot_longer</span>(home_on_1<span style="color:#f92672">:</span>away_on_6, names_to <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">variable&#34;</span>, values_to <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">player&#34;</span>) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">filter</span>(<span style="color:#f92672">!</span>(<span style="color:#a6e22e">is.na</span>(player)) <span style="color:#f92672">&amp;</span> player <span style="color:#f92672">!=</span> home_goalie <span style="color:#f92672">&amp;</span> player <span style="color:#f92672">!=</span> away_goalie) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">mutate</span>(player <span style="color:#f92672">=</span> <span style="color:#a6e22e">case_when</span>(
+    player <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">COLIN.WHITE2&#34;</span> <span style="color:#f92672">~</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">COLIN.WHITE&#34;</span>,
+    player <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">ERIK.GUSTAFSSON2&#34;</span> <span style="color:#f92672">~</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">ERIK.GUSTAFSSON&#34;</span>,
+    player <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">PATRICK.MAROON&#34;</span> <span style="color:#f92672">~</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">PAT.MAROON&#34;</span>,
+    <span style="color:#66d9ef">TRUE</span> <span style="color:#f92672">~</span> player
+  )) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">group_by</span>(player) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">summarize</span>(games <span style="color:#f92672">=</span> <span style="color:#a6e22e">n_distinct</span>(game_id),
+            TOI <span style="color:#f92672">=</span> <span style="color:#a6e22e">sum</span>(event_length) <span style="color:#f92672">/</span> <span style="color:#ae81ff">60</span>)
+
+<span style="color:#75715e"># Find basic player stats</span>
+<span style="color:#75715e"># To find individual stats, we again need to pivot the data to one row per player</span>
+<span style="color:#75715e"># but we&#39;re using the event_players only (not the on ice players)</span>
+<span style="color:#75715e"># You&#39;ll notice we&#39;re filtering out the shootout (which is game_period 5) because</span>
+<span style="color:#75715e"># those goals don&#39;t count</span>
+<span style="color:#75715e"># We&#39;ll sum up blocked shots (event_player_2 is the player who blocked the shot,</span>
+<span style="color:#75715e"># event_player_1 is the one who generated it), total points, shots, unblocked shots,</span>
+<span style="color:#75715e"># hits (both give nand received)</span>
+
+player_stats <span style="color:#f92672">&lt;-</span> pbp <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">filter</span>(event_type <span style="color:#f92672">%in%</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">HIT&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">BLOCK&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">SHOT&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">MISS&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">GOAL&#34;</span>) <span style="color:#f92672">&amp;</span> game_period <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">5</span>) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">select</span>(game_id, event_type, event_player_1<span style="color:#f92672">:</span>event_player_3) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">pivot_longer</span>(event_player_1<span style="color:#f92672">:</span>event_player_3, names_to <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">number&#34;</span>, values_to <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">player&#34;</span>) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">filter</span>(<span style="color:#f92672">!</span>(<span style="color:#a6e22e">is.na</span>(player))) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">mutate</span>(block <span style="color:#f92672">=</span> <span style="color:#a6e22e">ifelse</span>(event_type <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">BLOCK&#34;</span> <span style="color:#f92672">&amp;</span> number <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">event_player_2&#34;</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>),
+         point <span style="color:#f92672">=</span> <span style="color:#a6e22e">ifelse</span>(event_type <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">GOAL&#34;</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>),
+         shot <span style="color:#f92672">=</span> <span style="color:#a6e22e">ifelse</span>(number <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">event_player_1&#34;</span> <span style="color:#f92672">&amp;</span> event_type <span style="color:#f92672">%in%</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">SHOT&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">GOAL&#34;</span>), <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>),
+         fenwick <span style="color:#f92672">=</span> <span style="color:#a6e22e">ifelse</span>(number <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">event_player_1&#34;</span> <span style="color:#f92672">&amp;</span> event_type <span style="color:#f92672">%in%</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">SHOT&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">GOAL&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">MISS&#34;</span>), <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>),
+         hit <span style="color:#f92672">=</span> <span style="color:#a6e22e">ifelse</span>(number <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">event_player_1&#34;</span> <span style="color:#f92672">&amp;</span> event_type <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">HIT&#34;</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>),
+         hit_rec <span style="color:#f92672">=</span> <span style="color:#a6e22e">ifelse</span>(number <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">event_player_2&#34;</span> <span style="color:#f92672">&amp;</span> event_type <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">HIT&#34;</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>),
+         player <span style="color:#f92672">=</span> <span style="color:#a6e22e">case_when</span>(
+           player <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">COLIN.WHITE2&#34;</span> <span style="color:#f92672">~</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">COLIN.WHITE&#34;</span>,
+           player <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">ERIK.GUSTAFSSON2&#34;</span> <span style="color:#f92672">~</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">ERIK.GUSTAFSSON&#34;</span>,
+           player <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">PATRICK.MAROON&#34;</span> <span style="color:#f92672">~</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">PAT.MAROON&#34;</span>,
+           <span style="color:#66d9ef">TRUE</span> <span style="color:#f92672">~</span> player
+         )) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">group_by</span>(player) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">summarize</span>(blocks <span style="color:#f92672">=</span> <span style="color:#a6e22e">sum</span>(block),
+            points <span style="color:#f92672">=</span> <span style="color:#a6e22e">sum</span>(point),
+            shots <span style="color:#f92672">=</span> <span style="color:#a6e22e">sum</span>(shot),
+            fenwick <span style="color:#f92672">=</span> <span style="color:#a6e22e">sum</span>(fenwick),
+            hits <span style="color:#f92672">=</span> <span style="color:#a6e22e">sum</span>(hit),
+            hits_rec <span style="color:#f92672">=</span> <span style="color:#a6e22e">sum</span>(hit_rec))
+
+<span style="color:#75715e"># Join stats into TOI data frame and create rates</span>
+
+player_TOI_stats <span style="color:#f92672">&lt;-</span> player_TOI <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">left_join</span>(player_stats, by <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">player&#34;</span>) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">mutate</span>(points_60 <span style="color:#f92672">=</span> points <span style="color:#f92672">*</span> <span style="color:#ae81ff">60</span> <span style="color:#f92672">/</span> TOI,
+         shots_60 <span style="color:#f92672">=</span> shots <span style="color:#f92672">*</span> <span style="color:#ae81ff">60</span> <span style="color:#f92672">/</span> TOI,
+         fenwick_60 <span style="color:#f92672">=</span> fenwick <span style="color:#f92672">*</span> <span style="color:#ae81ff">60</span> <span style="color:#f92672">/</span> TOI,
+         hits_60 <span style="color:#f92672">=</span> hits <span style="color:#f92672">*</span> <span style="color:#ae81ff">60</span> <span style="color:#f92672">/</span> TOI,
+         hits_rec_60 <span style="color:#f92672">=</span> hits_rec <span style="color:#f92672">*</span> <span style="color:#ae81ff">60</span> <span style="color:#f92672">/</span> TOI,
+         blocks_60 <span style="color:#f92672">=</span> blocks <span style="color:#f92672">*</span> <span style="color:#ae81ff">60</span> <span style="color:#f92672">/</span> TOI,
+         TOI_game <span style="color:#f92672">=</span> TOI <span style="color:#f92672">/</span> games) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">select</span>(<span style="color:#f92672">-</span><span style="color:#a6e22e">c</span>(blocks<span style="color:#f92672">:</span>hits_rec))
+
+<span style="color:#75715e"># Clean up the biographical data</span>
+
+bios <span style="color:#f92672">&lt;-</span> bios <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">mutate</span>(player <span style="color:#f92672">=</span> <span style="color:#a6e22e">str_to_upper</span>(Player),
+         player <span style="color:#f92672">=</span> <span style="color:#a6e22e">str_replace</span>(player, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74"> &#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">.&#34;</span>),
+         defense <span style="color:#f92672">=</span> <span style="color:#a6e22e">ifelse</span>(Position <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">D&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">D&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">F&#34;</span>)) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">rename</span>(height <span style="color:#f92672">=</span> <span style="color:#a6e22e">`Height </span>(in)`,
+         weight = `<span style="color:#a6e22e">Weight </span>(lbs)`) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">select</span>(player, defense, height, weight) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">mutate</span>(player <span style="color:#f92672">=</span> <span style="color:#a6e22e">str_replace_all</span>(player, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">ALEXANDER&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">ALEX&#34;</span>),
+         player <span style="color:#f92672">=</span> <span style="color:#a6e22e">str_replace_all</span>(player, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">ALEXANDRE&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">ALEX&#34;</span>),
+         player <span style="color:#f92672">=</span> <span style="color:#a6e22e">case_when</span>(
+           player <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">CHRISTOPHER.TANEV&#34;</span> <span style="color:#f92672">~</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">CHRIS.TANEV&#34;</span>,
+           player <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">DANNY.O&#39;REGAN&#34;</span> <span style="color:#f92672">~</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">DANIEL.O&#39;REGAN&#34;</span>,
+           player <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">EVGENII.DADONOV&#34;</span> <span style="color:#f92672">~</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">EVGENY.DADONOV&#34;</span>,
+           player <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">MATTHEW.BENNING&#34;</span> <span style="color:#f92672">~</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">MATT.BENNING&#34;</span>,
+           player <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">MITCHELL.MARNER&#34;</span> <span style="color:#f92672">~</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">MITCH.MARNER&#34;</span>,
+           <span style="color:#66d9ef">TRUE</span> <span style="color:#f92672">~</span> player
+         ))
+
+<span style="color:#75715e"># Join biographical data into stats data</span>
+<span style="color:#75715e"># Filter to only keep players who played at least 20 games</span>
+
+final_data <span style="color:#f92672">&lt;-</span> player_TOI_stats <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">left_join</span>(bios, by <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">player&#34;</span>) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">filter</span>(games <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">19</span>)</code></pre></div>
+<p>These stats are the ones that we're going to use in our model to predict whether a given player is a forward or a defenseman. Let's create at a few graphs, just to see how some of these data look.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#75715e"># The code for these four graphs is nearly the same, just change the x</span>
+<span style="color:#75715e"># and the title/labels</span>
+
+final_data <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">ggplot</span>(<span style="color:#a6e22e">aes</span>(x <span style="color:#f92672">=</span> weight, fill <span style="color:#f92672">=</span> defense)) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">geom_density</span>(alpha <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.7</span>, color <span style="color:#f92672">=</span> <span style="color:#66d9ef">NA</span>) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">scale_fill_manual</span>(values <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">#0d324d&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">#a188a6&#34;</span>)) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">labs</span>(
+    y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Density&#34;</span>,
+    x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Weight (lbs)&#34;</span>,
+    fill <span style="color:#f92672">=</span> <span style="color:#66d9ef">NULL</span>,
+    title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Weight by Position&#34;</span>,
+    subtitle <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">2018-19 NHL Season, 20+ Games Played Only&#34;</span>,
+    caption <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Source: Natural Stat Trick&#34;</span>
+  ) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">meg_theme</span>() <span style="color:#f92672">+</span> 
+  <span style="color:#a6e22e">theme</span>(legend.position <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">0.9</span>, <span style="color:#ae81ff">0.9</span>))</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="weight_by_position.png" >
+<img src="weight_by_position.png" alt="" ></a>
+
+
+
+</figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="scoring_rate.png" >
+<img src="scoring_rate.png" alt="" ></a>
+
+
+
+</figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="TOI_by_position.png" >
+<img src="TOI_by_position.png" alt="" ></a>
+
+
+
+</figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="blocked_shots.png" >
+<img src="blocked_shots.png" alt="" ></a>
+
+
+
+</figure>
+
+
+<p>We can spot some differences here by position: defensemen tend to score at a lower rate and block shots at a higher rate than forwards do. They also tend to spend more time on the ice (by necessity, since there are generally half the number of defensemen as forwards on a dressed roster), which is one of the most well-known differences in the positions. In order to try to predict whether a given player is a forward or a defenseman, we're going to build two logistic regression models. One will have the average time on ice as its sole predictor variable, while the other will have all of these variables (average time on ice, height, weight, points per 60, shots per 60, unblocked shots per 60, hits per 60, hits received per 60, and blocked shots per 60) as predictor variables.</p>
+
+<h3 id="get-data-ready-for-modeling">Get data ready for modeling</h3>
+
+<p>Our <code>final_data</code> data frame from above will be the base of our <code>model_data</code> (we're just removing two unnecessary variables), and we'll use <code>set.seed()</code> to create reproducible samples.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#75715e"># Rearrange our model data</span>
+
+model_data <span style="color:#f92672">&lt;-</span> final_data <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">select</span>(player, defense, <span style="color:#a6e22e">everything</span>(), <span style="color:#f92672">-</span><span style="color:#a6e22e">c</span>(games, TOI))
+
+<span style="color:#75715e"># Set the seed (very useful for reproducible samples!)</span>
+
+<span style="color:#a6e22e">set.seed</span>(<span style="color:#ae81ff">1234</span>)
+
+<span style="color:#75715e"># Split into training and testing data</span>
+
+split_data <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">initial_split</span>(model_data, prop <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.6</span>, strata <span style="color:#f92672">=</span> defense)</code></pre></div>
+<p>The last line of code above, which created a list called <code>split_data</code>, uses the helpful <code>initial_split</code> function from the <code>rsample</code> package. This allows us to create a training data set and a testing data set, an essential step when modeling. We will <em>train</em> the data on one data set and then <em>test</em> the models on a separate data set. You can set the proportion on your own, of how many observations will go to the training data, but it will default to 0.75 without a different specification. And why did I include <code>defense</code> as an optional strata argument?</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="count.png" >
+<img src="count.png" alt="" ></a>
+
+
+
+</figure>
+
+
+<p>As you can see above, our data set has nearly twice the amount of forwards as defensemen. By using the <code>strata</code> option, we can ensure that there's a similar proportion of forwards to defensemen in both our training and our testing data sets.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#75715e"># Create our testing and training data sets</span>
+
+training_data <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">training</span>(split_data)
+testing_data <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">testing</span>(split_data)
+
+<span style="color:#75715e"># Write the recipe for our small TOI_only model</span>
+
+recipe_TOI_only <span style="color:#f92672">&lt;-</span> training_data <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">recipe</span>(defense <span style="color:#f92672">~</span> TOI_game) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">step_center</span>(<span style="color:#a6e22e">all_predictors</span>()) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">step_scale</span>(<span style="color:#a6e22e">all_predictors</span>()) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">prep</span>()
+
+recipe_TOI_only</code></pre></div>
+<p>In the code above, we can create our basic training and test data sets and then move onto the useful functions of the <code>recipes</code> package. This package allows you to create a <em>recipe</em> in order to organize all of your processing steps for your model(s). You specify the arguments with the <code>recipe()</code> function and then specify processing steps with the various functions that begin with step_. <a href="https://cran.r-project.org/web/packages/recipes/vignettes/Simple_Example.html" target="_blank">There are dozens of these</a> that will perform all sorts of functions (e.g., create dummy variables, input various values, take the log), but here we're just using <code>step_center()</code> and <code>step_scale()</code> to show you how to normalize variables. In order to specify variables for these step_ functions, you can use standard <code>dplyr::select</code> variables (e.g., <code>starts_with()</code>, <code>ends_with()</code>) or select by role (e.g., <code>all_predictors()</code>, <code>all_outcomes()</code>) or select by data type (e.g., <code>all_numeric()</code>). And you can of course select by variable name, as well.</p>
+
+<p>We now have a recipe called <code>recipe_TOI_only</code> that looks like this.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="recipe_TOI.png" >
+<img src="recipe_TOI.png" alt="" ></a>
+
+
+
+</figure>
+
+
+<h3 id="run-our-models">Run our models</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#75715e"># Extract our prepped training data </span>
+<span style="color:#75715e"># and &#34;bake&#34; our testing data</span>
+
+training_baked_TOI <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">juice</span>(recipe_TOI_only)
+
+testing_baked_TOI <span style="color:#f92672">&lt;-</span> recipe_TOI_only <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">bake</span>(testing_data) 
+
+<span style="color:#75715e"># Run the model with our training data</span>
+
+logistic_glm_TOI <span style="color:#f92672">&lt;-</span>
+  <span style="color:#a6e22e">logistic_reg</span>(mode <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">classification&#34;</span>) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">set_engine</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">glm&#34;</span>) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">fit</span>(defense <span style="color:#f92672">~</span> ., data <span style="color:#f92672">=</span> training_baked_TOI)</code></pre></div>
+<p>Now that we have our recipe, we can apply it to our training and testing data. Since the training data was the base of the recipe, we can use the <code>juice()</code> function to extract it. And the <code>bake()</code> function will prep the test data. Then, we can actually run the model with functions from the <code>parsnip</code> package. The package handles many different kind of models, but here we're running a simple logistic regression and training it on our baked data.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#75715e"># Find the class predictions from our testing data</span>
+<span style="color:#75715e"># And add back in the true values from testing data</span>
+
+predictions_class_TOI <span style="color:#f92672">&lt;-</span> logistic_glm_TOI <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">predict</span>(new_data <span style="color:#f92672">=</span> testing_baked_TOI) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">bind_cols</span>(testing_baked_TOI <span style="color:#f92672">%&gt;%</span> <span style="color:#a6e22e">select</span>(defense))
+
+<span style="color:#75715e"># Find the probability predictions</span>
+<span style="color:#75715e"># And add all together</span>
+
+predictions_TOI <span style="color:#f92672">&lt;-</span> logistic_glm_TOI <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">predict</span>(testing_baked_TOI, type <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">prob&#34;</span>) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">bind_cols</span>(predictions_class_TOI)</code></pre></div>
+<p>Now that the model has been trained, we can apply it to the testing data. The data frame we just created, <code>predictions_TOI</code>, looks like this. For each observation in our test data set, we have the predicted position and the probability that drove that prediction. We also brought in the <code>defense</code> variable from the test data set.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="TOI_example.png" >
+<img src="TOI_example.png" alt="" ></a>
+
+
+
+</figure>
+
+
+<p>Just for fun, we can bring the <code>player</code> variable back from the original test data set and look at who was predicted the <em>most</em> incorrectly.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#75715e"># Look at who was predicted the most incorrectly</span>
+<span style="color:#75715e"># (Just for fun)</span>
+
+most_wrong_TOI <span style="color:#f92672">&lt;-</span> predictions_TOI <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">bind_cols</span>(<span style="color:#a6e22e">select</span>(testing_data, player, TOI_game)) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">mutate</span>(incorrect <span style="color:#f92672">=</span> .pred_class <span style="color:#f92672">!=</span> defense) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">filter</span>(incorrect <span style="color:#f92672">==</span> <span style="color:#66d9ef">TRUE</span>) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">mutate</span>(prob_actual <span style="color:#f92672">=</span> <span style="color:#a6e22e">ifelse</span>(defense <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">D&#34;</span>, .pred_D, .pred_F)) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">arrange</span>(prob_actual)</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="incorrect_TOI.png" >
+<img src="incorrect_TOI.png" alt="" ></a>
+
+
+
+</figure>
+
+
+<p>As to be expected with such a simple model that's based solely on TOI, the predictions aren't so good for defensemen who don't play a lot of minutes or forwards who do. Let's move on to our kitchen sink model that includes all the variables.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#75715e"># Do the same process for our kitchen sink model</span>
+
+recipe_kitchen_sink <span style="color:#f92672">&lt;-</span> training_data <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">recipe</span>(defense <span style="color:#f92672">~</span> weight <span style="color:#f92672">+</span> height <span style="color:#f92672">+</span> points_60 <span style="color:#f92672">+</span> shots_60 <span style="color:#f92672">+</span> fenwick_60 <span style="color:#f92672">+</span> hits_60 <span style="color:#f92672">+</span> hits_rec_60 <span style="color:#f92672">+</span> blocks_60 <span style="color:#f92672">+</span> TOI_game) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">step_corr</span>(<span style="color:#a6e22e">all_predictors</span>(), threshold <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.8</span>) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">step_center</span>(<span style="color:#a6e22e">all_predictors</span>()) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">step_scale</span>(<span style="color:#a6e22e">all_predictors</span>()) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">prep</span>()
+
+recipe_kitchen_sink
+
+training_baked_KS <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">juice</span>(recipe_kitchen_sink)
+
+testing_baked_KS <span style="color:#f92672">&lt;-</span> recipe_kitchen_sink <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">bake</span>(testing_data) 
+
+<span style="color:#75715e"># Run the model with our training data</span>
+
+logistic_glm_KS <span style="color:#f92672">&lt;-</span>
+  <span style="color:#a6e22e">logistic_reg</span>(mode <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">classification&#34;</span>) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">set_engine</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">glm&#34;</span>) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">fit</span>(defense <span style="color:#f92672">~</span> ., data <span style="color:#f92672">=</span> training_baked_KS)
+
+<span style="color:#75715e"># Find the class predictions from our testing data</span>
+<span style="color:#75715e"># And add back in the true values from testing data</span>
+
+predictions_class_KS <span style="color:#f92672">&lt;-</span> logistic_glm_KS <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">predict</span>(new_data <span style="color:#f92672">=</span> testing_baked_KS) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">bind_cols</span>(testing_baked_KS <span style="color:#f92672">%&gt;%</span> <span style="color:#a6e22e">select</span>(defense))
+
+<span style="color:#75715e"># Find the probability predictions</span>
+<span style="color:#75715e"># And add all together</span>
+
+predictions_KS <span style="color:#f92672">&lt;-</span> logistic_glm_KS <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">predict</span>(testing_baked_KS, type <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">prob&#34;</span>) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">bind_cols</span>(predictions_class_KS)</code></pre></div>
+<p>The code above looks very similar to the code from before, except we added an extra step in our recipe. The <code>step_corr()</code> function will study all the correlations among variables you specify and remove offenders, as it often isn't a good idea to have variables in your model that are highly correlated with each other. The default threshold for exclusion is 0.9, but you can specify whatever value you want. As you can see in the recipe below, our recipe automatically removed the <code>shots_60</code> variable, which is (obviously) very highly correlated to the unblocked shot attempt variable, <code>fenwick_60</code>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="recipe_KS.png" >
+<img src="recipe_KS.png" alt="" ></a>
+
+
+
+</figure>
+
+
+<h3 id="evaluate-our-models">Evaluate our models</h3>
+
+<p>In this section, I'm only going to show the code for one model (though we're evaluating two), but of course you would use the same code for both. (And if you were working with multiple models that you want to compare, it'd be a good idea to create functions to do these steps so that you aren't copying and pasting.)</p>
+
+<p>First we can create a confusion matrix, which simply plots the predicted values against the actual values.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#75715e"># Create a confusion matrix</span>
+
+predictions_TOI <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">conf_mat</span>(defense, .pred_class) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">pluck</span>(<span style="color:#ae81ff">1</span>) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">as_tibble</span>() <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">ggplot</span>(<span style="color:#a6e22e">aes</span>(Prediction, Truth, alpha <span style="color:#f92672">=</span> n)) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">geom_tile</span>(show.legend <span style="color:#f92672">=</span> <span style="color:#66d9ef">FALSE</span>) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">geom_text</span>(<span style="color:#a6e22e">aes</span>(label <span style="color:#f92672">=</span> n), colour <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">white&#34;</span>, alpha <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>, size <span style="color:#f92672">=</span> <span style="color:#ae81ff">8</span>) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">meg_theme</span>() <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">theme</span>(panel.grid.major <span style="color:#f92672">=</span> <span style="color:#a6e22e">element_blank</span>()) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">labs</span>(
+    y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Actual Position&#34;</span>,
+    x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Predicted Position&#34;</span>,
+    fill <span style="color:#f92672">=</span> <span style="color:#66d9ef">NULL</span>,
+    title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Confusion Matrix&#34;</span>,
+    subtitle <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">TOI Only Model&#34;</span>
+  )</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="conf_matrix_TOI.png" >
+<img src="conf_matrix_TOI.png" alt="" ></a>
+
+
+
+</figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="conf_mat_KS.png" >
+<img src="conf_mat_KS.png" alt="" ></a>
+
+
+
+</figure>
+
+
+<p>Just from a brief look at this, the kitchen sink model clearly has higher accuracy (calculated as the number of correct predictions divided by the number of total predictions) than the TOI only model.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#75715e"># Find the accuracy</span>
+
+predictions_TOI <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">accuracy</span>(defense, .pred_class) 
+
+<span style="color:#75715e"># Find the logloss</span>
+
+predictions_TOI <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">mn_log_loss</span>(defense, .pred_D)
+
+<span style="color:#75715e"># Find the area under the ROC curve (AUC)</span>
+
+predictions_TOI <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">roc_auc</span>(defense, .pred_D)
+
+<span style="color:#75715e"># Create a tibble that holds all the evaluation metrics</span>
+
+TOI_metrics <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">tibble</span>(
+  <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">log_loss&#34;</span> <span style="color:#f92672">=</span> 
+    <span style="color:#a6e22e">mn_log_loss</span>(predictions_TOI, defense, .pred_D) <span style="color:#f92672">%&gt;%</span>
+    <span style="color:#a6e22e">select</span>(.estimate),
+  <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">accuracy&#34;</span> <span style="color:#f92672">=</span> 
+    <span style="color:#a6e22e">accuracy</span>(predictions_TOI, defense, .pred_class) <span style="color:#f92672">%&gt;%</span>
+    <span style="color:#a6e22e">select</span>(.estimate),
+  <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">auc&#34;</span> <span style="color:#f92672">=</span> 
+    <span style="color:#a6e22e">roc_auc</span>(predictions_TOI, defense, .pred_D) <span style="color:#f92672">%&gt;%</span>
+    <span style="color:#a6e22e">select</span>(.estimate)
+) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">unnest</span>(<span style="color:#a6e22e">everything</span>()) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">pivot_longer</span>(<span style="color:#a6e22e">everything</span>(), names_to <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">metric&#34;</span>, values_to <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">value&#34;</span>) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">mutate</span>(model <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">TOI_only&#34;</span>)</code></pre></div>
+<p>The <code>yardstick</code> package is what holds a lot of these functions that are useful for model evaulation. We just defined accuracy, which you can calculate on your own from the confusion matrix and is also available via the <code>accuracy()</code> function. That's useful for determining how good the model is in a binary sense, while log loss (from the <code>mn_log_loss()</code> function) uses the probabilities to quantify how correct the predictions are. As an example, let's go back to our TOI only model and see that Aleksander Barkov (a forward) was given a 0.75 probability of being a defenseman. That's obviously incorrect. It's counted as an incorrect prediction for the accuracy metric, but log loss also takes into account that the prediction was <em>quite</em> wrong. If the prediction had instead given him a 0.51 probability of being a defenseman, the penalty would be less.</p>
+
+<p>We can also create a tibble (a type of data frame) to hold all of these metrics. We'll use it to compare both models in a minute. The last metric included is the area under the ROC curve, known as AUC. The ROC curve graphs the false positive rate against the true positive rate and in a nutshell, quantifies how good the model is at distinguishing the groups.</p>
+
+<p>The <code>yardstick</code> package also makes it really easy to graph the curve itself.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#75715e"># Look at the ROC curve</span>
+
+predictions_TOI <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">roc_curve</span>(defense, .pred_D) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">ggplot</span>(<span style="color:#a6e22e">aes</span>(x <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">-</span> specificity, y <span style="color:#f92672">=</span> sensitivity)) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">geom_path</span>() <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">geom_abline</span>(lty <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">coord_equal</span>() <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">meg_theme</span>() <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">labs</span>(
+    y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">True Positive Rate (Sensitivity)&#34;</span>,
+    x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">False Positive Rate&#34;</span>,
+    fill <span style="color:#f92672">=</span> <span style="color:#66d9ef">NULL</span>,
+    title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">ROC Curve&#34;</span>,
+    subtitle <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">TOI Only Model&#34;</span>
+  )</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="ROC_TOi.png" >
+<img src="ROC_TOi.png" alt="" ></a>
+
+
+
+</figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="ROC_KS.png" >
+<img src="ROC_KS.png" alt="" ></a>
+
+
+
+</figure>
+
+
+<p>The ideal ROC curve is one that goes high up into the top left corner (as to maximize the area underneath it), so again, it appears that our kitchen sink model is performing better here. Lastly, let's use the tibbles we created to hold the evaulation metrics and graph to compare.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">metrics_compare <span style="color:#f92672">&lt;-</span> TOI_metrics <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">bind_rows</span>(KS_metrics)
+  
+metrics_compare <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">ggplot</span>(<span style="color:#a6e22e">aes</span>(fill <span style="color:#f92672">=</span> model, y <span style="color:#f92672">=</span> value, x <span style="color:#f92672">=</span> metric)) <span style="color:#f92672">+</span> 
+  <span style="color:#a6e22e">geom_bar</span>(position <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">dodge&#34;</span>, stat <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">identity&#34;</span>) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">scale_fill_manual</span>(values <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">#7A8B99&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">#A9DDD6&#34;</span>)) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">meg_theme</span>() <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">labs</span>(
+    y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Value&#34;</span>,
+    x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Metric&#34;</span>,
+    fill <span style="color:#f92672">=</span> <span style="color:#66d9ef">NULL</span>,
+    title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Comparing Our Models&#34;</span>,
+    subtitle <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Higher is Better: Accuracy and AUC\nLower is Better: Log Loss&#34;</span>
+  ) <span style="color:#f92672">+</span> 
+  <span style="color:#a6e22e">geom_text</span>(<span style="color:#a6e22e">aes</span>(label <span style="color:#f92672">=</span> <span style="color:#a6e22e">round</span>(value, <span style="color:#ae81ff">3</span>)), vjust <span style="color:#f92672">=</span> <span style="color:#ae81ff">-0.5</span>, size <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>, position <span style="color:#f92672">=</span> <span style="color:#a6e22e">position_dodge</span>(width<span style="color:#f92672">=</span> <span style="color:#ae81ff">0.9</span>)) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">theme</span>(legend.position <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">0.86</span>, <span style="color:#ae81ff">0.9</span>))</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<figure>
+
+
+  <a data-fancybox="" href="compare.png" >
+<img src="compare.png" alt="" ></a>
+
+
+
+</figure>
+
+
+<p>We saw previously from the confusion matrices that the accuracy for the kitchen sink model is higher, and this tells us that the AUC is higher, as well, while the log loss is lower (which is good). Thanks to the evaluation metrics of the <code>yardstick</code> package (and there are many more than the few we viewed!), we have evidence that compared to the TOI only model, the kitchen sink model makes more accurate predictions and is better at distinguishing between the groups.</p>
+
+<p><code>tidymodels</code> is a pretty neat set of packages, and I hope this little tutorial was useful in introducing some of the many features. Here are a handful of other resources I have found helpful as I continue to learn more about this package:</p>
+
+<ul>
+<li><a href="https://juliasilge.com/blog/intro-tidymodels/">https://juliasilge.com/blog/intro-tidymodels/</a></li>
+<li><a href="https://towardsdatascience.com/modelling-with-tidymodels-and-parsnip-bae2c01c131c">https://towardsdatascience.com/modelling-with-tidymodels-and-parsnip-bae2c01c131c</a></li>
+<li><a href="https://www.benjaminsorensen.me/post/modeling-with-parsnip-and-tidymodels/">https://www.benjaminsorensen.me/post/modeling-with-parsnip-and-tidymodels/</a></li>
+<li><a href="https://rviews.rstudio.com/2019/06/19/a-gentle-intro-to-tidymodels/">https://rviews.rstudio.com/2019/06/19/a-gentle-intro-to-tidymodels/</a></li>
+</ul>
+
+    </div>
+
+    
+
+
+
+
+
+
+
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=/post/tidymodels-intro/&amp;text=Exploring%20tidymodels%20With%20Hockey%20Data" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=/post/tidymodels-intro/&amp;t=Exploring%20tidymodels%20With%20Hockey%20Data" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=Exploring%20tidymodels%20With%20Hockey%20Data&amp;body=/post/tidymodels-intro/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=/post/tidymodels-intro/&amp;title=Exploring%20tidymodels%20With%20Hockey%20Data" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=Exploring%20tidymodels%20With%20Hockey%20Data%20/post/tidymodels-intro/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=/post/tidymodels-intro/&amp;title=Exploring%20tidymodels%20With%20Hockey%20Data" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <img class="portrait mr-3" src="/authors/admin/avatar_hucaa0e95ed0346ad1c56367030b69cbf7_1253772_250x250_fill_q90_lanczos_center.jpg" alt="Avatar">
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="">Meghan Hall</a></h5>
+      <h6 class="card-subtitle">Hockey Analyst</h6>
+      
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="/#contact" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://twitter.com/MeghanMHall" target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/meghall06" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://public.tableau.com/profile/balls.and.sticks#!/" target="_blank" rel="noopener">
+        <i class="fas fa-chart-bar"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+  </div>
+</article>
+
+      
+
+    
+    
+    
+    <script src="/js/mathjax-config.js"></script>
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/8.3.1/mermaid.min.js" integrity="sha256-vOIuDSYDirTfyr+S2MjFnhOz6Rgiz4ODFAHATG0rFxw=" crossorigin="anonymous" title="mermaid"></script>
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js" integrity="sha256-1zu+3BnLYV9LdiY85uXMzii3bdrkelyp37e0ZyTAQh0=" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/r.min.js"></script>
+        
+      
+
+      
+      
+      <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.js" integrity="sha256-EErZamuLefUnbMBQbsEqu1USa+btR2oIlCpBJbyD4/g=" crossorigin="anonymous"></script>
+    
+
+    
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+    
+    
+    
+    
+    <script>
+      const search_config = {"indexURI":"/index.json","minLength":1,"threshold":0.3};
+      const i18n = {"no_results":"No results found","placeholder":"Search...","results":"results found"};
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/academic.min.0e040a4c8b8532fc173c2fe4328906d0.js"></script>
+
+    
+
+
+
+
+
+
+  
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+  <p class="powered-by">
+    
+      <a href="/privacy/">Privacy Policy</a>
+    
+    
+       &middot; 
+      <a href="/terms/">Terms</a>
+    
+  </p>
+  
+
+  <p class="powered-by">
+    
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" class="back-to-top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
