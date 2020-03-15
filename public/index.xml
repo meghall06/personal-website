@@ -5,7 +5,7 @@
     <link>/</link>
       <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <description>Meghan Hall</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Mon, 09 Mar 2020 00:00:00 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sun, 15 Mar 2020 00:00:00 +0000</lastBuildDate>
     <image>
       <url>img/icon-192.png</url>
       <title>Meghan Hall</title>
@@ -51,6 +51,26 @@
 &lt;p&gt;Cras aliquam rhoncus ipsum, in hendrerit nunc mattis vitae. Duis vitae efficitur metus, ac tempus leo. Cras nec fringilla lacus. Quisque sit amet risus at ipsum pharetra commodo. Sed aliquam mauris at consequat eleifend. Praesent porta, augue sed viverra bibendum, neque ante euismod ante, in vehicula justo lorem ac eros. Suspendisse augue libero, venenatis eget tincidunt ut, malesuada at lorem. Donec vitae bibendum arcu. Aenean maximus nulla non pretium iaculis. Quisque imperdiet, nulla in pulvinar aliquet, velit quam ultrices quam, sit amet fringilla leo sem vel nunc. Mauris in lacinia lacus.&lt;/p&gt;
 &lt;p&gt;Suspendisse a tincidunt lacus. Curabitur at urna sagittis, dictum ante sit amet, euismod magna. Sed rutrum massa id tortor commodo, vitae elementum turpis tempus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean purus turpis, venenatis a ullamcorper nec, tincidunt et massa. Integer posuere quam rutrum arcu vehicula imperdiet. Mauris ullamcorper quam vitae purus congue, quis euismod magna eleifend. Vestibulum semper vel augue eget tincidunt. Fusce eget justo sodales, dapibus odio eu, ultrices lorem. Duis condimentum lorem id eros commodo, in facilisis mauris scelerisque. Morbi sed auctor leo. Nullam volutpat a lacus quis pharetra. Nulla congue rutrum magna a ornare.&lt;/p&gt;
 &lt;p&gt;Aliquam in turpis accumsan, malesuada nibh ut, hendrerit justo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Quisque sed erat nec justo posuere suscipit. Donec ut efficitur arcu, in malesuada neque. Nunc dignissim nisl massa, id vulputate nunc pretium nec. Quisque eget urna in risus suscipit ultricies. Pellentesque odio odio, tincidunt in eleifend sed, posuere a diam. Nam gravida nisl convallis semper elementum. Morbi vitae felis faucibus, vulputate orci placerat, aliquet nisi. Aliquam erat volutpat. Maecenas sagittis pulvinar purus, sed porta quam laoreet at.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Learning R with Hockey Data in Swirl</title>
+      <link>/post/hockey-data-with-swirl/</link>
+      <pubDate>Sun, 15 Mar 2020 00:00:00 +0000</pubDate>
+      <guid>/post/hockey-data-with-swirl/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://swirlstats.com/&#34; target=&#34;_blank&#34;&gt;The &lt;code&gt;swirl&lt;/code&gt; package&lt;/a&gt; is an incredibly neat learning tool that teaches you how to use R via interactive learning in the RStudio console. And an associated package called &lt;code&gt;swirlify&lt;/code&gt; allows anyone to &lt;em&gt;create&lt;/em&gt; lessons that can then be used by anyone using &lt;code&gt;swirl&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;I&#39;ve created a course called &lt;a href=&#34;https://github.com/meghall06/Hockey_Data_With_Swirl&#34; target=&#34;_blank&#34;&gt;Hockey Data With Swirl&lt;/a&gt; that aims to teach you basic tidyverse functions using hockey data. The data set used in the swirl lesson is the same one used in &lt;a href=&#34;https://hockey-graphs.com/2019/12/11/an-introduction-to-r-with-hockey-data/&#34; target=&#34;_blank&#34;&gt;my introduction to R at Hockey-Graphs&lt;/a&gt;, and the content is similar, but not quite identical. You can go through either tutorial, or both, in any order. The &lt;code&gt;swirl&lt;/code&gt; package is just another learning tool that guides you through, question by question. Right now there is only one lesson in the course, but my goal is to add more in the future (such as a lesson for &lt;code&gt;ggplot2&lt;/code&gt;!).&lt;/p&gt;
+
+&lt;p&gt;In order to go through the lesson, you need to have downloaded R and RStudio (the instructions for which are available in the Hockey-Graphs tutorial I linked above). In RStudio, open a script and run the following code:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;install.packages&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;swirl&amp;#34;&lt;/span&gt;)
+&lt;span style=&#34;color:#a6e22e&#34;&gt;library&lt;/span&gt;(swirl)
+&lt;span style=&#34;color:#a6e22e&#34;&gt;install_course_github&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;meghall06&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Hockey_Data_With_Swirl&amp;#34;&lt;/span&gt;)
+&lt;span style=&#34;color:#a6e22e&#34;&gt;swirl&lt;/span&gt;()&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The console prompts will take over from there. &lt;code&gt;swirl&lt;/code&gt; works through the console, which allows for interactivity but doesn&#39;t make it easy to save your code and go back to it later. I&#39;ve attempted to account for that by making available &lt;a href=&#34;https://github.com/meghall06/Hockey_Data_With_Swirl/blob/master/swirl_lesson_one.R&#34; target=&#34;_blank&#34;&gt;the code file&lt;/a&gt; that contains all of the questions and answers from the lesson.&lt;/p&gt;
+
+&lt;p&gt;I hope you find the lesson useful, feel free to give feedback and let me know what other topics you&#39;d be interested in!&lt;/p&gt;
 </description>
     </item>
     
