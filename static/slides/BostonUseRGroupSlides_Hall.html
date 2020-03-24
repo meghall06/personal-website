@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Good to Great: Custom Themes in ggplot2</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Meghan Hall" />
+    <meta name="date" content="2020-03-24" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Good to Great: Custom Themes in ggplot2
+### Meghan Hall
+### Virtual TidyTuesday UseR Meetup
+### March 24, 2020
+
+---
+
+
+# Me in 15 seconds
+
+--
+
+- Day job: data manager in higher education (I use R a lot)
+
+--
+
+- Also a hockey nerd! (I use R a lot there too)
+
+--
+
+- R makes my work so much easier, so I love helping people learn
+
+--
+
+- Find me on Twitter [@MeghanMHall](https://twitter.com/MeghanMHall)
+
+- Check out [Hockey Graphs](https://hockey-graphs.com/)
+
+---
+class: inverse, center, middle
+
+# Onto Themes!
+
+---
+
+# Why Use a Custom Theme?
+
+--
+
+- It helps brand your work! Whether you're working for yourself or for a company.
+
+--
+
+- It shows that you know R and are willing to put in a little effort for a custom look. 
+
+--
+
+- Most importantly: It's not as hard as it seems, I swear.
+
+---
+
+# Level One
+
+A simple plot with **ggplot2**:
+
+
+```r
+library(datasets)
+library(tidyverse)
+
+ggplot(chickwts) +
+  geom_bar(aes(x = feed, y = weight, fill = feed), 
+         position = "dodge", stat = "summary", fun.y = "mean") +
+  labs(
+    y = "Average Weight",
+    x = "Feed",
+    fill = NULL,
+    title = "Average Chicken Weight by Feed Type",
+    subtitle = "What's the unit of measure? Who knows!",
+    caption = "From the chickwts dataset"
+  )
+```
+
+---
+
+# Level One
+
+.center[
+
+![](BostonUseRGroupSlides_Hall_files/figure-html/plot-label1-out-1.png)&lt;!-- --&gt;
+
+]
+
+---
+
+# Level Two
+
+Add in a **built-in theme** and some **custom colors**:
+
+
+```r
+library(datasets)
+library(tidyverse)
+
+ggplot(chickwts) +
+  geom_bar(aes(x = feed, y = weight, fill = feed), 
+         position = "dodge", stat = "summary", fun.y = "mean") +
+  labs(
+    y = "Average Weight",
+    x = "Feed",
+    fill = NULL,
+    title = "Average Chicken Weight by Feed Type",
+    subtitle = "What's the unit of measure? Who knows!",
+    caption = "From the chickwts dataset"
+  ) +
+  scale_fill_manual(values = c("#2B4162", "#C5CBD4", "#385F71", 
+                               "#D7B377", "#F5F0F6", "#8F754F")) +
+  theme_minimal()
+```
+
+---
+
+# Level Two
+
+.center[
+
+![](BostonUseRGroupSlides_Hall_files/figure-html/plot-label2-out-1.png)&lt;!-- --&gt;
+
+]
+
+---
+
+# Built-In Themes
+
+- theme_gray()
+
+- theme_bw()
+
+- theme_linedraw()
+
+- theme_light()
+
+- theme_dark()
+
+- theme_minimal()
+
+- theme_classic()
+
+
+---
+
+# Level Three
+
+Use your own **custom theme** and some **custom color palettes**:
+
+
+```r
+library(datasets)
+library(tidyverse)
+
+ggplot(chickwts) +
+  geom_bar(aes(x = feed, y = weight, fill = feed), 
+         position = "dodge", stat = "summary", fun.y = "mean") +
+  labs(
+    y = "Average Weight",
+    x = "Feed",
+    fill = NULL,
+    title = "Average Chicken Weight by Feed Type",
+    subtitle = "What's the unit of measure? Who knows!",
+    caption = "From the chickwts dataset"
+  ) +
+  scale_fill_manual(values = my_colors) +
+  meg_theme()
+```
+
+---
+
+# Level Three
+
+.center[
+
+![](BostonUseRGroupSlides_Hall_files/figure-html/plot-label3-out-1.png)&lt;!-- --&gt;
+
+]
+
+---
+
+# Custom Color Palettes
+
+- If you find yourself constantly copying and pasting the same hex codes, it might be time to make a custom color palette!
+
+```{eval=FALSE}
+my_colors &lt;- c("#2B4162", "#C5CBD4", "#385F71", 
+               "#D7B377", "#F5F0F6", "#8F754F")
+
++ scale_fill_manual(values = my_colors)
+
++ scale_color_manual(values = my_colors)
+```
+
+--
+
+- Can also use the ColorBrewer scales that are part of ggplot2 (various palettes available, can view with ?scale_fill_brewer).
+
+- Always consider colorblindness: try viridis in ggplot2 or find a palette generator with a colorblind option (I like [coolors.co](coolors.co)).
+
+```{eval=FALSE}
++ scale_fill_brewer(palette = "Pastel1")
+
++ scale_fill_viridis_d()
+```
+
+---
+
+# Making Your Own Theme
+
+- In my experience, it was easier to start from an existing theme.
+
+```{eval=FALSE}
+  theme_linedraw(base_size=11, base_family="Courier") %+replace% 
+    theme(
+      axis.ticks = element_blank(),
+      panel.grid.minor = element_blank()
+    )
+```
+
+--
+
+- [This ggplot2 reference page](https://ggplot2.tidyverse.org/reference/theme.html) is your bible, it lists all the various arguments to the theme() function.
+
+--
+
+Just a few of the arguments I use in meg_theme():
+
+```{eval=FALSE}
+plot.title = element_text(size = 13, hjust = 0, vjust = 0.5, 
+                margin = margin(b = 0.2, unit = "cm")),
+plot.subtitle = element_text(size = 9, hjust = 0, vjust = 0.5, 
+                   margin = margin(b = 0.2, unit = "cm")),
+plot.caption = element_text(size = 7, hjust = 1, face = "italic", 
+                   margin = margin(t = 0.1, unit = "cm")
+```
+
+---
+
+# Making Your Own Theme
+
+How do you know what all the options are?
+
+--
+
+
+```r
+theme_deets &lt;- theme_linedraw()
+
+theme_deets$plot.caption
+```
+
+```
+# List of 11
+#  $ family       : NULL
+#  $ face         : NULL
+#  $ colour       : NULL
+#  $ size         : 'rel' num 0.8
+#  $ hjust        : num 1
+#  $ vjust        : num 1
+#  $ angle        : NULL
+#  $ lineheight   : NULL
+#  $ margin       : 'margin' num [1:4] 5.5pt 0pt 0pt 0pt
+#   ..- attr(*, "valid.unit")= int 8
+#   ..- attr(*, "unit")= chr "pt"
+#  $ debug        : NULL
+#  $ inherit.blank: logi TRUE
+#  - attr(*, "class")= chr [1:2] "element_text" "element"
+```
+
+---
+
+# Using Your Own Theme
+
+
+```r
+our_new_theme &lt;- function () { 
+  theme_linedraw(base_size=11, base_family="Courier") %+replace% 
+    theme(
+      axis.ticks = element_blank(),
+      panel.grid.minor = element_blank()
+    )}
+
+ggplot(chickwts) +
+  geom_bar(aes(x = feed, y = weight, fill = feed), 
+         position = "dodge", stat = "summary", fun.y = "mean") +
+  labs(
+    y = "Average Weight",
+    x = "Feed",
+    fill = NULL,
+    title = "Average Chicken Weight by Feed Type",
+    subtitle = "What's the unit of measure? Who knows!",
+    caption = "From the chickwts dataset"
+  ) +
+  our_new_theme()
+```
+
+---
+
+# Using Your Own Theme
+
+.center[
+
+![](BostonUseRGroupSlides_Hall_files/figure-html/plot-label4-out-1.png)&lt;!-- --&gt;
+
+]
+
+---
+
+class: inverse, center, middle
+
+# Thanks! Have fun theme building!
+
+Slides created with the R package [xaringan](https://github.com/yihui/xaringan).
+
+I'm on Twitter [@MeghanMHall](https://twitter.com/MeghanMHall).
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  /* Replace <script> tags in slides area to make them executable
+   *
+   * Runs after post-processing of markdown source into slides and replaces only
+   * <script>s on the last slide of continued slides using the .has-continuation
+   * class added by xaringan. Finally, any <script>s in the slides area that
+   * aren't executed are commented out.
+   */
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container:not(.has-continuation) script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+  var scriptsNotExecuted = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container.has-continuation script'
+  );
+  if (!scriptsNotExecuted.length) return;
+  for (var i = 0; i < scriptsNotExecuted.length; i++) {
+    var comment = document.createComment(scriptsNotExecuted[i].outerHTML)
+    scriptsNotExecuted[i].parentElement.replaceChild(comment, scriptsNotExecuted[i])
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
