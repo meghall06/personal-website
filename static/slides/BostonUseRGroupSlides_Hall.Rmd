@@ -1,0 +1,301 @@
+---
+title: "Good to Great: Custom Themes in ggplot2"
+subtitle: ""
+author: "Meghan Hall"
+institute: "Virtual TidyTuesday UseR Meetup"
+date: "March 24, 2020"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+
+---
+
+# Me in 15 seconds
+
+--
+
+- Day job: data manager in higher education (I use R a lot)
+
+--
+
+- Also a hockey nerd! (I use R a lot there too)
+
+--
+
+- R makes my work so much easier, so I love helping people learn
+
+--
+
+- Find me on Twitter [@MeghanMHall](https://twitter.com/MeghanMHall)
+
+- Check out [Hockey Graphs](https://hockey-graphs.com/)
+
+---
+class: inverse, center, middle
+
+# Onto Themes!
+
+---
+
+# Why Use a Custom Theme?
+
+--
+
+- It helps brand your work! Whether you're working for yourself or for a company.
+
+--
+
+- It shows that you know R and are willing to put in a little effort for a custom look. 
+
+--
+
+- Most importantly: It's not as hard as it seems, I swear.
+
+---
+
+# Level One
+
+A simple plot with **ggplot2**:
+
+```{r plot-label1, eval=FALSE}
+library(datasets)
+library(tidyverse)
+
+ggplot(chickwts) +
+  geom_bar(aes(x = feed, y = weight, fill = feed), 
+         position = "dodge", stat = "summary", fun.y = "mean") +
+  labs(
+    y = "Average Weight",
+    x = "Feed",
+    fill = NULL,
+    title = "Average Chicken Weight by Feed Type",
+    subtitle = "What's the unit of measure? Who knows!",
+    caption = "From the chickwts dataset"
+  )
+```
+
+---
+
+# Level One
+
+.center[
+
+```{r plot-label1-out, ref.label="plot-label1", echo=FALSE}
+```
+
+]
+
+---
+
+# Level Two
+
+Add in a **built-in theme** and some **custom colors**:
+
+```{r plot-label2, eval=FALSE}
+library(datasets)
+library(tidyverse)
+
+ggplot(chickwts) +
+  geom_bar(aes(x = feed, y = weight, fill = feed), 
+         position = "dodge", stat = "summary", fun.y = "mean") +
+  labs(
+    y = "Average Weight",
+    x = "Feed",
+    fill = NULL,
+    title = "Average Chicken Weight by Feed Type",
+    subtitle = "What's the unit of measure? Who knows!",
+    caption = "From the chickwts dataset"
+  ) +
+  scale_fill_manual(values = c("#2B4162", "#C5CBD4", "#385F71", 
+                               "#D7B377", "#F5F0F6", "#8F754F")) +
+  theme_minimal()
+```
+
+---
+
+# Level Two
+
+.center[
+
+```{r plot-label2-out, ref.label="plot-label2", echo=FALSE}
+```
+
+]
+
+---
+
+# Built-In Themes
+
+- theme_gray()
+
+- theme_bw()
+
+- theme_linedraw()
+
+- theme_light()
+
+- theme_dark()
+
+- theme_minimal()
+
+- theme_classic()
+
+
+---
+
+# Level Three
+
+Use your own **custom theme** and some **custom color palettes**:
+
+```{r plot-label3, eval=FALSE}
+library(datasets)
+library(tidyverse)
+
+ggplot(chickwts) +
+  geom_bar(aes(x = feed, y = weight, fill = feed), 
+         position = "dodge", stat = "summary", fun.y = "mean") +
+  labs(
+    y = "Average Weight",
+    x = "Feed",
+    fill = NULL,
+    title = "Average Chicken Weight by Feed Type",
+    subtitle = "What's the unit of measure? Who knows!",
+    caption = "From the chickwts dataset"
+  ) +
+  scale_fill_manual(values = my_colors) +
+  meg_theme()
+```
+
+---
+
+# Level Three
+
+.center[
+
+```{r plot-label3-out, ref.label="plot-label3", echo=FALSE}
+```
+
+]
+
+---
+
+# Custom Color Palettes
+
+- If you find yourself constantly copying and pasting the same hex codes, it might be time to make a custom color palette!
+
+```{eval=FALSE}
+my_colors <- c("#2B4162", "#C5CBD4", "#385F71", 
+               "#D7B377", "#F5F0F6", "#8F754F")
+
++ scale_fill_manual(values = my_colors)
+
++ scale_color_manual(values = my_colors)
+```
+
+--
+
+- Can also use the ColorBrewer scales that are part of ggplot2 (various palettes available, can view with ?scale_fill_brewer).
+
+- Always consider colorblindness: try viridis in ggplot2 or find a palette generator with a colorblind option (I like [coolors.co](coolors.co)).
+
+```{eval=FALSE}
++ scale_fill_brewer(palette = "Pastel1")
+
++ scale_fill_viridis_d()
+```
+
+---
+
+# Making Your Own Theme
+
+- In my experience, it was easier to start from an existing theme.
+
+```{eval=FALSE}
+  theme_linedraw(base_size=11, base_family="Courier") %+replace% 
+    theme(
+      axis.ticks = element_blank(),
+      panel.grid.minor = element_blank()
+    )
+```
+
+--
+
+- [This ggplot2 reference page](https://ggplot2.tidyverse.org/reference/theme.html) is your bible, it lists all the various arguments to the theme() function.
+
+--
+
+Just a few of the arguments I use in meg_theme():
+
+```{eval=FALSE}
+plot.title = element_text(size = 13, hjust = 0, vjust = 0.5, 
+                margin = margin(b = 0.2, unit = "cm")),
+plot.subtitle = element_text(size = 9, hjust = 0, vjust = 0.5, 
+                   margin = margin(b = 0.2, unit = "cm")),
+plot.caption = element_text(size = 7, hjust = 1, face = "italic", 
+                   margin = margin(t = 0.1, unit = "cm")
+```
+
+---
+
+# Making Your Own Theme
+
+How do you know what all the options are?
+
+--
+
+```{r comment='#'}
+theme_deets <- theme_linedraw()
+
+theme_deets$plot.caption
+```
+
+---
+
+# Using Your Own Theme
+
+```{r plot-label4, eval=FALSE}
+our_new_theme <- function () { 
+  theme_linedraw(base_size=11, base_family="Courier") %+replace% 
+    theme(
+      axis.ticks = element_blank(),
+      panel.grid.minor = element_blank()
+    )}
+
+ggplot(chickwts) +
+  geom_bar(aes(x = feed, y = weight, fill = feed), 
+         position = "dodge", stat = "summary", fun.y = "mean") +
+  labs(
+    y = "Average Weight",
+    x = "Feed",
+    fill = NULL,
+    title = "Average Chicken Weight by Feed Type",
+    subtitle = "What's the unit of measure? Who knows!",
+    caption = "From the chickwts dataset"
+  ) +
+  our_new_theme()
+```
+
+---
+
+# Using Your Own Theme
+
+.center[
+
+```{r plot-label4-out, ref.label="plot-label4", echo=FALSE}
+```
+
+]
+
+---
+
+class: inverse, center, middle
+
+# Thanks! Have fun theme building!
+
+Slides created with the R package [xaringan](https://github.com/yihui/xaringan).
+
+I'm on Twitter [@MeghanMHall](https://twitter.com/MeghanMHall).
