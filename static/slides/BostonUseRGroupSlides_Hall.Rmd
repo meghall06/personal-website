@@ -14,6 +14,14 @@ output:
 
 ---
 
+```{r setup, include=FALSE}
+# options(htmltools.dir.version = FALSE)
+# options("scipen" = 16)
+knitr::opts_chunk$set(collapse = TRUE,
+                      fig.retina = 3,
+                      fig.path = "figs/Use/")
+```
+
 # Me in 15 seconds
 
 --
