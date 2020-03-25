@@ -107,7 +107,7 @@ test
 
 Add in a **built-in theme** and some **custom colors**:
 
-```{r plot-label2, eval=FALSE}
+```{r plot-label2, fig.show = 'hide'}
 library(datasets)
 library(tidyverse)
 
@@ -133,7 +133,7 @@ ggplot(chickwts) +
 
 .center[
 
-```{r plot-label2-out, ref.label="plot-label2", echo=FALSE}
+```{r ref.label = 'plot-label2', echo = FALSE}
 ```
 
 ]
