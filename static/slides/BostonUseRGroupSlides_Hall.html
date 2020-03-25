@@ -72,7 +72,7 @@ A simple plot with **ggplot2**:
 library(datasets)
 library(tidyverse)
 
-ggplot(chickwts) +
+test &lt;- ggplot(chickwts) +
   geom_bar(aes(x = feed, y = weight, fill = feed), 
          position = "dodge", stat = "summary", fun.y = "mean") +
   labs(
@@ -91,7 +91,22 @@ ggplot(chickwts) +
 
 .center[
 
-![](BostonUseRGroupSlides_Hall_files/figure-html/plot-label1-out-1.png)&lt;!-- --&gt;
+
+
+]
+
+---
+
+# Level One
+
+.center[
+
+
+```r
+test
+```
+
+&lt;img src="BostonUseRGroupSlides_Hall_files/figure-html/unnamed-chunk-1-1.png" width="504" /&gt;
 
 ]
 
