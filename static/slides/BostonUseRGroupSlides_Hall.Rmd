@@ -61,11 +61,11 @@ class: inverse, center, middle
 
 A simple plot with **ggplot2**:
 
-```{r plot-label1, eval=FALSE}
+```{r plot-label1, fig.show = 'hide'}
 library(datasets)
 library(tidyverse)
 
-test <- ggplot(chickwts) +
+ggplot(chickwts) +
   geom_bar(aes(x = feed, y = weight, fill = feed), 
          position = "dodge", stat = "summary", fun.y = "mean") +
   labs(
@@ -84,19 +84,7 @@ test <- ggplot(chickwts) +
 
 .center[
 
-```{r plot-label1-out, ref.label="plot-label1", echo=FALSE}
-```
-
-]
-
----
-
-# Level One
-
-.center[
-
-```{r fig.retina=3}
-test
+```{r ref.label = 'plot-label1', echo = FALSE}
 ```
 
 ]
