@@ -1,0 +1,24 @@
+---
+title: Creating Custom Themes in ggplot2
+author: ''
+date: '2020-03-25'
+slug: creating-custom-themes-in-ggplot2
+categories: []
+tags: []
+subtitle: ''
+summary: 'Slides from a useR group lightning talk on getting started with creating custom themes in ggplot2.'
+authors: []
+lastmod: ''
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+In March 2020, the Greater Boston useR Group hosted a [Virtual Tidy Tuesday Meetup](https://www.meetup.com/Boston-useR/events/269130710/), and I gave a 10-minute lightning talk on getting started with building custom themes in `ggplot2`. The slides should be embedded below!
+
+```{r echo=FALSE}
+knitr::include_url('/slides/BostonUseRGroupSlides_Hall.html', height = "505px")
+```

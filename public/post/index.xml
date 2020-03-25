@@ -5,12 +5,26 @@
     <link>/post/</link>
       <atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     <description>Posts</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sun, 15 Mar 2020 00:00:00 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Wed, 25 Mar 2020 00:00:00 +0000</lastBuildDate>
     <image>
       <url>img/icon-192.png</url>
       <title>Posts</title>
       <link>/post/</link>
     </image>
+    
+    <item>
+      <title>Creating Custom Themes in ggplot2</title>
+      <link>/post/creating-custom-themes-in-ggplot2/</link>
+      <pubDate>Wed, 25 Mar 2020 00:00:00 +0000</pubDate>
+      <guid>/post/creating-custom-themes-in-ggplot2/</guid>
+      <description>
+
+
+&lt;p&gt;In March 2020, the Greater Boston useR Group hosted a &lt;a href=&#34;https://www.meetup.com/Boston-useR/events/269130710/&#34;&gt;Virtual Tidy Tuesday Meetup&lt;/a&gt;, and I gave a 10-minute lightning talk on getting started with building custom themes in &lt;code&gt;ggplot2&lt;/code&gt;. The slides should be embedded below!&lt;/p&gt;
+&lt;iframe src=&#34;/slides/BostonUseRGroupSlides_Hall.html&#34; width=&#34;672&#34; height=&#34;505px&#34;&gt;
+&lt;/iframe&gt;
+</description>
+    </item>
     
     <item>
       <title>Learning R with Hockey Data in Swirl</title>
