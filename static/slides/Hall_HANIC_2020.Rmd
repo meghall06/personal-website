@@ -6,7 +6,7 @@ institute: '`r icon::fa("twitter")` [MeghanMHall](https://twitter.com/MeghanMHal
 date: 
 output:
   xaringan::moon_reader:
-    lib_dir: "HANIC/libs"
+    lib_dir: libs
     nature:
       titleSlideClass: ["left", "middle", "inverse"]
       highlightStyle: github
@@ -24,7 +24,7 @@ library(tidyverse) ## for data wrangling
 
 knitr::opts_chunk$set(collapse = TRUE,
                       fig.retina = 3,
-                      fig.path = "HANIC/figs/Use/",
+                      fig.path = "figs/Use/HANIC",
                       message = FALSE)
 
 meg_theme <- function () { 
