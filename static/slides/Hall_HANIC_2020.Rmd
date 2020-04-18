@@ -469,7 +469,7 @@ moneypuck_w_tracking <- moneypuck %>%
 
 # Longest average shifts?
 
-```{r plot-label2, fig.show = 'hide'}
+```{r avg_shifts, fig.show = 'hide'}
 
 shift_length %>%
   top_n(10) %>%
@@ -494,7 +494,7 @@ shift_length %>%
 
 .center[
 
-```{r ref.label = 'plot-label2', echo = FALSE}
+```{r ref.label = 'avg_shifts', echo = FALSE}
 ```
 
 ]
@@ -503,7 +503,7 @@ shift_length %>%
 
 # Most shifts per game?
 
-```{r plot-label1, fig.show = 'hide'}
+```{r most_shifts, fig.show = 'hide'}
 
 shifts_game %>%
   ggplot(aes(y = avg_shifts_game, x = position_grouped)) +
@@ -526,7 +526,7 @@ shifts_game %>%
 
 .center[
 
-```{r ref.label = 'plot-label1', echo = FALSE}
+```{r ref.label = 'most_shifts', echo = FALSE}
 ```
 
 ]
