@@ -149,7 +149,7 @@ class: inverse, center, middle
 
 name: moneypuck
 class: inverse, middle, center
-background-image: url(Moneypuck.png)
+background-image: url(img/Moneypuck.png)
 background-size: contain
 
 ---
@@ -157,7 +157,7 @@ background-size: contain
 
 name: moneypuck2
 class: inverse, middle, center
-background-image: url(Moneypuck2.png)
+background-image: url(img/Moneypuck2.png)
 background-size: contain
 
 ---
@@ -200,7 +200,7 @@ background-size: contain
 
 name: moneypuck4
 class: inverse, middle, center
-background-image: url(Moneypuck4.png)
+background-image: url(img/Moneypuck4.png)
 background-size: contain
 
 ---
@@ -223,7 +223,7 @@ background-size: contain
 
 name: moneypuck3
 class: inverse, middle, center
-background-image: url(Moneypuck3.png)
+background-image: url(img/Moneypuck3.png)
 background-size: contain
 
 ---
