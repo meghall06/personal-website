@@ -24,7 +24,7 @@ library(tidyverse) ## for data wrangling
 
 knitr::opts_chunk$set(collapse = TRUE,
                       fig.retina = 3,
-                      fig.path = "figs/Use/HANIC",
+                      fig.path = "figs/Use/",
                       message = FALSE)
 
 meg_theme <- function () { 
