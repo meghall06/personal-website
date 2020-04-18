@@ -6,7 +6,7 @@ institute: '`r icon::fa("twitter")` [MeghanMHall](https://twitter.com/MeghanMHal
 date: 
 output:
   xaringan::moon_reader:
-    lib_dir: libs
+    lib_dir: "HANIC/libs"
     nature:
       titleSlideClass: ["left", "middle", "inverse"]
       highlightStyle: github
