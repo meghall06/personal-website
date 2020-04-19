@@ -1,0 +1,788 @@
+---
+title: "Moving Beyond Excel <br> For Your Hockey Analysis"
+subtitle: 'Meghan Hall'
+author: '#HANIC <br> April 18, 2020'
+institute: '`r icon::fa("twitter")` [MeghanMHall](https://twitter.com/MeghanMHall) <br> `r icon::fa("github")` [meghall06](https://github.com/meghall06) <br> `r icon::fa("link")` [meghan.rbind.io](https://meghan.rbind.io/)'
+date: 
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      titleSlideClass: ["left", "middle", "inverse"]
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, echo = FALSE, message = FALSE, warning = FALSE}
+options(htmltools.dir.version = FALSE)
+
+#knitr::opts_chunk$set(echo = FALSE, eval = FALSE, message = FALSE, dpi = 72)
+library(icon)      ## for FontAwesome icons (ozunconf17 project!)
+library(emo)       ## for emoji, obvs (github.com/hadley/emo)
+library(tidyverse) ## for data wrangling
+
+knitr::opts_chunk$set(collapse = TRUE,
+                      fig.retina = 3,
+                      fig.path = "figs/Use/",
+                      message = FALSE)
+
+meg_theme <- function () { 
+  theme_linedraw(base_size=11, base_family="Seravek") %+replace% 
+    theme(
+      panel.background  = element_blank(),
+      plot.background = element_rect(fill="transparent", color=NA), 
+      legend.background = element_rect(fill="transparent", color=NA),
+      legend.key = element_rect(fill="transparent", color=NA),
+      axis.ticks = element_blank(),
+      panel.grid.major = element_line(color = "grey90", size = 0.3), 
+      panel.grid.minor = element_blank(),
+      plot.title = element_text(size = 13, hjust = 0, vjust = 0.5, margin = margin(b = 0.2, unit = "cm")),
+      plot.subtitle = element_text(size = 9, hjust = 0, vjust = 0.5, margin = margin(b = 0.2, unit = "cm")),
+      plot.caption = element_text(size = 7, hjust = 1, face = "italic", margin = margin(t = 0.1, unit = "cm"))
+    )
+}
+
+```
+
+# About me
+
+--
+
+.center[
+
+`r icon::fa("school", size = 2)`
+
+Data manager in higher education
+
+]
+
+--
+
+.center[
+
+`r icon::fa("hockey-puck", size = 2)`
+
+Amateur hockey analyst ([Hockey-Graphs!](https://hockey-graphs.com))
+
+]
+
+--
+
+.center[
+
+`r icon::fa("r-project", size = 2)` 
+
+R enthusiast
+
+]
+
+---
+
+# About you
+
+--
+
+.center[
+
+`r icon::fa("chart-bar", size = 2)`
+
+Working with data manipulation, visualization, and analysis
+
+]
+
+--
+
+.center[
+
+`r icon::fa("question-circle", size = 2)`
+
+Maybe you use Excel?
+
+]
+
+--
+
+.center[
+
+`r icon::fa("code", size = 2)` 
+
+Curious about learning to code (or already on your way!)
+
+]
+
+---
+
+class: center, middle, inverse
+
+# Rule #1
+
+### No Excel shaming
+
+---
+
+# Goals for tonight
+
+--
+
+### Limitations of Excel 
+- When your goal is **efficient** and **reproducible** and **shareable** analysis
+
+--
+
+### Advantages of R 
+- (Or whatever language you like)
+
+--
+
+### Confidence to move on
+- Find resources and develop a learning roadmap
+
+---
+class: inverse, center, middle
+
+# Data Example
+
+## From Moneypuck
+
+---
+
+name: moneypuck
+class: inverse, middle, center
+background-image: url(img/Moneypuck.png)
+background-size: contain
+
+---
+
+
+name: moneypuck2
+class: inverse, middle, center
+background-image: url(img/Moneypuck2.png)
+background-size: contain
+
+---
+
+# Two questions we have from this data
+
+--
+
+### Longest average shifts?
+
+- Forwards only
+- Strength state: 5v4
+- 100+ shifts
+
+--
+
+### Most shifts per game?
+
+- Forwards vs. defensemen
+- Strength state: 5v5
+- 10+ games
+
+---
+
+# Easy enough to do in Excel!
+
+### Longest average shifts?
+
+- create a **shift_length** variable: `icetime / shifts`
+
+- filter `position` to L, C, R
+
+- filter `situation` to 5on4
+
+- filter `shifts` to at least 100
+
+- sort descending by `shift_length`
+
+---
+
+name: moneypuck4
+class: inverse, middle, center
+background-image: url(img/Moneypuck4.png)
+background-size: contain
+
+---
+
+# Easy enough to do in Excel!
+
+### Most shifts per game?
+
+- create a **shifts_game** variable: `shifts / games_played`
+
+- create a **position_grouped** variable to create D and F
+
+- filter `situation` to 5on5
+
+- filter `games_played` to at least 10
+
+- find the average values for `shifts_game`
+
+---
+
+name: moneypuck3
+class: inverse, middle, center
+background-image: url(img/Moneypuck3.png)
+background-size: contain
+
+---
+
+class: inverse, center, middle
+
+# But...
+
+---
+
+# ...what if...
+
+--
+
+`r icon::fa("exclamation-triangle", size = 2)` &nbsp;someone asks you exactly what you did? &nbsp;`r emo::ji("grimace")`
+
+<br>
+
+--
+
+`r icon::fa("exclamation-triangle", size = 2)` &nbsp;you get refreshed data? &nbsp;`r emo::ji("grimace")`
+
+<br>
+
+--
+
+`r icon::fa("exclamation-triangle", size = 2)` &nbsp;you make a mistake, or there's something you want to make note of? &nbsp;`r emo::ji("grimace")`
+
+<br>
+
+--
+
+`r icon::fa("exclamation-triangle", size = 2)` &nbsp;there's more data you want to join in? &nbsp;`r emo::ji("grimace")`
+
+<br>
+
+--
+
+`r icon::fa("exclamation-triangle", size = 2)` &nbsp;you have to make a graph? &nbsp;`r emo::ji("grimace")`
+
+---
+
+class: inverse, center, middle
+
+# Let's try this in R
+
+---
+
+# Longest average shifts?
+
+```{r eval=TRUE, include=FALSE}
+moneypuck <- read_csv("MoneyPuck.csv")
+```
+
+```{r include=TRUE}
+shift_length <- moneypuck %>%
+  mutate(shift_length = icetime / shifts) %>%
+  filter(position != "D" & situation == "5on4" & shifts >= 100) %>%
+  arrange(desc(shift_length)) %>%
+  select(name, shift_length)
+```
+
+--
+
+```{r}
+head(shift_length)
+```
+
+---
+
+# Most shifts per game?
+
+```{r include=TRUE}
+shifts_game <- moneypuck %>%
+  mutate(shifts_game = shifts / games_played,
+         position_grouped = ifelse(position == "D", "D", "F")) %>%
+  filter(situation == "5on5" & games_played >= 10) %>%
+  group_by(position_grouped) %>%
+  summarize(avg_shifts_game = mean(shifts_game))
+```
+
+--
+
+```{r}
+head(shifts_game)
+```
+
+---
+
+# ...what if...
+
+--
+
+`r icon::fa("check-circle", size = 2)` &nbsp;someone asks you exactly what you did? &nbsp;`r emo::ji("smile")`
+
+<br>
+
+---
+
+class: middle
+
+```{r eval=FALSE, include=TRUE}
+# Always comment your code as if others will read it
+# "Others" includes yourself in 3 months when you've 
+# forgotten everything
+
+# This is the "Skaters" file from MoneyPuck as of 2020-04-11 
+
+moneypuck <- read_csv("MoneyPuck.csv")
+
+# Created a new variable to calculate average shift length
+# Filters: forwards only, 5on4, at least 100 shifts 
+# Can easily include justification for why you did all this
+# Because you WILL forget
+
+shift_length <- moneypuck %>%
+  mutate(shift_length = icetime / shifts) %>%
+  filter(position != "D" & situation == "5on4" & shifts >= 100) %>%
+  arrange(desc(shift_length)) %>%
+  select(name, shift_length)
+ 
+```
+
+---
+
+# ...what if...
+
+`r icon::fa("check-circle", size = 2)` &nbsp;someone asks you exactly what you did? &nbsp;`r emo::ji("smile")`
+
+<br>
+
+`r icon::fa("check-circle", size = 2)` &nbsp;you get refreshed data? &nbsp;`r emo::ji("smile")`
+
+<br>
+
+--
+
+`r icon::fa("check-circle", size = 2)` &nbsp;you make a mistake, or there's something you want to make note of? &nbsp;`r emo::ji("smile")`
+
+<br>
+
+---
+
+class: middle
+
+```{r eval=FALSE, include=TRUE}
+# You can create functions for common tasks
+# Let's say you hate the Leafs and always want to 
+# remove them for your data
+# That would be a pain to do every time by hand, so:
+
+no_leafs_no <- function(original_data, team_variable) {
+  
+  original_data %>%
+    filter(team_variable != "TOR")
+  
+}
+
+moneypuck_no_leafs <- no_leafs_no(moneypuck, moneypuck$team)
+
+# Or more realistically, you always want to remove a certain game
+# Or you have tasks that you do frequently
+# If you're copying and pasting code, it's time for a function
+ 
+```
+
+---
+
+class: middle
+
+```{r eval=TRUE, include=TRUE}
+# You can also run tests to check for mistakes
+# Should have 31 teams and 883 players
+
+moneypuck %>%
+  summarize(teams = n_distinct(team))
+
+moneypuck %>%
+  summarize(players = n_distinct(name))
+ 
+```
+
+---
+
+# ...what if...
+
+`r icon::fa("check-circle", size = 2)` &nbsp;someone asks you exactly what you did? &nbsp;`r emo::ji("smile")`
+
+<br>
+
+`r icon::fa("check-circle", size = 2)` &nbsp;you get refreshed data? &nbsp;`r emo::ji("smile")`
+
+<br>
+
+`r icon::fa("check-circle", size = 2)` &nbsp;you make a mistake, or there's something you want to make note of? &nbsp;`r emo::ji("smile")`
+
+<br>
+
+`r icon::fa("check-circle", size = 2)` &nbsp;there's more data you want to join in? &nbsp;`r emo::ji("smile")`
+
+<br>
+
+---
+
+class: middle
+
+```{r eval=FALSE, include=TRUE}
+# Read in your tracking data that has your proprietary statistic:
+# Gutsy Recoveries In Transition
+
+GRIT <- read_csv("your_tracking_data.csv")
+
+# Join that into the moneypuck data by both player and season
+
+moneypuck_w_tracking <- moneypuck %>%
+  left_join(GRIT, by = c("name", "season", "team"))
+ 
+```
+
+---
+
+# ...what if...
+
+`r icon::fa("check-circle", size = 2)` &nbsp;someone asks you exactly what you did? &nbsp;`r emo::ji("smile")`
+
+<br>
+
+`r icon::fa("check-circle", size = 2)` &nbsp;you get refreshed data? &nbsp;`r emo::ji("smile")`
+
+<br>
+
+`r icon::fa("check-circle", size = 2)` &nbsp;you make a mistake, or there's something you want to make note of? &nbsp;`r emo::ji("smile")`
+
+<br>
+
+`r icon::fa("check-circle", size = 2)` &nbsp;there's more data you want to join in? &nbsp;`r emo::ji("smile")`
+
+<br>
+
+`r icon::fa("check-circle", size = 2)` &nbsp;you have to make a graph? &nbsp;`r emo::ji("smile")`
+
+---
+
+# Longest average shifts?
+
+```{r avg_shifts, fig.show = 'hide'}
+
+shift_length %>%
+  top_n(10) %>%
+  ggplot(aes(y = shift_length, x = reorder(name, shift_length))) +
+  geom_col() +
+  coord_flip() +
+  labs(
+    y = "Average Shift Length",
+    x = NULL,
+    title = "Average Shift Length Among Forwards",
+    subtitle = "2019-20 NHL Season, 5v4 Only",
+    caption = "Data from Moneypuck"
+  ) +
+  geom_text(aes(label = round(shift_length, 1)), colour = "white", 
+            size = 3, position = position_stack(vjust = 0.07)) +
+  meg_theme()
+```
+
+---
+
+# Longest average shifts?
+
+.center[
+
+```{r ref.label = 'avg_shifts', echo = FALSE}
+```
+
+]
+
+---
+
+# Most shifts per game?
+
+```{r most_shifts, fig.show = 'hide'}
+
+shifts_game %>%
+  ggplot(aes(y = avg_shifts_game, x = position_grouped)) +
+  geom_col() +
+  labs(
+    y = "Average Shifts per Game",
+    x = NULL,
+    title = "Average Shifts per Game By Position",
+    subtitle = "2019-20 NHL Season, 5v5 Only",
+    caption = "Data from Moneypuck"
+  ) +
+  geom_text(aes(label = round(avg_shifts_game, 1)),
+            size = 4, position = position_stack(vjust = 1.05)) +
+  meg_theme()
+```
+
+---
+
+# Most shifts per game?
+
+.center[
+
+```{r ref.label = 'most_shifts', echo = FALSE}
+```
+
+]
+
+---
+
+# Other things you can do with R
+
+--
+
+## Github `r icon::fa("github")`
+
+- Integrates easily so you can collaborate, save, share. Version control!
+
+--
+
+## RMarkdown
+
+- Useful for creating and sharing all kinds of content
+
+--
+
+- Like slides &nbsp;`r emo::ji("halo")`
+
+---
+
+```{r}
+shift_length %>%
+  top_n(10) %>%
+  mutate(shift_length = round(shift_length, 2)) %>%
+  knitr::kable(format = "html")
+```
+
+---
+
+# Other things you can do with R
+
+## Github `r icon::fa("github")`
+
+- Integrates easily within RStudio so you can collaborate, save, share
+
+## RMarkdown
+
+- Useful for creating and sharing all kinds of content
+
+- Like slides &nbsp;`r emo::ji("halo")`
+
+## Make a website
+
+--
+
+- Using `Shiny` (like Evolving-Hockey!)
+
+--
+
+- Using `blogdown` (like my website!)
+
+---
+
+class: center, middle, inverse
+
+# Okay but how?
+
+---
+
+# Moving past Excel conceptually
+
+--
+
+### It is comforting to *see* all of your data
+
+--
+
+- but that's not really necessary!
+
+- much more efficient to look at the pieces you need
+
+--
+
+### Excel quickly becomes unwieldy with too much data
+
+- if you're working with NHL play-by-play data? 1M+ rows
+
+--
+
+### Easier to keep track of data frames in an R file
+
+- rather than a lot of workbooks and sheets
+
+--
+
+### Separate your data from your analysis!
+
+---
+
+# Treat it like learning a new language
+
+--
+
+.pull-left[
+
+### Excel
+
+Create a new variable that creates **position_grouped**
+
+]
+
+.pull-right[
+
+### R
+
+```{r include=TRUE, eval=FALSE}
+mutate(position_grouped = 
+         ifelse(position == "D",
+                "D", "F"))
+```
+
+]
+
+---
+
+# Treat it like learning a new language
+
+
+.pull-left[
+
+### Excel
+
+Sort descending by `shifts_game`
+
+]
+
+.pull-right[
+
+### R
+
+```{r include=TRUE, eval=FALSE}
+arrange(desc(shifts_game))
+```
+]
+
+---
+
+# Treat it like learning a new language
+
+.pull-left[
+
+### Excel
+
+Make a pivot table by position and find average shifts
+
+]
+
+.pull-right[
+
+### R
+
+```{r include=TRUE, eval=FALSE}
+data %>%
+  group_by(position_grouped) %>%
+  summarize(avg_shifts_game = 
+              mean(shifts_game))
+```
+]
+
+---
+
+# Treat it like learning a new language
+
+.pull-left[
+
+### Excel
+
+Filter to forwards only
+
+]
+
+.pull-right[
+
+### R
+
+```{r include=TRUE, eval=FALSE}
+filter(position != "D")
+```
+]
+
+---
+
+# Tips for learning
+
+`r icon::fa("clipboard-list", size = 2)` &nbsp;&nbsp;&nbsp;Practice a little bit frequently!
+
+<br>
+
+--
+
+`r icon::fa("clipboard-list", size = 2)` &nbsp;&nbsp;&nbsp;Pick **one** resource and go all the way through
+
+<br>
+
+--
+
+`r icon::fa("clipboard-list", size = 2)` &nbsp;&nbsp;&nbsp;Get really good at Googling
+
+<br>
+
+--
+
+`r icon::fa("clipboard-list", size = 2)` &nbsp;&nbsp;&nbsp;Use a project or a question as motivation
+
+---
+
+# My favorite resources
+
+--
+
+### R for Data Science &nbsp; [`r icon::fa("link")`](https://r4ds.had.co.nz/)
+
+- Focuses on the tidyverse
+- Can skip from chapter to chapter to focus on what you need
+- Really helpful examples you can follow along with
+
+--
+
+### R for Excel Users workshop &nbsp; [`r icon::fa("link")`](https://rstudio-conf-2020.github.io/r-for-excel/)
+
+--
+
+### My tutorials — gotta plug my own stuff &nbsp;`r emo::ji("shrug")`
+
+- [Intro to R on Hockey-Graphs](https://hockey-graphs.com/2019/12/11/an-introduction-to-r-with-hockey-data/) (with lots of exercises)
+- [Intro to R with Swirl](https://meghan.rbind.io/post/hockey-data-with-swirl/) (interactive learning in the console)
+- Various ad hoc tutorials (exploratory data analysis, tidymodels, etc.)
+
+---
+
+class: center, middle
+
+# Where to find me
+
+`r icon::fa("twitter", size = 2)` &nbsp;[MeghanMHall](https://twitter.com/MeghanMHall)
+
+`r icon::fa("github", size = 2)` &nbsp;[meghall06](https://github.com/meghall06)
+
+`r icon::fa("link", size = 2)` &nbsp;[meghan.rbind.io](https://meghan.rbind.io)
+
+---
+
+class: inverse, center, middle
+
+# Go forth and code &nbsp;`r emo::ji("pray")`
+
+<br>
+<br>
+<br>
+
+Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan).
+
+
