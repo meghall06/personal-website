@@ -1,5 +1,5 @@
 ---
-abstract: Why and how to get started with coding! This presentation was part of Meghan Chayka and Alison Lukan's HANIC (Hockey Analytics Night in Canada) and focused on how to move on from Excel in order to make your analysis more reproducible, efficient, and shareable. The slides are available at the link above and also [here](https://meghan.rbind.io/slides/hall_hanic_2020.html#1). If/when recorded video is available, I will post the link here, as well.
+abstract: Why and how to get started with coding! This presentation was part of Meghan Chayka and Alison Lukan's HANIC (Hockey Analytics Night in Canada) and focused on how to move on from Excel in order to make your analysis more reproducible, efficient, and shareable. The slides are available at the link above and also [here](https://meghan.rbind.io/slides/hall_hanic_2020.html#1). Recorded video of the talk is available [here](https://www.youtube.com/watch?v=-Zl_b5Emvb0&feature=youtu.be).
 
 address:
   city: 
