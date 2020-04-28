@@ -5,9 +5,9 @@
     <link>/tags/r-markdown/</link>
       <atom:link href="/tags/r-markdown/index.xml" rel="self" type="application/rss+xml" />
     <description>R Markdown</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Thu, 23 Jul 2015 21:13:14 -0500</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2020</copyright><lastBuildDate>Thu, 23 Jul 2015 21:13:14 -0500</lastBuildDate>
     <image>
-      <url>img/icon-192.png</url>
+      <url>/img/icon-192.png</url>
       <title>R Markdown</title>
       <link>/tags/r-markdown/</link>
     </image>

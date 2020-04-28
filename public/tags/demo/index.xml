@@ -5,9 +5,9 @@
     <link>/tags/demo/</link>
       <atom:link href="/tags/demo/index.xml" rel="self" type="application/rss+xml" />
     <description>Demo</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Wed, 27 Apr 2016 00:00:00 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2020</copyright><lastBuildDate>Wed, 27 Apr 2016 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>img/icon-192.png</url>
+      <url>/img/icon-192.png</url>
       <title>Demo</title>
       <link>/tags/demo/</link>
     </image>

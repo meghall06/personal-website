@@ -12,7 +12,7 @@ authors: []
 date: "2020-04-18"
 date_end: ""
 event: Hockey Analytics Night in Canada #HANIC
-event_url: 
+event_url: https://hanic-analytics.com
 featured: false
 #image:
 #  caption: ''
@@ -26,6 +26,10 @@ links:
   icon_pack: fas
   name: Slides
   url: https://meghan.rbind.io/slides/hall_hanic_2020.html#1
+- icon: youtube
+  icon_pack: fab
+  name: Video
+  url: https://www.youtube.com/watch?v=-Zl_b5Emvb0&feature=youtu.be
 location: Hockey Analytics Night in Canada #HANIC
 math: true
 projects:

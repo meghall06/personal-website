@@ -5,30 +5,12 @@
     <link>/authors/</link>
       <atom:link href="/authors/index.xml" rel="self" type="application/rss+xml" />
     <description>Authors</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sun, 07 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2020</copyright><lastBuildDate>Sun, 07 Apr 2019 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>img/icon-192.png</url>
+      <url>/img/icon-192.png</url>
       <title>Authors</title>
       <link>/authors/</link>
     </image>
-    
-    <item>
-      <title></title>
-      <link>/authors/admin/</link>
-      <pubDate>Sun, 07 Apr 2019 00:00:00 +0000</pubDate>
-      <guid>/authors/admin/</guid>
-      <description>&lt;p&gt;Meghan Hall is a higher education data professional by day and an amateur hockey analyst by night. She contributes to Hockey-Graphs and has written for Nightingale, the publication of the Data Visualization Society. She is also an enthusiastic user of both R and Tableau and loves helping other people learn these tools to make their work easier.&lt;/p&gt;
-&lt;p&gt;She presented at the Seattle Hockey Analytics Conference in March 2019 on league-wide trends in goalie pulling and has presented on features of the penalty kill three times, at the Rochester Institute of Technology Sports Analytics Conference in August 2019, the Ottawa Hockey Analytics Conference in November 2019, and the Columbus Blue Jackets Hockey Analytics Conference (with Alison Lukan) in February 2020.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Robert Ford</title>
-      <link>/authors/robert-ford/</link>
-      <pubDate>Tue, 01 Sep 2015 00:00:00 +0000</pubDate>
-      <guid>/authors/robert-ford/</guid>
-      <description></description>
-    </item>
     
   </channel>
 </rss>

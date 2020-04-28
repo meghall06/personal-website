@@ -118,8 +118,8 @@
   <meta property="og:site_name" content="Meghan Hall">
   <meta property="og:url" content="/post/tidymodels-intro/">
   <meta property="og:title" content="Exploring tidymodels With Hockey Data | Meghan Hall">
-  <meta property="og:description" content="Before we start, an important disclaimer: this is not a tutorial on how to thoughtfully build and thoroughly evaluate models. This is a gentle introduction to the tidymodels package (which, like the tidyverse, is actually a collection of packages), and in order to examine various functions and capabilities of those packages, we&#39;ll build two very simple models, using easily available NHL data, and go over a few ways to evaluate them."><meta property="og:image" content="img/icon-192.png">
-  <meta property="twitter:image" content="img/icon-192.png"><meta property="og:locale" content="en-us">
+  <meta property="og:description" content="Before we start, an important disclaimer: this is not a tutorial on how to thoughtfully build and thoroughly evaluate models. This is a gentle introduction to the tidymodels package (which, like the tidyverse, is actually a collection of packages), and in order to examine various functions and capabilities of those packages, we&#39;ll build two very simple models, using easily available NHL data, and go over a few ways to evaluate them."><meta property="og:image" content="/img/icon-192.png">
+  <meta property="twitter:image" content="/img/icon-192.png"><meta property="og:locale" content="en-us">
   
     
       <meta property="article:published_time" content="2020-03-09T00:00:00&#43;00:00">
@@ -167,7 +167,7 @@
     "name": "Meghan Hall",
     "logo": {
       "@type": "ImageObject",
-      "url": "img/icon-512.png"
+      "url": "/img/icon-512.png"
     }
   },
   "description": "Before we start, an important disclaimer: this is not a tutorial on how to thoughtfully build and thoroughly evaluate models. This is a gentle introduction to the tidymodels package (which, like the tidyverse, is actually a collection of packages), and in order to examine various functions and capabilities of those packages, we'll build two very simple models, using easily available NHL data, and go over a few ways to evaluate them."
@@ -464,8 +464,8 @@
 
 <span style="color:#75715e"># Read in files (pbp from Evolving Hockey, bios from Natural Stat Trick)</span>
 
-pbp <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">read_csv</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">pbp_20182019_all.csv&#34;</span>)
-bios <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">read_csv</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">bios_1819.csv&#34;</span>)
+pbp <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">read_csv</span>(<span style="color:#e6db74">&#34;pbp_20182019_all.csv&#34;</span>)
+bios <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">read_csv</span>(<span style="color:#e6db74">&#34;bios_1819.csv&#34;</span>)
 
 <span style="color:#75715e"># Find player TOI and games played</span>
 <span style="color:#75715e"># To do so, you must pivot the data so there is one row per player</span>
@@ -477,12 +477,12 @@ bios <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">read_c
 player_TOI <span style="color:#f92672">&lt;-</span> pbp <span style="color:#f92672">%&gt;%</span>
   <span style="color:#a6e22e">filter</span>(event_length <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>) <span style="color:#f92672">%&gt;%</span>
   <span style="color:#a6e22e">select</span>(game_id, event_length, home_on_1<span style="color:#f92672">:</span>away_goalie) <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">pivot_longer</span>(home_on_1<span style="color:#f92672">:</span>away_on_6, names_to <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">variable&#34;</span>, values_to <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">player&#34;</span>) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">pivot_longer</span>(home_on_1<span style="color:#f92672">:</span>away_on_6, names_to <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;variable&#34;</span>, values_to <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;player&#34;</span>) <span style="color:#f92672">%&gt;%</span>
   <span style="color:#a6e22e">filter</span>(<span style="color:#f92672">!</span>(<span style="color:#a6e22e">is.na</span>(player)) <span style="color:#f92672">&amp;</span> player <span style="color:#f92672">!=</span> home_goalie <span style="color:#f92672">&amp;</span> player <span style="color:#f92672">!=</span> away_goalie) <span style="color:#f92672">%&gt;%</span>
   <span style="color:#a6e22e">mutate</span>(player <span style="color:#f92672">=</span> <span style="color:#a6e22e">case_when</span>(
-    player <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">COLIN.WHITE2&#34;</span> <span style="color:#f92672">~</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">COLIN.WHITE&#34;</span>,
-    player <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">ERIK.GUSTAFSSON2&#34;</span> <span style="color:#f92672">~</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">ERIK.GUSTAFSSON&#34;</span>,
-    player <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">PATRICK.MAROON&#34;</span> <span style="color:#f92672">~</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">PAT.MAROON&#34;</span>,
+    player <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;COLIN.WHITE2&#34;</span> <span style="color:#f92672">~</span> <span style="color:#e6db74">&#34;COLIN.WHITE&#34;</span>,
+    player <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;ERIK.GUSTAFSSON2&#34;</span> <span style="color:#f92672">~</span> <span style="color:#e6db74">&#34;ERIK.GUSTAFSSON&#34;</span>,
+    player <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;PATRICK.MAROON&#34;</span> <span style="color:#f92672">~</span> <span style="color:#e6db74">&#34;PAT.MAROON&#34;</span>,
     <span style="color:#66d9ef">TRUE</span> <span style="color:#f92672">~</span> player
   )) <span style="color:#f92672">%&gt;%</span>
   <span style="color:#a6e22e">group_by</span>(player) <span style="color:#f92672">%&gt;%</span>
@@ -499,20 +499,20 @@ player_TOI <span style="color:#f92672">&lt;-</span> pbp <span style="color:#f926
 <span style="color:#75715e"># hits (both give nand received)</span>
 
 player_stats <span style="color:#f92672">&lt;-</span> pbp <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">filter</span>(event_type <span style="color:#f92672">%in%</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">HIT&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">BLOCK&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">SHOT&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">MISS&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">GOAL&#34;</span>) <span style="color:#f92672">&amp;</span> game_period <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">5</span>) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">filter</span>(event_type <span style="color:#f92672">%in%</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;HIT&#34;</span>, <span style="color:#e6db74">&#34;BLOCK&#34;</span>, <span style="color:#e6db74">&#34;SHOT&#34;</span>, <span style="color:#e6db74">&#34;MISS&#34;</span>, <span style="color:#e6db74">&#34;GOAL&#34;</span>) <span style="color:#f92672">&amp;</span> game_period <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">5</span>) <span style="color:#f92672">%&gt;%</span>
   <span style="color:#a6e22e">select</span>(game_id, event_type, event_player_1<span style="color:#f92672">:</span>event_player_3) <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">pivot_longer</span>(event_player_1<span style="color:#f92672">:</span>event_player_3, names_to <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">number&#34;</span>, values_to <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">player&#34;</span>) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">pivot_longer</span>(event_player_1<span style="color:#f92672">:</span>event_player_3, names_to <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;number&#34;</span>, values_to <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;player&#34;</span>) <span style="color:#f92672">%&gt;%</span>
   <span style="color:#a6e22e">filter</span>(<span style="color:#f92672">!</span>(<span style="color:#a6e22e">is.na</span>(player))) <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">mutate</span>(block <span style="color:#f92672">=</span> <span style="color:#a6e22e">ifelse</span>(event_type <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">BLOCK&#34;</span> <span style="color:#f92672">&amp;</span> number <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">event_player_2&#34;</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>),
-         point <span style="color:#f92672">=</span> <span style="color:#a6e22e">ifelse</span>(event_type <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">GOAL&#34;</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>),
-         shot <span style="color:#f92672">=</span> <span style="color:#a6e22e">ifelse</span>(number <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">event_player_1&#34;</span> <span style="color:#f92672">&amp;</span> event_type <span style="color:#f92672">%in%</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">SHOT&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">GOAL&#34;</span>), <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>),
-         fenwick <span style="color:#f92672">=</span> <span style="color:#a6e22e">ifelse</span>(number <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">event_player_1&#34;</span> <span style="color:#f92672">&amp;</span> event_type <span style="color:#f92672">%in%</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">SHOT&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">GOAL&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">MISS&#34;</span>), <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>),
-         hit <span style="color:#f92672">=</span> <span style="color:#a6e22e">ifelse</span>(number <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">event_player_1&#34;</span> <span style="color:#f92672">&amp;</span> event_type <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">HIT&#34;</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>),
-         hit_rec <span style="color:#f92672">=</span> <span style="color:#a6e22e">ifelse</span>(number <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">event_player_2&#34;</span> <span style="color:#f92672">&amp;</span> event_type <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">HIT&#34;</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>),
+  <span style="color:#a6e22e">mutate</span>(block <span style="color:#f92672">=</span> <span style="color:#a6e22e">ifelse</span>(event_type <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;BLOCK&#34;</span> <span style="color:#f92672">&amp;</span> number <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;event_player_2&#34;</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>),
+         point <span style="color:#f92672">=</span> <span style="color:#a6e22e">ifelse</span>(event_type <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;GOAL&#34;</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>),
+         shot <span style="color:#f92672">=</span> <span style="color:#a6e22e">ifelse</span>(number <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;event_player_1&#34;</span> <span style="color:#f92672">&amp;</span> event_type <span style="color:#f92672">%in%</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;SHOT&#34;</span>, <span style="color:#e6db74">&#34;GOAL&#34;</span>), <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>),
+         fenwick <span style="color:#f92672">=</span> <span style="color:#a6e22e">ifelse</span>(number <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;event_player_1&#34;</span> <span style="color:#f92672">&amp;</span> event_type <span style="color:#f92672">%in%</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;SHOT&#34;</span>, <span style="color:#e6db74">&#34;GOAL&#34;</span>, <span style="color:#e6db74">&#34;MISS&#34;</span>), <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>),
+         hit <span style="color:#f92672">=</span> <span style="color:#a6e22e">ifelse</span>(number <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;event_player_1&#34;</span> <span style="color:#f92672">&amp;</span> event_type <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;HIT&#34;</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>),
+         hit_rec <span style="color:#f92672">=</span> <span style="color:#a6e22e">ifelse</span>(number <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;event_player_2&#34;</span> <span style="color:#f92672">&amp;</span> event_type <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;HIT&#34;</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>),
          player <span style="color:#f92672">=</span> <span style="color:#a6e22e">case_when</span>(
-           player <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">COLIN.WHITE2&#34;</span> <span style="color:#f92672">~</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">COLIN.WHITE&#34;</span>,
-           player <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">ERIK.GUSTAFSSON2&#34;</span> <span style="color:#f92672">~</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">ERIK.GUSTAFSSON&#34;</span>,
-           player <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">PATRICK.MAROON&#34;</span> <span style="color:#f92672">~</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">PAT.MAROON&#34;</span>,
+           player <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;COLIN.WHITE2&#34;</span> <span style="color:#f92672">~</span> <span style="color:#e6db74">&#34;COLIN.WHITE&#34;</span>,
+           player <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;ERIK.GUSTAFSSON2&#34;</span> <span style="color:#f92672">~</span> <span style="color:#e6db74">&#34;ERIK.GUSTAFSSON&#34;</span>,
+           player <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;PATRICK.MAROON&#34;</span> <span style="color:#f92672">~</span> <span style="color:#e6db74">&#34;PAT.MAROON&#34;</span>,
            <span style="color:#66d9ef">TRUE</span> <span style="color:#f92672">~</span> player
          )) <span style="color:#f92672">%&gt;%</span>
   <span style="color:#a6e22e">group_by</span>(player) <span style="color:#f92672">%&gt;%</span>
@@ -526,7 +526,7 @@ player_stats <span style="color:#f92672">&lt;-</span> pbp <span style="color:#f9
 <span style="color:#75715e"># Join stats into TOI data frame and create rates</span>
 
 player_TOI_stats <span style="color:#f92672">&lt;-</span> player_TOI <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">left_join</span>(player_stats, by <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">player&#34;</span>) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">left_join</span>(player_stats, by <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;player&#34;</span>) <span style="color:#f92672">%&gt;%</span>
   <span style="color:#a6e22e">mutate</span>(points_60 <span style="color:#f92672">=</span> points <span style="color:#f92672">*</span> <span style="color:#ae81ff">60</span> <span style="color:#f92672">/</span> TOI,
          shots_60 <span style="color:#f92672">=</span> shots <span style="color:#f92672">*</span> <span style="color:#ae81ff">60</span> <span style="color:#f92672">/</span> TOI,
          fenwick_60 <span style="color:#f92672">=</span> fenwick <span style="color:#f92672">*</span> <span style="color:#ae81ff">60</span> <span style="color:#f92672">/</span> TOI,
@@ -540,19 +540,19 @@ player_TOI_stats <span style="color:#f92672">&lt;-</span> player_TOI <span style
 
 bios <span style="color:#f92672">&lt;-</span> bios <span style="color:#f92672">%&gt;%</span>
   <span style="color:#a6e22e">mutate</span>(player <span style="color:#f92672">=</span> <span style="color:#a6e22e">str_to_upper</span>(Player),
-         player <span style="color:#f92672">=</span> <span style="color:#a6e22e">str_replace</span>(player, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74"> &#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">.&#34;</span>),
-         defense <span style="color:#f92672">=</span> <span style="color:#a6e22e">ifelse</span>(Position <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">D&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">D&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">F&#34;</span>)) <span style="color:#f92672">%&gt;%</span>
+         player <span style="color:#f92672">=</span> <span style="color:#a6e22e">str_replace</span>(player, <span style="color:#e6db74">&#34; &#34;</span>, <span style="color:#e6db74">&#34;.&#34;</span>),
+         defense <span style="color:#f92672">=</span> <span style="color:#a6e22e">ifelse</span>(Position <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;D&#34;</span>, <span style="color:#e6db74">&#34;D&#34;</span>, <span style="color:#e6db74">&#34;F&#34;</span>)) <span style="color:#f92672">%&gt;%</span>
   <span style="color:#a6e22e">rename</span>(height <span style="color:#f92672">=</span> <span style="color:#a6e22e">`Height </span>(in)`,
          weight = `<span style="color:#a6e22e">Weight </span>(lbs)`) <span style="color:#f92672">%&gt;%</span>
   <span style="color:#a6e22e">select</span>(player, defense, height, weight) <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">mutate</span>(player <span style="color:#f92672">=</span> <span style="color:#a6e22e">str_replace_all</span>(player, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">ALEXANDER&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">ALEX&#34;</span>),
-         player <span style="color:#f92672">=</span> <span style="color:#a6e22e">str_replace_all</span>(player, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">ALEXANDRE&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">ALEX&#34;</span>),
+  <span style="color:#a6e22e">mutate</span>(player <span style="color:#f92672">=</span> <span style="color:#a6e22e">str_replace_all</span>(player, <span style="color:#e6db74">&#34;ALEXANDER&#34;</span>, <span style="color:#e6db74">&#34;ALEX&#34;</span>),
+         player <span style="color:#f92672">=</span> <span style="color:#a6e22e">str_replace_all</span>(player, <span style="color:#e6db74">&#34;ALEXANDRE&#34;</span>, <span style="color:#e6db74">&#34;ALEX&#34;</span>),
          player <span style="color:#f92672">=</span> <span style="color:#a6e22e">case_when</span>(
-           player <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">CHRISTOPHER.TANEV&#34;</span> <span style="color:#f92672">~</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">CHRIS.TANEV&#34;</span>,
-           player <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">DANNY.O&#39;REGAN&#34;</span> <span style="color:#f92672">~</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">DANIEL.O&#39;REGAN&#34;</span>,
-           player <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">EVGENII.DADONOV&#34;</span> <span style="color:#f92672">~</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">EVGENY.DADONOV&#34;</span>,
-           player <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">MATTHEW.BENNING&#34;</span> <span style="color:#f92672">~</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">MATT.BENNING&#34;</span>,
-           player <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">MITCHELL.MARNER&#34;</span> <span style="color:#f92672">~</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">MITCH.MARNER&#34;</span>,
+           player <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;CHRISTOPHER.TANEV&#34;</span> <span style="color:#f92672">~</span> <span style="color:#e6db74">&#34;CHRIS.TANEV&#34;</span>,
+           player <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;DANNY.O&#39;REGAN&#34;</span> <span style="color:#f92672">~</span> <span style="color:#e6db74">&#34;DANIEL.O&#39;REGAN&#34;</span>,
+           player <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;EVGENII.DADONOV&#34;</span> <span style="color:#f92672">~</span> <span style="color:#e6db74">&#34;EVGENY.DADONOV&#34;</span>,
+           player <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;MATTHEW.BENNING&#34;</span> <span style="color:#f92672">~</span> <span style="color:#e6db74">&#34;MATT.BENNING&#34;</span>,
+           player <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;MITCHELL.MARNER&#34;</span> <span style="color:#f92672">~</span> <span style="color:#e6db74">&#34;MITCH.MARNER&#34;</span>,
            <span style="color:#66d9ef">TRUE</span> <span style="color:#f92672">~</span> player
          ))
 
@@ -560,7 +560,7 @@ bios <span style="color:#f92672">&lt;-</span> bios <span style="color:#f92672">%
 <span style="color:#75715e"># Filter to only keep players who played at least 20 games</span>
 
 final_data <span style="color:#f92672">&lt;-</span> player_TOI_stats <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">left_join</span>(bios, by <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">player&#34;</span>) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">left_join</span>(bios, by <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;player&#34;</span>) <span style="color:#f92672">%&gt;%</span>
   <span style="color:#a6e22e">filter</span>(games <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">19</span>)</code></pre></div>
 <p>These stats are the ones that we're going to use in our model to predict whether a given player is a forward or a defenseman. Let's create at a few graphs, just to see how some of these data look.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#75715e"># The code for these four graphs is nearly the same, just change the x</span>
@@ -569,14 +569,14 @@ final_data <span style="color:#f92672">&lt;-</span> player_TOI_stats <span style
 final_data <span style="color:#f92672">%&gt;%</span>
   <span style="color:#a6e22e">ggplot</span>(<span style="color:#a6e22e">aes</span>(x <span style="color:#f92672">=</span> weight, fill <span style="color:#f92672">=</span> defense)) <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">geom_density</span>(alpha <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.7</span>, color <span style="color:#f92672">=</span> <span style="color:#66d9ef">NA</span>) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">scale_fill_manual</span>(values <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">#0d324d&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">#a188a6&#34;</span>)) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">scale_fill_manual</span>(values <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;#0d324d&#34;</span>, <span style="color:#e6db74">&#34;#a188a6&#34;</span>)) <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">labs</span>(
-    y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Density&#34;</span>,
-    x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Weight (lbs)&#34;</span>,
+    y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Density&#34;</span>,
+    x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Weight (lbs)&#34;</span>,
     fill <span style="color:#f92672">=</span> <span style="color:#66d9ef">NULL</span>,
-    title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Weight by Position&#34;</span>,
-    subtitle <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">2018-19 NHL Season, 20+ Games Played Only&#34;</span>,
-    caption <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Source: Natural Stat Trick&#34;</span>
+    title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Weight by Position&#34;</span>,
+    subtitle <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;2018-19 NHL Season, 20+ Games Played Only&#34;</span>,
+    caption <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Source: Natural Stat Trick&#34;</span>
   ) <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">meg_theme</span>() <span style="color:#f92672">+</span> 
   <span style="color:#a6e22e">theme</span>(legend.position <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">0.9</span>, <span style="color:#ae81ff">0.9</span>))</code></pre></div>
@@ -774,8 +774,8 @@ testing_baked_TOI <span style="color:#f92672">&lt;-</span> recipe_TOI_only <span
 <span style="color:#75715e"># Run the model with our training data</span>
 
 logistic_glm_TOI <span style="color:#f92672">&lt;-</span>
-  <span style="color:#a6e22e">logistic_reg</span>(mode <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">classification&#34;</span>) <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">set_engine</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">glm&#34;</span>) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">logistic_reg</span>(mode <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;classification&#34;</span>) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">set_engine</span>(<span style="color:#e6db74">&#34;glm&#34;</span>) <span style="color:#f92672">%&gt;%</span>
   <span style="color:#a6e22e">fit</span>(defense <span style="color:#f92672">~</span> ., data <span style="color:#f92672">=</span> training_baked_TOI)</code></pre></div>
 <p>Now that we have our recipe, we can apply it to our training and testing data. Since the training data was the base of the recipe, we can use the <code>juice()</code> function to extract it. And the <code>bake()</code> function will prep the test data. Then, we can actually run the model with functions from the <code>parsnip</code> package. The package handles many different kind of models, but here we're running a simple logistic regression and training it on our baked data.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#75715e"># Find the class predictions from our testing data</span>
@@ -789,7 +789,7 @@ predictions_class_TOI <span style="color:#f92672">&lt;-</span> logistic_glm_TOI 
 <span style="color:#75715e"># And add all together</span>
 
 predictions_TOI <span style="color:#f92672">&lt;-</span> logistic_glm_TOI <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">predict</span>(testing_baked_TOI, type <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">prob&#34;</span>) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">predict</span>(testing_baked_TOI, type <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;prob&#34;</span>) <span style="color:#f92672">%&gt;%</span>
   <span style="color:#a6e22e">bind_cols</span>(predictions_class_TOI)</code></pre></div>
 <p>Now that the model has been trained, we can apply it to the testing data. The data frame we just created, <code>predictions_TOI</code>, looks like this. For each observation in our test data set, we have the predicted position and the probability that drove that prediction. We also brought in the <code>defense</code> variable from the test data set.</p>
 
@@ -825,7 +825,7 @@ most_wrong_TOI <span style="color:#f92672">&lt;-</span> predictions_TOI <span st
   <span style="color:#a6e22e">bind_cols</span>(<span style="color:#a6e22e">select</span>(testing_data, player, TOI_game)) <span style="color:#f92672">%&gt;%</span>
   <span style="color:#a6e22e">mutate</span>(incorrect <span style="color:#f92672">=</span> .pred_class <span style="color:#f92672">!=</span> defense) <span style="color:#f92672">%&gt;%</span>
   <span style="color:#a6e22e">filter</span>(incorrect <span style="color:#f92672">==</span> <span style="color:#66d9ef">TRUE</span>) <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">mutate</span>(prob_actual <span style="color:#f92672">=</span> <span style="color:#a6e22e">ifelse</span>(defense <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">D&#34;</span>, .pred_D, .pred_F)) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">mutate</span>(prob_actual <span style="color:#f92672">=</span> <span style="color:#a6e22e">ifelse</span>(defense <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;D&#34;</span>, .pred_D, .pred_F)) <span style="color:#f92672">%&gt;%</span>
   <span style="color:#a6e22e">arrange</span>(prob_actual)</code></pre></div>
 
 
@@ -871,8 +871,8 @@ testing_baked_KS <span style="color:#f92672">&lt;-</span> recipe_kitchen_sink <s
 <span style="color:#75715e"># Run the model with our training data</span>
 
 logistic_glm_KS <span style="color:#f92672">&lt;-</span>
-  <span style="color:#a6e22e">logistic_reg</span>(mode <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">classification&#34;</span>) <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">set_engine</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">glm&#34;</span>) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">logistic_reg</span>(mode <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;classification&#34;</span>) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">set_engine</span>(<span style="color:#e6db74">&#34;glm&#34;</span>) <span style="color:#f92672">%&gt;%</span>
   <span style="color:#a6e22e">fit</span>(defense <span style="color:#f92672">~</span> ., data <span style="color:#f92672">=</span> training_baked_KS)
 
 <span style="color:#75715e"># Find the class predictions from our testing data</span>
@@ -886,7 +886,7 @@ predictions_class_KS <span style="color:#f92672">&lt;-</span> logistic_glm_KS <s
 <span style="color:#75715e"># And add all together</span>
 
 predictions_KS <span style="color:#f92672">&lt;-</span> logistic_glm_KS <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">predict</span>(testing_baked_KS, type <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">prob&#34;</span>) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">predict</span>(testing_baked_KS, type <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;prob&#34;</span>) <span style="color:#f92672">%&gt;%</span>
   <span style="color:#a6e22e">bind_cols</span>(predictions_class_KS)</code></pre></div>
 <p>The code above looks very similar to the code from before, except we added an extra step in our recipe. The <code>step_corr()</code> function will study all the correlations among variables you specify and remove offenders, as it often isn't a good idea to have variables in your model that are highly correlated with each other. The default threshold for exclusion is 0.9, but you can specify whatever value you want. As you can see in the recipe below, our recipe automatically removed the <code>shots_60</code> variable, which is (obviously) very highly correlated to the unblocked shot attempt variable, <code>fenwick_60</code>.</p>
 
@@ -927,15 +927,15 @@ predictions_TOI <span style="color:#f92672">%&gt;%</span>
   <span style="color:#a6e22e">as_tibble</span>() <span style="color:#f92672">%&gt;%</span>
   <span style="color:#a6e22e">ggplot</span>(<span style="color:#a6e22e">aes</span>(Prediction, Truth, alpha <span style="color:#f92672">=</span> n)) <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">geom_tile</span>(show.legend <span style="color:#f92672">=</span> <span style="color:#66d9ef">FALSE</span>) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">geom_text</span>(<span style="color:#a6e22e">aes</span>(label <span style="color:#f92672">=</span> n), colour <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">white&#34;</span>, alpha <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>, size <span style="color:#f92672">=</span> <span style="color:#ae81ff">8</span>) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">geom_text</span>(<span style="color:#a6e22e">aes</span>(label <span style="color:#f92672">=</span> n), colour <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;white&#34;</span>, alpha <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>, size <span style="color:#f92672">=</span> <span style="color:#ae81ff">8</span>) <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">meg_theme</span>() <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">theme</span>(panel.grid.major <span style="color:#f92672">=</span> <span style="color:#a6e22e">element_blank</span>()) <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">labs</span>(
-    y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Actual Position&#34;</span>,
-    x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Predicted Position&#34;</span>,
+    y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Actual Position&#34;</span>,
+    x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Predicted Position&#34;</span>,
     fill <span style="color:#f92672">=</span> <span style="color:#66d9ef">NULL</span>,
-    title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Confusion Matrix&#34;</span>,
-    subtitle <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">TOI Only Model&#34;</span>
+    title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Confusion Matrix&#34;</span>,
+    subtitle <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;TOI Only Model&#34;</span>
   )</code></pre></div>
 
 
@@ -1004,19 +1004,19 @@ predictions_TOI <span style="color:#f92672">%&gt;%</span>
 <span style="color:#75715e"># Create a tibble that holds all the evaluation metrics</span>
 
 TOI_metrics <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">tibble</span>(
-  <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">log_loss&#34;</span> <span style="color:#f92672">=</span> 
+  <span style="color:#e6db74">&#34;log_loss&#34;</span> <span style="color:#f92672">=</span> 
     <span style="color:#a6e22e">mn_log_loss</span>(predictions_TOI, defense, .pred_D) <span style="color:#f92672">%&gt;%</span>
     <span style="color:#a6e22e">select</span>(.estimate),
-  <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">accuracy&#34;</span> <span style="color:#f92672">=</span> 
+  <span style="color:#e6db74">&#34;accuracy&#34;</span> <span style="color:#f92672">=</span> 
     <span style="color:#a6e22e">accuracy</span>(predictions_TOI, defense, .pred_class) <span style="color:#f92672">%&gt;%</span>
     <span style="color:#a6e22e">select</span>(.estimate),
-  <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">auc&#34;</span> <span style="color:#f92672">=</span> 
+  <span style="color:#e6db74">&#34;auc&#34;</span> <span style="color:#f92672">=</span> 
     <span style="color:#a6e22e">roc_auc</span>(predictions_TOI, defense, .pred_D) <span style="color:#f92672">%&gt;%</span>
     <span style="color:#a6e22e">select</span>(.estimate)
 ) <span style="color:#f92672">%&gt;%</span>
   <span style="color:#a6e22e">unnest</span>(<span style="color:#a6e22e">everything</span>()) <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">pivot_longer</span>(<span style="color:#a6e22e">everything</span>(), names_to <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">metric&#34;</span>, values_to <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">value&#34;</span>) <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">mutate</span>(model <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">TOI_only&#34;</span>)</code></pre></div>
+  <span style="color:#a6e22e">pivot_longer</span>(<span style="color:#a6e22e">everything</span>(), names_to <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;metric&#34;</span>, values_to <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;value&#34;</span>) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">mutate</span>(model <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;TOI_only&#34;</span>)</code></pre></div>
 <p>The <code>yardstick</code> package is what holds a lot of these functions that are useful for model evaulation. We just defined accuracy, which you can calculate on your own from the confusion matrix and is also available via the <code>accuracy()</code> function. That's useful for determining how good the model is in a binary sense, while log loss (from the <code>mn_log_loss()</code> function) uses the probabilities to quantify how correct the predictions are. As an example, let's go back to our TOI only model and see that Aleksander Barkov (a forward) was given a 0.75 probability of being a defenseman. That's obviously incorrect. It's counted as an incorrect prediction for the accuracy metric, but log loss also takes into account that the prediction was <em>quite</em> wrong. If the prediction had instead given him a 0.51 probability of being a defenseman, the penalty would be less.</p>
 
 <p>We can also create a tibble (a type of data frame) to hold all of these metrics. We'll use it to compare both models in a minute. The last metric included is the area under the ROC curve, known as AUC. The ROC curve graphs the false positive rate against the true positive rate and in a nutshell, quantifies how good the model is at distinguishing the groups.</p>
@@ -1032,11 +1032,11 @@ predictions_TOI <span style="color:#f92672">%&gt;%</span>
   <span style="color:#a6e22e">coord_equal</span>() <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">meg_theme</span>() <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">labs</span>(
-    y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">True Positive Rate (Sensitivity)&#34;</span>,
-    x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">False Positive Rate&#34;</span>,
+    y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;True Positive Rate (Sensitivity)&#34;</span>,
+    x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;False Positive Rate&#34;</span>,
     fill <span style="color:#f92672">=</span> <span style="color:#66d9ef">NULL</span>,
-    title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">ROC Curve&#34;</span>,
-    subtitle <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">TOI Only Model&#34;</span>
+    title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;ROC Curve&#34;</span>,
+    subtitle <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;TOI Only Model&#34;</span>
   )</code></pre></div>
 
 
@@ -1092,15 +1092,15 @@ predictions_TOI <span style="color:#f92672">%&gt;%</span>
   
 metrics_compare <span style="color:#f92672">%&gt;%</span>
   <span style="color:#a6e22e">ggplot</span>(<span style="color:#a6e22e">aes</span>(fill <span style="color:#f92672">=</span> model, y <span style="color:#f92672">=</span> value, x <span style="color:#f92672">=</span> metric)) <span style="color:#f92672">+</span> 
-  <span style="color:#a6e22e">geom_bar</span>(position <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">dodge&#34;</span>, stat <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">identity&#34;</span>) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">scale_fill_manual</span>(values <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">#7A8B99&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">#A9DDD6&#34;</span>)) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">geom_bar</span>(position <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;dodge&#34;</span>, stat <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;identity&#34;</span>) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">scale_fill_manual</span>(values <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;#7A8B99&#34;</span>, <span style="color:#e6db74">&#34;#A9DDD6&#34;</span>)) <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">meg_theme</span>() <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">labs</span>(
-    y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Value&#34;</span>,
-    x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Metric&#34;</span>,
+    y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Value&#34;</span>,
+    x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Metric&#34;</span>,
     fill <span style="color:#f92672">=</span> <span style="color:#66d9ef">NULL</span>,
-    title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Comparing Our Models&#34;</span>,
-    subtitle <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Higher is Better: Accuracy and AUC\nLower is Better: Log Loss&#34;</span>
+    title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Comparing Our Models&#34;</span>,
+    subtitle <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Higher is Better: Accuracy and AUC\nLower is Better: Log Loss&#34;</span>
   ) <span style="color:#f92672">+</span> 
   <span style="color:#a6e22e">geom_text</span>(<span style="color:#a6e22e">aes</span>(label <span style="color:#f92672">=</span> <span style="color:#a6e22e">round</span>(value, <span style="color:#ae81ff">3</span>)), vjust <span style="color:#f92672">=</span> <span style="color:#ae81ff">-0.5</span>, size <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>, position <span style="color:#f92672">=</span> <span style="color:#a6e22e">position_dodge</span>(width<span style="color:#f92672">=</span> <span style="color:#ae81ff">0.9</span>)) <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">theme</span>(legend.position <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">0.86</span>, <span style="color:#ae81ff">0.9</span>))</code></pre></div>
@@ -1264,7 +1264,7 @@ metrics_compare <span style="color:#f92672">%&gt;%</span>
     
 
     <div class="media-body">
-      <h5 class="card-title"><a href="">Meghan Hall</a></h5>
+      <h5 class="card-title"><a href="/">Meghan Hall</a></h5>
       <h6 class="card-subtitle">Hockey Analyst</h6>
       
       <ul class="network-icon" aria-hidden="true">
@@ -1490,7 +1490,7 @@ metrics_compare <span style="color:#f92672">%&gt;%</span>
   
 
   <p class="powered-by">
-    
+    © 2020 &middot; 
 
     Powered by the
     <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for

@@ -120,8 +120,8 @@ Since I spend a lot of time looking at special teams data, I have long been curi
   <meta property="og:url" content="/post/score-effects/">
   <meta property="og:title" content="Examining Score Effects on Special Teams | Meghan Hall">
   <meta property="og:description" content="Score effects in hockey are well-known, whether you&#39;re watching the game or looking at numbers: teams that are losing tend to generate a greater share of the shot attempts. Micah Blake McCurdy developed an adjustment method for 5v5 events that is currently used to create the score- and venue-adjusted shot attempt metrics available at hockey stats websites like Natural Stat Trick and Evolving Hockey.
-Since I spend a lot of time looking at special teams data, I have long been curious as to whether score effects might also be a factor for power plays."><meta property="og:image" content="img/icon-192.png">
-  <meta property="twitter:image" content="img/icon-192.png"><meta property="og:locale" content="en-us">
+Since I spend a lot of time looking at special teams data, I have long been curious as to whether score effects might also be a factor for power plays."><meta property="og:image" content="/img/icon-192.png">
+  <meta property="twitter:image" content="/img/icon-192.png"><meta property="og:locale" content="en-us">
   
     
       <meta property="article:published_time" content="2020-01-15T00:00:00&#43;00:00">
@@ -169,7 +169,7 @@ Since I spend a lot of time looking at special teams data, I have long been curi
     "name": "Meghan Hall",
     "logo": {
       "@type": "ImageObject",
-      "url": "img/icon-512.png"
+      "url": "/img/icon-512.png"
     }
   },
   "description": "Score effects in hockey are well-known, whether you're watching the game or looking at numbers: teams that are losing tend to generate a greater share of the shot attempts. Micah Blake McCurdy developed an adjustment method for 5v5 events that is currently used to create the score- and venue-adjusted shot attempt metrics available at hockey stats websites like Natural Stat Trick and Evolving Hockey.\nSince I spend a lot of time looking at special teams data, I have long been curious as to whether score effects might also be a factor for power plays."
@@ -464,8 +464,8 @@ and <a href="https://evolving-hockey.com/" target="_blank">Evolving Hockey</a>.<
 <span style="color:#75715e"># All 10 of my csv files (one for each season) are in a folder in my wd called &#34;score_adj&#34;</span>
 <span style="color:#75715e"># This will ID all the files and read them in as one file (score_adj_5v4_raw)</span>
 
-mydir <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">score_adj&#34;</span>
-myfiles <span style="color:#f92672">=</span> <span style="color:#a6e22e">list.files</span>(path<span style="color:#f92672">=</span>mydir, pattern<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">*.csv&#34;</span>, full.names<span style="color:#f92672">=</span><span style="color:#66d9ef">TRUE</span>)
+mydir <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;score_adj&#34;</span>
+myfiles <span style="color:#f92672">=</span> <span style="color:#a6e22e">list.files</span>(path<span style="color:#f92672">=</span>mydir, pattern<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;*.csv&#34;</span>, full.names<span style="color:#f92672">=</span><span style="color:#66d9ef">TRUE</span>)
 myfiles
 
 score_adj_5v4_raw <span style="color:#f92672">=</span> <span style="color:#a6e22e">ldply</span>(myfiles, read_csv)</code></pre></div>
@@ -475,18 +475,18 @@ score_adj_5v4_raw <span style="color:#f92672">=</span> <span style="color:#a6e22
 <span style="color:#75715e"># For home lead, everything above 2 and below -2 will be grouped together</span>
 
 score_adj_5v4 <span style="color:#f92672">&lt;-</span> score_adj_5v4_raw <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">filter</span>(event_type <span style="color:#f92672">%in%</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">SHOT&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">GOAL&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">MISS&#34;</span>) <span style="color:#f92672">|</span> event_length <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">filter</span>(event_type <span style="color:#f92672">%in%</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;SHOT&#34;</span>, <span style="color:#e6db74">&#34;GOAL&#34;</span>, <span style="color:#e6db74">&#34;MISS&#34;</span>) <span style="color:#f92672">|</span> event_length <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>) <span style="color:#f92672">%&gt;%</span>
   <span style="color:#a6e22e">mutate</span>(home_lead <span style="color:#f92672">=</span> home_score <span style="color:#f92672">-</span> away_score,
          home_lead <span style="color:#f92672">=</span> <span style="color:#a6e22e">ifelse</span>(home_lead <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">-3</span>, <span style="color:#ae81ff">-3</span>,
                             <span style="color:#a6e22e">ifelse</span>(home_lead <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">3</span>, home_lead)),
-         home_away <span style="color:#f92672">=</span> <span style="color:#a6e22e">ifelse</span>(event_team <span style="color:#f92672">==</span> home_team, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">home&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">away&#34;</span>),
-         fenwick <span style="color:#f92672">=</span> <span style="color:#a6e22e">ifelse</span>(event_type <span style="color:#f92672">%in%</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">SHOT&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">GOAL&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">MISS&#34;</span>), <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>),
-         goal <span style="color:#f92672">=</span> <span style="color:#a6e22e">ifelse</span>(event_type <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">GOAL&#34;</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>),
-         PP_team <span style="color:#f92672">=</span> <span style="color:#a6e22e">ifelse</span>(game_strength_state <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">5v4&#34;</span>, home_team, away_team),
-         type <span style="color:#f92672">=</span> <span style="color:#a6e22e">ifelse</span>(fenwick <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">&amp;</span> PP_team <span style="color:#f92672">==</span> event_team, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">PP&#34;</span>, 
-                       <span style="color:#a6e22e">ifelse</span>(fenwick <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">PK&#34;</span>, <span style="color:#66d9ef">NA</span>)),
-         PP_fenwick <span style="color:#f92672">=</span> <span style="color:#a6e22e">ifelse</span>(type <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">PP&#34;</span> <span style="color:#f92672">&amp;</span> fenwick <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>),
-         f <span style="color:#f92672">=</span> <span style="color:#a6e22e">ifelse</span>(PP_fenwick <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Y&#34;</span>, <span style="color:#66d9ef">NA</span>)) <span style="color:#f92672">%&gt;%</span>
+         home_away <span style="color:#f92672">=</span> <span style="color:#a6e22e">ifelse</span>(event_team <span style="color:#f92672">==</span> home_team, <span style="color:#e6db74">&#34;home&#34;</span>, <span style="color:#e6db74">&#34;away&#34;</span>),
+         fenwick <span style="color:#f92672">=</span> <span style="color:#a6e22e">ifelse</span>(event_type <span style="color:#f92672">%in%</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;SHOT&#34;</span>, <span style="color:#e6db74">&#34;GOAL&#34;</span>, <span style="color:#e6db74">&#34;MISS&#34;</span>), <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>),
+         goal <span style="color:#f92672">=</span> <span style="color:#a6e22e">ifelse</span>(event_type <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;GOAL&#34;</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>),
+         PP_team <span style="color:#f92672">=</span> <span style="color:#a6e22e">ifelse</span>(game_strength_state <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;5v4&#34;</span>, home_team, away_team),
+         type <span style="color:#f92672">=</span> <span style="color:#a6e22e">ifelse</span>(fenwick <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">&amp;</span> PP_team <span style="color:#f92672">==</span> event_team, <span style="color:#e6db74">&#34;PP&#34;</span>, 
+                       <span style="color:#a6e22e">ifelse</span>(fenwick <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>, <span style="color:#e6db74">&#34;PK&#34;</span>, <span style="color:#66d9ef">NA</span>)),
+         PP_fenwick <span style="color:#f92672">=</span> <span style="color:#a6e22e">ifelse</span>(type <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;PP&#34;</span> <span style="color:#f92672">&amp;</span> fenwick <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>),
+         f <span style="color:#f92672">=</span> <span style="color:#a6e22e">ifelse</span>(PP_fenwick <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>, <span style="color:#e6db74">&#34;Y&#34;</span>, <span style="color:#66d9ef">NA</span>)) <span style="color:#f92672">%&gt;%</span>
   <span style="color:#a6e22e">select</span>(type, PP_fenwick, f, game_strength_state, home_team, away_team, PP_team, event_team, <span style="color:#a6e22e">everything</span>())
   </code></pre></div>
 <h3 id="create-the-weights">Create the weights</h3>
@@ -513,7 +513,7 @@ score_adj_f_avg <span style="color:#f92672">&lt;-</span> score_adj_f <span style
 <span style="color:#75715e"># and create the adjusted score by dividing the average by the raw fenwick</span>
 
 score_adj_f <span style="color:#f92672">&lt;-</span> score_adj_f <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">left_join</span>(score_adj_f_avg, by <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">home_lead&#34;</span>) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">left_join</span>(score_adj_f_avg, by <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;home_lead&#34;</span>) <span style="color:#f92672">%&gt;%</span>
   <span style="color:#a6e22e">mutate</span>(fenwick_adj <span style="color:#f92672">=</span> avg <span style="color:#f92672">/</span> fenwick)
 
 <span style="color:#75715e"># Reshape to get the numbers in a more readable format</span>
@@ -581,10 +581,10 @@ score_adj_f_reshape <span style="color:#f92672">&lt;-</span> score_adj_f <span s
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#75715e"># Read in Micah&#39;s 5v5 values</span>
 <span style="color:#75715e"># And join to compare</span>
 
-score_adj_5v5 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">read_csv</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">score_adj_5v5_MBM.csv&#34;</span>)
+score_adj_5v5 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">read_csv</span>(<span style="color:#e6db74">&#34;score_adj_5v5_MBM.csv&#34;</span>)
 
 score_adj_f_reshape_compare <span style="color:#f92672">&lt;-</span> score_adj_f_reshape <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">left_join</span>(score_adj_5v5, by <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">home_lead&#34;</span>) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">left_join</span>(score_adj_5v5, by <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;home_lead&#34;</span>) <span style="color:#f92672">%&gt;%</span>
   <span style="color:#a6e22e">mutate</span>(diff_home <span style="color:#f92672">=</span> home <span style="color:#f92672">-</span> home_5v5,
          diff_away <span style="color:#f92672">=</span> away <span style="color:#f92672">-</span> away_5v5)
 
@@ -592,15 +592,15 @@ score_adj_f_reshape_compare <span style="color:#f92672">&lt;-</span> score_adj_f
 
 <span style="color:#a6e22e">ggplot</span>(data <span style="color:#f92672">=</span> score_adj_f_reshape_compare, 
        <span style="color:#a6e22e">aes</span>(x <span style="color:#f92672">=</span> <span style="color:#a6e22e">as.factor</span>(home_lead), y <span style="color:#f92672">=</span> diff_home)) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">geom_bar</span>(stat <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">identity&#34;</span>) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">labs</span>(title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Home Event Weights, 5v4 vs 5v5&#34;</span>, x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Home Lead&#34;</span>, y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Difference From 5v5 Weight&#34;</span>) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">geom_bar</span>(stat <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;identity&#34;</span>) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">labs</span>(title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Home Event Weights, 5v4 vs 5v5&#34;</span>, x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Home Lead&#34;</span>, y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Difference From 5v5 Weight&#34;</span>) <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">theme_linedraw</span>() <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">theme</span>(axis.ticks <span style="color:#f92672">=</span> <span style="color:#a6e22e">element_blank</span>())
 
 <span style="color:#a6e22e">ggplot</span>(data <span style="color:#f92672">=</span> score_adj_f_reshape_compare, 
        <span style="color:#a6e22e">aes</span>(x <span style="color:#f92672">=</span> <span style="color:#a6e22e">as.factor</span>(home_lead), y <span style="color:#f92672">=</span> diff_away)) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">geom_bar</span>(stat <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">identity&#34;</span>) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">labs</span>(title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Away Event Weights, 5v4 vs 5v5&#34;</span>, x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Home Lead&#34;</span>, y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Difference From 5v5 Weight&#34;</span>) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">geom_bar</span>(stat <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;identity&#34;</span>) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">labs</span>(title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Away Event Weights, 5v4 vs 5v5&#34;</span>, x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Home Lead&#34;</span>, y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Difference From 5v5 Weight&#34;</span>) <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">theme_linedraw</span>() <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">theme</span>(axis.ticks <span style="color:#f92672">=</span> <span style="color:#a6e22e">element_blank</span>())
   
@@ -608,31 +608,31 @@ for_comparison <span style="color:#f92672">&lt;-</span> score_adj_f_reshape_comp
   <span style="color:#a6e22e">select</span>(<span style="color:#f92672">-</span><span style="color:#a6e22e">c</span>(diff_home<span style="color:#f92672">:</span>diff_away)) <span style="color:#f92672">%&gt;%</span>
   <span style="color:#a6e22e">rename</span>(home_5v4 <span style="color:#f92672">=</span> home,
          away_5v4 <span style="color:#f92672">=</span> away) <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">pivot_longer</span>(home_5v4<span style="color:#f92672">:</span>away_5v5, names_to <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">type&#34;</span>, values_to <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">value&#34;</span>) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">pivot_longer</span>(home_5v4<span style="color:#f92672">:</span>away_5v5, names_to <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;type&#34;</span>, values_to <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;value&#34;</span>) <span style="color:#f92672">%&gt;%</span>
   <span style="color:#a6e22e">mutate</span>(home_away <span style="color:#f92672">=</span> <span style="color:#a6e22e">substr</span>(type, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">4</span>),
          state <span style="color:#f92672">=</span> <span style="color:#a6e22e">substr</span>(type, <span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">8</span>))
 
 for_comparison <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">filter</span>(home_away <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">home&#34;</span>) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">filter</span>(home_away <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;home&#34;</span>) <span style="color:#f92672">%&gt;%</span>
   <span style="color:#a6e22e">ggplot</span>(<span style="color:#a6e22e">aes</span>(fill <span style="color:#f92672">=</span> state, x <span style="color:#f92672">=</span> <span style="color:#a6e22e">as.character</span>(home_lead), y <span style="color:#f92672">=</span> value)) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">geom_bar</span>(stat <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">identity&#34;</span>, position <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">dodge&#34;</span>) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">labs</span>(title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Home Event Weights, 5v4 vs 5v5&#34;</span>, x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Home Lead&#34;</span>, 
-       y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Weight&#34;</span>, fill <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">State?&#34;</span>) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">geom_bar</span>(stat <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;identity&#34;</span>, position <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;dodge&#34;</span>) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">labs</span>(title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Home Event Weights, 5v4 vs 5v5&#34;</span>, x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Home Lead&#34;</span>, 
+       y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Weight&#34;</span>, fill <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;State?&#34;</span>) <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">theme_linedraw</span>() <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">theme</span>(axis.ticks <span style="color:#f92672">=</span> <span style="color:#a6e22e">element_blank</span>()) <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">geom_hline</span>(yintercept <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">scale_fill_manual</span>(values <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">#CF8BA8&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">#DDDDDD&#34;</span>))
+  <span style="color:#a6e22e">scale_fill_manual</span>(values <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;#CF8BA8&#34;</span>, <span style="color:#e6db74">&#34;#DDDDDD&#34;</span>))
 
 for_comparison <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">filter</span>(home_away <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">away&#34;</span>) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">filter</span>(home_away <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;away&#34;</span>) <span style="color:#f92672">%&gt;%</span>
   <span style="color:#a6e22e">ggplot</span>(<span style="color:#a6e22e">aes</span>(fill <span style="color:#f92672">=</span> state, x <span style="color:#f92672">=</span> <span style="color:#a6e22e">as.character</span>(home_lead), y <span style="color:#f92672">=</span> value)) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">geom_bar</span>(stat <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">identity&#34;</span>, position <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">dodge&#34;</span>) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">labs</span>(title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Away Event Weights, 5v4 vs 5v5&#34;</span>, x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Home Lead&#34;</span>, 
-       y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Weight&#34;</span>, fill <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">State?&#34;</span>) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">geom_bar</span>(stat <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;identity&#34;</span>, position <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;dodge&#34;</span>) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">labs</span>(title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Away Event Weights, 5v4 vs 5v5&#34;</span>, x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Home Lead&#34;</span>, 
+       y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Weight&#34;</span>, fill <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;State?&#34;</span>) <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">theme_linedraw</span>() <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">theme</span>(axis.ticks <span style="color:#f92672">=</span> <span style="color:#a6e22e">element_blank</span>()) <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">geom_hline</span>(yintercept <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">scale_fill_manual</span>(values <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">#CF8BA8&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">#DDDDDD&#34;</span>))
+  <span style="color:#a6e22e">scale_fill_manual</span>(values <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;#CF8BA8&#34;</span>, <span style="color:#e6db74">&#34;#DDDDDD&#34;</span>))
   </code></pre></div>
 
 
@@ -736,7 +736,7 @@ for_comparison <span style="color:#f92672">%&gt;%</span>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#75715e"># Join the adjusted values back into the raw data</span>
 
 score_adj_5v4_w_values <span style="color:#f92672">&lt;-</span> score_adj_5v4 <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">left_join</span>(<span style="color:#a6e22e">select</span>(score_adj_f, home_lead, home_away, fenwick_adj, f), by <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">home_lead&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">home_away&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">f&#34;</span>))</code></pre></div>
+  <span style="color:#a6e22e">left_join</span>(<span style="color:#a6e22e">select</span>(score_adj_f, home_lead, home_away, fenwick_adj, f), by <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;home_lead&#34;</span>, <span style="color:#e6db74">&#34;home_away&#34;</span>, <span style="color:#e6db74">&#34;f&#34;</span>))</code></pre></div>
 <h3 id="testing-repeatability-and-prediction">Testing repeatability and prediction</h3>
 
 <p>To examine these adjusted values in comparison to the raw ones, we'll look at both <em>repeatability</em> and <em>prediction</em>. Repeatability is measured by how well the unblocked shot attempts in one sample of a season correlate to those in another sample, and prediction looks at how well the unblocked shot attempts in one sample correlate to <em>goals</em> in another.  Our metric of interest in both cases will be R<sup>2</sup>, and we're curious to see whether those R<sup>2</sup> values are <em>higher</em> for the adjusted values.</p>
@@ -756,7 +756,7 @@ sampling_team <span style="color:#f92672">&lt;-</span> score_adj_5v4_w_values <s
             fen_adj <span style="color:#f92672">=</span> <span style="color:#a6e22e">sum</span>(fenwick_adj, na.rm <span style="color:#f92672">=</span> <span style="color:#66d9ef">TRUE</span>),
             goals <span style="color:#f92672">=</span> <span style="color:#a6e22e">sum</span>(goal),
             TOI <span style="color:#f92672">=</span> <span style="color:#a6e22e">sum</span>(event_length) <span style="color:#f92672">/</span> <span style="color:#ae81ff">60</span>) <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">unite</span>(team_season, season, PP_team, sep <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">-&#34;</span>, remove <span style="color:#f92672">=</span> <span style="color:#66d9ef">FALSE</span>)</code></pre></div>
+  <span style="color:#a6e22e">unite</span>(team_season, season, PP_team, sep <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;-&#34;</span>, remove <span style="color:#f92672">=</span> <span style="color:#66d9ef">FALSE</span>)</code></pre></div>
 <p>That <code>sampling_team</code> data frame will be the starting point for the sampling function I wrote that's based on the <code>rep_sample_n</code> function in the <code>infer</code> package. In a nutshell, the function below will do the following: filter the <code>sampling_team</code> data frame to a specific <code>team_season</code>; take a sample of <code>x</code> number of games; split that sample into two groups; sum the unblocked shot attempts (both raw and adjusted), goals, and TOI in each group; and repeat 1000 times. The <code>pivot_wider</code> function at the end will just reshape the data into a format that's easier to use later.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#75715e"># The function below will filter by teamseason, sample a specified amount of games, </span>
 <span style="color:#75715e"># split into two groups, sum fenwick and fen_adj, repeat 1000 times per season</span>
@@ -788,16 +788,16 @@ sampling_fn <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e"
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#75715e"># Run the function for the various sample sizes</span>
 
 summary_team <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">lapply</span>(<span style="color:#a6e22e">unique</span>(sampling_team<span style="color:#f92672">$</span>team_season), sampling_fn, samplesize <span style="color:#f92672">=</span> <span style="color:#ae81ff">40</span>)
-sampling_team_40 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">bind_rows</span>(summary_team, .id <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">column_label&#34;</span>)
+sampling_team_40 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">bind_rows</span>(summary_team, .id <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;column_label&#34;</span>)
 
 summary_team <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">lapply</span>(<span style="color:#a6e22e">unique</span>(sampling_team<span style="color:#f92672">$</span>team_season), sampling_fn, samplesize <span style="color:#f92672">=</span> <span style="color:#ae81ff">50</span>)
-sampling_team_50 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">bind_rows</span>(summary_team, .id <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">column_label&#34;</span>)
+sampling_team_50 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">bind_rows</span>(summary_team, .id <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;column_label&#34;</span>)
 
 summary_team <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">lapply</span>(<span style="color:#a6e22e">unique</span>(sampling_team<span style="color:#f92672">$</span>team_season), sampling_fn, samplesize <span style="color:#f92672">=</span> <span style="color:#ae81ff">60</span>)
-sampling_team_60 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">bind_rows</span>(summary_team, .id <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">column_label&#34;</span>)
+sampling_team_60 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">bind_rows</span>(summary_team, .id <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;column_label&#34;</span>)
 
 summary_team <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">lapply</span>(<span style="color:#a6e22e">unique</span>(sampling_team<span style="color:#f92672">$</span>team_season), sampling_fn, samplesize <span style="color:#f92672">=</span> <span style="color:#ae81ff">70</span>)
-sampling_team_70 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">bind_rows</span>(summary_team, .id <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">column_label&#34;</span>)</code></pre></div>
+sampling_team_70 <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">bind_rows</span>(summary_team, .id <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;column_label&#34;</span>)</code></pre></div>
 <p>I will end up with four data frames, <code>sampling_team_40</code> through <code>sampling_team_70</code> that are all the same size. Here is a sample:</p>
 
 
@@ -875,43 +875,43 @@ cor <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">bind_ro
 <span style="color:#75715e"># Reshape data to make it easier</span>
 
 cor_reshape <span style="color:#f92672">&lt;-</span> cor <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">pivot_longer</span>(raw_f<span style="color:#f92672">:</span>adj_rate_pred, names_to <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">metric&#34;</span>, values_to <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">R2&#34;</span>) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">pivot_longer</span>(raw_f<span style="color:#f92672">:</span>adj_rate_pred, names_to <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;metric&#34;</span>, values_to <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;R2&#34;</span>) <span style="color:#f92672">%&gt;%</span>
   <span style="color:#a6e22e">mutate</span>(type <span style="color:#f92672">=</span> <span style="color:#a6e22e">substr</span>(metric, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">3</span>)) <span style="color:#f92672">%&gt;%</span>
   <span style="color:#a6e22e">arrange</span>(type) <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">mutate</span>(type <span style="color:#f92672">=</span> <span style="color:#a6e22e">factor</span>(type, levels<span style="color:#f92672">=</span><span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">raw&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">adj&#34;</span>)))
+  <span style="color:#a6e22e">mutate</span>(type <span style="color:#f92672">=</span> <span style="color:#a6e22e">factor</span>(type, levels<span style="color:#f92672">=</span><span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;raw&#34;</span>, <span style="color:#e6db74">&#34;adj&#34;</span>)))
 
 cor_reshape <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">filter</span>(metric <span style="color:#f92672">%in%</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">raw_f&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">adj_f&#34;</span>)) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">filter</span>(metric <span style="color:#f92672">%in%</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;raw_f&#34;</span>, <span style="color:#e6db74">&#34;adj_f&#34;</span>)) <span style="color:#f92672">%&gt;%</span>
   <span style="color:#a6e22e">ggplot</span>(<span style="color:#a6e22e">aes</span>(fill <span style="color:#f92672">=</span> type, x <span style="color:#f92672">=</span> samplesize, y <span style="color:#f92672">=</span> R2)) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">geom_bar</span>(stat <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">identity&#34;</span>, position <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">dodge&#34;</span>) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">labs</span>(title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Repeatability: Unblocked Shot Attempts&#34;</span>, x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Sample Size&#34;</span>, 
-       y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">R-Squared&#34;</span>, fill <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Adjusted?&#34;</span>) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">geom_bar</span>(stat <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;identity&#34;</span>, position <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;dodge&#34;</span>) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">labs</span>(title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Repeatability: Unblocked Shot Attempts&#34;</span>, x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Sample Size&#34;</span>, 
+       y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;R-Squared&#34;</span>, fill <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Adjusted?&#34;</span>) <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">theme_linedraw</span>() <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">theme</span>(axis.ticks <span style="color:#f92672">=</span> <span style="color:#a6e22e">element_blank</span>()) <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">geom_text</span>(<span style="color:#a6e22e">aes</span>(label <span style="color:#f92672">=</span> <span style="color:#a6e22e">round</span>(R2, <span style="color:#ae81ff">3</span>)), position <span style="color:#f92672">=</span> <span style="color:#a6e22e">position_dodge</span>(<span style="color:#ae81ff">10</span>),  vjust <span style="color:#f92672">=</span> <span style="color:#ae81ff">-0.5</span>, size <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">scale_fill_manual</span>(values <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">#DDDDDD&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">#CF8BA8&#34;</span>))
+  <span style="color:#a6e22e">scale_fill_manual</span>(values <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;#DDDDDD&#34;</span>, <span style="color:#e6db74">&#34;#CF8BA8&#34;</span>))
 
 cor_reshape <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">filter</span>(metric <span style="color:#f92672">%in%</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">raw_rate&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">adj_rate&#34;</span>)) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">filter</span>(metric <span style="color:#f92672">%in%</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;raw_rate&#34;</span>, <span style="color:#e6db74">&#34;adj_rate&#34;</span>)) <span style="color:#f92672">%&gt;%</span>
   <span style="color:#a6e22e">ggplot</span>(<span style="color:#a6e22e">aes</span>(fill <span style="color:#f92672">=</span> type, x <span style="color:#f92672">=</span> samplesize, y <span style="color:#f92672">=</span> R2)) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">geom_bar</span>(stat <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">identity&#34;</span>, position <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">dodge&#34;</span>) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">labs</span>(title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Repeatability: Unblocked Shot Attempt Rate&#34;</span>, x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Sample Size&#34;</span>, 
-       y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">R-Squared&#34;</span>, fill <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Adjusted?&#34;</span>) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">geom_bar</span>(stat <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;identity&#34;</span>, position <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;dodge&#34;</span>) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">labs</span>(title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Repeatability: Unblocked Shot Attempt Rate&#34;</span>, x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Sample Size&#34;</span>, 
+       y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;R-Squared&#34;</span>, fill <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Adjusted?&#34;</span>) <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">theme_linedraw</span>() <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">theme</span>(axis.ticks <span style="color:#f92672">=</span> <span style="color:#a6e22e">element_blank</span>()) <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">geom_text</span>(<span style="color:#a6e22e">aes</span>(label <span style="color:#f92672">=</span> <span style="color:#a6e22e">round</span>(R2, <span style="color:#ae81ff">3</span>)), position <span style="color:#f92672">=</span> <span style="color:#a6e22e">position_dodge</span>(<span style="color:#ae81ff">10</span>),  vjust <span style="color:#f92672">=</span> <span style="color:#ae81ff">-0.5</span>, size <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">scale_fill_manual</span>(values <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">#DDDDDD&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">#CF8BA8&#34;</span>))
+  <span style="color:#a6e22e">scale_fill_manual</span>(values <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;#DDDDDD&#34;</span>, <span style="color:#e6db74">&#34;#CF8BA8&#34;</span>))
 
 cor_reshape <span style="color:#f92672">%&gt;%</span>
-  <span style="color:#a6e22e">filter</span>(metric <span style="color:#f92672">%in%</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">raw_rate_pred&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">adj_rate_pred&#34;</span>)) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">filter</span>(metric <span style="color:#f92672">%in%</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;raw_rate_pred&#34;</span>, <span style="color:#e6db74">&#34;adj_rate_pred&#34;</span>)) <span style="color:#f92672">%&gt;%</span>
   <span style="color:#a6e22e">ggplot</span>(<span style="color:#a6e22e">aes</span>(fill <span style="color:#f92672">=</span> type, x <span style="color:#f92672">=</span> samplesize, y <span style="color:#f92672">=</span> R2)) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">geom_bar</span>(stat <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">identity&#34;</span>, position <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">dodge&#34;</span>) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">labs</span>(title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Predictivity: Unblocked Shot Attempt Rate&#34;</span>, x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Sample Size&#34;</span>, 
-       y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">R-Squared&#34;</span>, fill <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Adjusted?&#34;</span>) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">geom_bar</span>(stat <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;identity&#34;</span>, position <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;dodge&#34;</span>) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">labs</span>(title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Predictivity: Unblocked Shot Attempt Rate&#34;</span>, x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Sample Size&#34;</span>, 
+       y <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;R-Squared&#34;</span>, fill <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Adjusted?&#34;</span>) <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">theme_linedraw</span>() <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">theme</span>(axis.ticks <span style="color:#f92672">=</span> <span style="color:#a6e22e">element_blank</span>()) <span style="color:#f92672">+</span>
   <span style="color:#a6e22e">geom_text</span>(<span style="color:#a6e22e">aes</span>(label <span style="color:#f92672">=</span> <span style="color:#a6e22e">round</span>(R2, <span style="color:#ae81ff">3</span>)), position <span style="color:#f92672">=</span> <span style="color:#a6e22e">position_dodge</span>(<span style="color:#ae81ff">10</span>),  vjust <span style="color:#f92672">=</span> <span style="color:#ae81ff">-0.5</span>, size <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>) <span style="color:#f92672">+</span>
-  <span style="color:#a6e22e">scale_fill_manual</span>(values <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">#DDDDDD&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">#CF8BA8&#34;</span>))</code></pre></div>
+  <span style="color:#a6e22e">scale_fill_manual</span>(values <span style="color:#f92672">=</span> <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;#DDDDDD&#34;</span>, <span style="color:#e6db74">&#34;#CF8BA8&#34;</span>))</code></pre></div>
 <p>The two figures below show the R<sup>2</sup> values for raw and adjusted values, by sample size, for the unblocked shot attempts and the unblocked shot attempt <em>rate</em>, respectively. As expected, the correlation increases along with the sample size. And although none of the R<sup>2</sup> values are particularly large, they are consistently higher for the adjusted values. (As a comparison, Micah found a R<sup>2</sup> value of 0.530 for a similar test with 5v5 adjusted values.)</p>
 
 
@@ -1115,7 +1115,7 @@ cor_reshape <span style="color:#f92672">%&gt;%</span>
     
 
     <div class="media-body">
-      <h5 class="card-title"><a href="">Meghan Hall</a></h5>
+      <h5 class="card-title"><a href="/">Meghan Hall</a></h5>
       <h6 class="card-subtitle">Hockey Analyst</h6>
       
       <ul class="network-icon" aria-hidden="true">
@@ -1341,7 +1341,7 @@ cor_reshape <span style="color:#f92672">%&gt;%</span>
   
 
   <p class="powered-by">
-    
+    © 2020 &middot; 
 
     Powered by the
     <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for

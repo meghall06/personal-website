@@ -176,7 +176,7 @@ Examples Code Academic supports a Markdown extension for highlighting code synta
     "name": "Meghan Hall",
     "logo": {
       "@type": "ImageObject",
-      "url": "img/icon-512.png"
+      "url": "/img/icon-512.png"
     }
   },
   "description": "Academic is designed to give technical content creators a seamless experience. You can focus on the content and Academic handles the rest.\nHighlight your code snippets, take notes on math classes, and draw diagrams from textual representation.\nOn this page, you'll find some examples of the types of technical content that can be rendered with Academic.\nExamples Code Academic supports a Markdown extension for highlighting code syntax. You can enable this feature by toggling the highlight option in your config/_default/params."
@@ -481,12 +481,12 @@ Examples Code Academic supports a Markdown extension for highlighting code synta
 <p>Academic supports a Markdown extension for highlighting code syntax. You can enable this feature by toggling the <code>highlight</code> option in your <code>config/_default/params.toml</code> file.</p>
 <pre><code>```python
 import pandas as pd
-data = pd.read_csv("data.csv")
+data = pd.read_csv(&#34;data.csv&#34;)
 data.head()
 ```</code></pre>
 <p>renders as</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> pandas <span style="color:#f92672">as</span> pd
-data <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(<span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">data.csv</span><span style="color:#e6db74">&#34;</span>)
+data <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(<span style="color:#e6db74">&#34;data.csv&#34;</span>)
 data<span style="color:#f92672">.</span>head()</code></pre></div>
 <h3 id="math">Math</h3>
 
@@ -506,7 +506,7 @@ data<span style="color:#f92672">.</span>head()</code></pre></div>
 <p>Example <strong>inline math</strong> <code>$$\left \|\nabla F(\mathbf{x}_{n}) - \nabla F(\mathbf{x}_{n-1}) \right \|^2$$</code> renders as <span  class="math">\(\left \|\nabla F(\mathbf{x}_{n}) - \nabla F(\mathbf{x}_{n-1}) \right \|^2\)</span> .</p>
 
 <p>Example <strong>multi-line math</strong> using the <code>\\</code> math linebreak:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-tex" data-lang="tex"><span style="color:#e6db74">$$</span>f<span style="color:#f92672">(</span>k;p_<span style="color:#ae81ff">0</span>^<span style="color:#f92672">*</span><span style="color:#f92672">)</span> <span style="color:#f92672">=</span> \begin{cases} p_<span style="color:#ae81ff">0</span>^<span style="color:#f92672">*</span> &amp; \text{if }k<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, \\
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-tex" data-lang="tex"><span style="color:#e6db74">$$</span>f<span style="color:#f92672">(</span>k;p_<span style="color:#ae81ff">0</span>^<span style="color:#f92672">*)</span> <span style="color:#f92672">=</span> \begin{cases} p_<span style="color:#ae81ff">0</span>^<span style="color:#f92672">*</span> &amp; \text{if }k<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, \\
 <span style="color:#ae81ff">1</span><span style="color:#f92672">-</span>p_<span style="color:#ae81ff">0</span>^<span style="color:#f92672">*</span> &amp; \text {if }k<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>.\end{cases}<span style="color:#e6db74">$$</span></code></pre></div>
 <p>renders as</p>
 
@@ -520,43 +520,43 @@ data<span style="color:#f92672">.</span>head()</code></pre></div>
 <p>An example <strong>flowchart</strong>:</p>
 <pre><code>```mermaid
 graph TD;
-  A-->B;
-  A-->C;
-  B-->D;
-  C-->D;
+  A--&gt;B;
+  A--&gt;C;
+  B--&gt;D;
+  C--&gt;D;
 ```</code></pre>
 <p>renders as</p>
 <pre><code class="language-mermaid" data-lang="mermaid">graph TD;
-  A-->B;
-  A-->C;
-  B-->D;
-  C-->D;</code></pre>
+  A--&gt;B;
+  A--&gt;C;
+  B--&gt;D;
+  C--&gt;D;</code></pre>
 <p>An example <strong>sequence diagram</strong>:</p>
 <pre><code>```mermaid
 sequenceDiagram
   participant Alice
   participant Bob
-  Alice->John: Hello John, how are you?
+  Alice-&gt;John: Hello John, how are you?
   loop Healthcheck
-      John->John: Fight against hypochondria
+      John-&gt;John: Fight against hypochondria
   end
-  Note right of John: Rational thoughts <br/>prevail...
-  John-->Alice: Great!
-  John->Bob: How about you?
-  Bob-->John: Jolly good!
+  Note right of John: Rational thoughts &lt;br/&gt;prevail...
+  John--&gt;Alice: Great!
+  John-&gt;Bob: How about you?
+  Bob--&gt;John: Jolly good!
 ```</code></pre>
 <p>renders as</p>
 <pre><code class="language-mermaid" data-lang="mermaid">sequenceDiagram
   participant Alice
   participant Bob
-  Alice->John: Hello John, how are you?
+  Alice-&gt;John: Hello John, how are you?
   loop Healthcheck
-      John->John: Fight against hypochondria
+      John-&gt;John: Fight against hypochondria
   end
-  Note right of John: Rational thoughts <br/>prevail...
-  John-->Alice: Great!
-  John->Bob: How about you?
-  Bob-->John: Jolly good!</code></pre>
+  Note right of John: Rational thoughts &lt;br/&gt;prevail...
+  John--&gt;Alice: Great!
+  John-&gt;Bob: How about you?
+  Bob--&gt;John: Jolly good!</code></pre>
 <p>An example <strong>Gantt diagram</strong>:</p>
 <pre><code>```mermaid
 gantt
@@ -580,8 +580,8 @@ gantt
 <h3 id="todo-lists">Todo lists</h3>
 
 <p>You can even write your todo lists in Academic too:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-markdown" data-lang="markdown"><span style="color:#66d9ef">- </span><span style="color:#66d9ef">[x]</span> Write math example
-<span style="color:#66d9ef">- </span><span style="color:#66d9ef">[x]</span> Write diagram example
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-markdown" data-lang="markdown"><span style="color:#66d9ef">- [x]</span> Write math example
+<span style="color:#66d9ef">- [x]</span> Write diagram example
 - [ ] Do something else</code></pre></div>
 <p>renders as</p>
 
@@ -758,7 +758,7 @@ gantt
     
 
     <div class="media-body">
-      <h5 class="card-title"><a href="">Meghan Hall</a></h5>
+      <h5 class="card-title"><a href="/">Meghan Hall</a></h5>
       <h6 class="card-subtitle">Hockey Analyst</h6>
       
       <ul class="network-icon" aria-hidden="true">
@@ -984,7 +984,7 @@ gantt
   
 
   <p class="powered-by">
-    
+    © 2020 &middot; 
 
     Powered by the
     <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
