@@ -18,6 +18,16 @@
   </url>
   
   <url>
+    <loc>/post/</loc>
+    <lastmod>2020-05-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/goalie-pulling/</loc>
+    <lastmod>2020-05-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/talk/hanic/</loc>
     <lastmod>2020-04-18T00:00:00+00:00</lastmod>
   </url>
@@ -29,11 +39,6 @@
   
   <url>
     <loc>/post/introduction-to-tableau/</loc>
-    <lastmod>2020-03-30T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/post/</loc>
     <lastmod>2020-03-30T00:00:00+00:00</lastmod>
   </url>
   
