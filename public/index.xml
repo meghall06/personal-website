@@ -55,6 +55,76 @@
     </item>
     
     <item>
+      <title>Learning R with Hockey Data and learnr</title>
+      <link>/post/learnr/</link>
+      <pubDate>Mon, 29 Jun 2020 00:00:00 +0000</pubDate>
+      <guid>/post/learnr/</guid>
+      <description>
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;pipes_logo.png&#34; &gt;
+&lt;img src=&#34;pipes_logo.png&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+&lt;p&gt;When I created &lt;a href=&#34;https://meghan.rbind.io/post/hockey-data-with-swirl/&#34; target=&#34;_blank&#34;&gt;a tutorial with swirl&lt;/a&gt; earlier this year, some people asked me why I hadn&#39;t instead used &lt;a href=&#34;https://rstudio.github.io/learnr/index.html&#34; target=&#34;_blank&#34;&gt;learnr&lt;/a&gt;, another tool for interactive learning. I wasn&#39;t familiar with learnr, but since it&#39;s based in R Markdown and one of my goals for this year is to improve my skills in that area, I decided to give it a try!&lt;/p&gt;
+
+&lt;p&gt;So I&#39;ve created two tutorials in learnr, one that is a true introduction for beginners (focused on the tidyverse) and one that goes a little bit deeper into data manipuation with pivoting and joining data. These tutorials (screenshot below) live in a package I created called &lt;code&gt;betweenthepipes&lt;/code&gt;. More detail on the package and the tutorial content is available on &lt;a href=&#34;https://github.com/meghall06/betweenthepipes/blob/master/README.md&#34; target=&#34;_blank&#34;&gt;my Github&lt;/a&gt;.&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;learnrSS.png&#34; &gt;
+&lt;img src=&#34;learnrSS.png&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+&lt;p&gt;To access these tutorials, simply download the package. If you&#39;re working in RStudio 1.3 or later, there should be a Tutorial pane in the upper right corner of the program where you should see the two tutorials listed. If not, or if you&#39;d prefer to access the tutorials directly, follow the second block of code below.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-r&#34; data-lang=&#34;r&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Install my package via github&lt;/span&gt;
+
+&lt;span style=&#34;color:#a6e22e&#34;&gt;install.packages&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;devtools&amp;#34;&lt;/span&gt;)
+devtools&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;install_github&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;meghall06/betweenthepipes&amp;#34;&lt;/span&gt;)
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# Only necessary if you don&amp;#39;t have RStudio &amp;gt;= 1.3&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Or if you want to access them directly&lt;/span&gt;
+
+learnr&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;run_tutorial&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;intro&amp;#34;&lt;/span&gt;, package &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;betweenthepipes&amp;#34;&lt;/span&gt;)
+learnr&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;run_tutorial&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;data_manip&amp;#34;&lt;/span&gt;, package &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;betweenthepipes&amp;#34;&lt;/span&gt;)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+    </item>
+    
+    <item>
       <title>The State of Goalie Pulling in the NHL</title>
       <link>/post/goalie-pulling/</link>
       <pubDate>Mon, 18 May 2020 00:00:00 +0000</pubDate>
