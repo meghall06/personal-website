@@ -5,6 +5,7 @@ image:
   caption: 
   placement: 
 markup: mmark
+categories: ["hockey analysis"]
 math: true
 title: Examining Score Effects on Special Teams
 ---

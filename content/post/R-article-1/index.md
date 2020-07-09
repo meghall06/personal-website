@@ -1,6 +1,7 @@
 ---
 date: "2019-09-19"
 diagram: true
+categories: ["tutorials"]
 image:
   caption: 
   placement: 

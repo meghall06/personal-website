@@ -3,7 +3,7 @@ title: Creating Custom Themes in ggplot2
 author: ''
 date: '2020-03-25'
 slug: creating-custom-themes-in-ggplot2
-categories: []
+categories: ["tutorials"]
 tags: []
 subtitle: ''
 summary: 'Slides from a useR group lightning talk on getting started with creating custom themes in ggplot2.'

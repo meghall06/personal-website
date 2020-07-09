@@ -4,6 +4,7 @@ diagram: yes
 date: '2020-02-24'
 markup: mmark
 math: yes
+categories: ["hockey analysis"]
 image:
   caption: null
   placement: null

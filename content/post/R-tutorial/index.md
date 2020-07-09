@@ -6,6 +6,7 @@ image:
   placement: 3
 markup: mmark
 math: true
+categories: ["tutorials"]
 title: An Introduction to R With Hockey Data
 ---
 
