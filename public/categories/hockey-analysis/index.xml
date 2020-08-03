@@ -5,12 +5,420 @@
     <link>/categories/hockey-analysis/</link>
       <atom:link href="/categories/hockey-analysis/index.xml" rel="self" type="application/rss+xml" />
     <description>hockey analysis</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2020</copyright><lastBuildDate>Mon, 18 May 2020 00:00:00 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2020</copyright><lastBuildDate>Mon, 03 Aug 2020 00:00:00 +0000</lastBuildDate>
     <image>
       <url>/img/icon-192.png</url>
       <title>hockey analysis</title>
       <link>/categories/hockey-analysis/</link>
     </image>
+    
+    <item>
+      <title>Examining the Effect of the Last Change in Hockey</title>
+      <link>/post/last-change/</link>
+      <pubDate>Mon, 03 Aug 2020 00:00:00 +0000</pubDate>
+      <guid>/post/last-change/</guid>
+      <description>&lt;blockquote class=&#34;twitter-tweet&#34;&gt;&lt;p lang=&#34;en&#34; dir=&#34;ltr&#34;&gt;I&amp;#39;ve always been curious about the effect of the home team getting the last change in the NHL. (At each faceoff, save for those following an icing, the home team gets to make the final line change, thus controlling the player matchup until a team makes a change.) Mini-thread 👇&lt;/p&gt;&amp;mdash; Meghan Hall (@MeghanMHall) &lt;a href=&#34;https://twitter.com/MeghanMHall/status/1288983649795420161?ref_src=twsrc%5Etfw&#34;&gt;July 30, 2020&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;I keep a running list of hockey things that I want to look into, and now that playoff bubble hockey has begun, with many people discussing what &amp;ldquo;home field&amp;rdquo; advantage looks like in a different building with no fans, it seems like a good time to cross off &amp;ldquo;last change&amp;rdquo; from the list. My curiosity about the effect of this advantage spawned some analysis that led to the Twitter thread linked above and now this article!&lt;/p&gt;
+&lt;h2&gt;Table of Contents&lt;/h2&gt;
+&lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#introduction&#34;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#league-averages&#34;&gt;League Averages&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#teams-and-players&#34;&gt;Teams and Players&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#coaches&#34;&gt;Coaches&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#special-teams&#34;&gt;Special Teams&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#playoffs&#34;&gt;Playoffs&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#conclusion&#34;&gt;Conclusion&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+
+&lt;div class=&#34;alert alert-note&#34;&gt;
+  &lt;div&gt;
+    &lt;strong&gt;A brief review of NHL rules:&lt;/strong&gt; At the beginning of each period and after each stoppage, play resumes with a faceoff. There are, on average, 60 faceoffs in a game. One advantage for the home team is that they get the last line change, thus determining the player matchup until one of the teams makes another change. They control the matchup beginning at every faceoff, except those following an icing by the home team (when a player dumps the puck, untouched, over the center line and then the goal line), which happens, on average, four times per game.
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;em&gt;All data is from the 2015-2019 seasons and references 5v5 play by the home team in the regular season, unless otherwise indicated.&lt;/em&gt;&lt;/p&gt;
+&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Home teams have historically had a slight advantage over away teams in terms of offense generation. (Throughout, as a proxy for offense generation, I&amp;rsquo;m using the rate of unblocked shot attempts&amp;mdash;i.e., goals, shots on goals, and missed shots&amp;mdash;per 60 minutes.) In the 6081 regular season games that form the basis of this analysis, home teams generated 42.6 unblocked shot attempts per 60 minutes at 5v5, while away teams generated 40.7. This difference holds for every season and is a slight but consistent advantage. (When you see &amp;ldquo;adjusted&amp;rdquo; statistics in hockey, &lt;a href=&#34;https://hockeyviz.com/txt/senstats&#34;&gt;they&amp;rsquo;re adjusted for venue as well as score state&lt;/a&gt;.)&lt;/p&gt;
+&lt;p&gt;How much of this advantage might be attributed to the fact that the home team gets the last change and gets to control the matchups for a certain part of the game? To address this, we first need to know how much of the game this actually affects. That is, what percent of the game involves a line matchup orchestrated by the home team? Since every game second can be classified as a &amp;ldquo;controlled matchup&amp;rdquo; (i.e., all seconds after a home-team-controlled faceoff, until there is a change) or not, we can calculate this, and it turns out to be pretty consistent across seasons at around 38 percent.&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;time.png&#34; &gt;
+&lt;img src=&#34;time.png&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+&lt;p&gt;The variation is fairly small, as well: if you separate out this calculation per team, it only varies from 35 to 41 percent. (And if you isolate the matched line to just forward lines or just defense pairs, the matchup time increases to 42 percent.) So this means a majority of the game still involves line matchups that are created on the fly. However, 38% of game play at 5v5&amp;mdash;which is, on average, just over 18 minutes per game&amp;mdash;is still a significant amount, and having this information means that we can assess the home team in two ways.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Compare the team to itself&lt;/strong&gt;: How does a team generate offense when the matchup is controlled versus when it is not? Is the home team better when it gets to pick the lines?&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Compare the team to the other team&lt;/strong&gt;: When the matchup is controlled, how does the home team generate offense compared to the away team? How much of an advantage do they actually have?&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;league-averages&#34;&gt;League Averages&lt;/h2&gt;
+&lt;p&gt;Both of those questions, at the league level, can be answered by the graph below.&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;league.png&#34; &gt;
+&lt;img src=&#34;league.png&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+&lt;p&gt;Both the home and away teams do a bit better here, in that their shot rates are higher, when the matchups aren&amp;rsquo;t controlled. But when they &lt;em&gt;are&lt;/em&gt;, as logic might dictate, the home team does better, at 41.1 unblocked shot attempts per 60 minutes compared to 35.6 for the away team. In other words, about 15 percent more offense. (It&amp;rsquo;s worth noting that these numbers do not change much if you consider a &amp;ldquo;line matchup&amp;rdquo; to be either just forward lines or just defense pairs, rather than the entire five-skater group.)&lt;/p&gt;
+&lt;p&gt;We can also break this down further by the event zone of the faceoff that kicked off the controlled matchup.&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;zone.png&#34; &gt;
+&lt;img src=&#34;zone.png&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+&lt;p&gt;The graph above shows the shot attempt rate when the matchup is controlled. As to be expected, it&amp;rsquo;s highest when the faceoff is in the offensive zone, and also as to be expected, the home team sees an advantage when compared to the away team: they generate 60.5 shot attempts (per 60 minutes) from an offensive zone faceoff, while the away team generates 55.2 (an advantage of about 10 percent). The home team sees this advantage when the faceoff is in the neutral and the defensive zones, as well, even though less offense overall is generated from starts in those areas. And by shifting the perspective, it&amp;rsquo;s of course true that the home team also does a better job &lt;em&gt;suppressing&lt;/em&gt; shots, as well, when they control the matchup.&lt;/p&gt;
+&lt;h2 id=&#34;teams-and-players&#34;&gt;Teams and Players&lt;/h2&gt;
+&lt;p&gt;With the league averages as a comparison, we can evaluate individual team-seasons on these same metrics. First, within each team, we can compare controlled matchup game play to game play that doesn&amp;rsquo;t involve a controlled matchup, for games in which they are the home team. As shown in the earlier graph, home teams do slightly worse when the matchups are controlled, in that their shot rate is depressed by a little over five percent compared to when the matchups are not controlled. Let&amp;rsquo;s look at the teams that have the biggest difference in their shot rates between those states of play.&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;team_fen_good.png&#34; &gt;
+&lt;img src=&#34;team_fen_good.png&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;team_fen_bad.png&#34; &gt;
+&lt;img src=&#34;team_fen_bad.png&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;In both graphs, the league average of -5.5 percent is shown with a dashed line. The first graph shows the 10 teams who have the biggest positive difference, while the second shows the 10 teams who have the biggest negative difference. That is, teams like Carolina and Columbus from this season played better than we might expect when they were able to control the matchup, while teams like Chicago and the Islanders (over multiple seasons) played worse.&lt;/p&gt;
+&lt;p&gt;Next, we can look at team-level data &lt;em&gt;when the matchup is controlled&lt;/em&gt;. We already saw that the home team has the advantage there (the league average is 15 percent more offense, as shown above), but we can find out which teams have the largest advantage and which have the smallest. This likely correlates well to overall offensive performance&amp;mdash;that is, even when a bad team has control of the matchup, they&amp;rsquo;re still not very good. And vice versa for the good teams. Shown below are the top 10 and bottom 10 teams, those who have the biggest and smallest advantage over the away team when they control the matchup as the home team. The dashed line is the league average at 15 percent.&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;team_fen_good_matchup.png&#34; &gt;
+&lt;img src=&#34;team_fen_good_matchup.png&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;team_fen_bad_matchup.png&#34; &gt;
+&lt;img src=&#34;team_fen_bad_matchup.png&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;Lastly, mostly just for fun, we can take a look at which players&amp;mdash;forward lines and defense pairs&amp;mdash;in this time frame have been used most often when the home team has control of the matchup.&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;off_F.png&#34; &gt;
+&lt;img src=&#34;off_F.png&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;off_D.png&#34; &gt;
+&lt;img src=&#34;off_D.png&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;Shown above are the players trusted for offensive zone faceoffs, and shown below are the lines and pairs most commonly used for defensive zone faceoffs, when the home teams want to suppress offense by the away team.&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;def_F.png&#34; &gt;
+&lt;img src=&#34;def_F.png&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;def_D.png&#34; &gt;
+&lt;img src=&#34;def_D.png&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h2 id=&#34;coaches&#34;&gt;Coaches&lt;/h2&gt;
+&lt;p&gt;To take this one step further, we can look at &lt;em&gt;coaches&lt;/em&gt; instead of just individual team-seasons, as the head coach is generally in charge of the line matchups. The data for each coach includes all home games for which he was the head coach over this time frame, possibly combining seasons and teams.&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;coach_good.png&#34; &gt;
+&lt;img src=&#34;coach_good.png&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+&lt;p&gt;Similar to what we saw previously, the graphs above and below show the top and bottom 10 coaches, respectively, with the greatest difference in controlled play versus uncontrolled. Some coaches, like Rod Brind&amp;rsquo;Amour, show a greater positive difference with line matching than we might expect, while others, like Jeremy Colliton and Joel Quenneville, are below league average when comparing controlled matchup time to non-controlled matchup time.&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;coach_bad.png&#34; &gt;
+&lt;img src=&#34;coach_bad.png&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+&lt;h2 id=&#34;special-teams&#34;&gt;Special Teams&lt;/h2&gt;
+&lt;p&gt;The home team&amp;rsquo;s technical advantage of the last line change still applies during special teams play, but we might hypothesize that the effect would be smaller since special teams units are usually fairly standard&amp;mdash;each team generally has two units each for the power play and penalty kill, and teams are often prepared for these matchups in advance.&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;special.png&#34; &gt;
+&lt;img src=&#34;special.png&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+&lt;p&gt;Still, we can explore the effect similarly to how we did so in the first section. In contrast to play at 5v5, in which home teams generate a little less offense when matchups are controlled versus when they are not, at 5v4 home teams generate much more here. This makes sense considering that power plays start with a faceoff, generally in the offensive zone and generally with the top unit, and the initial line matchup likely lasts longer. We can also see that the home team does have a slight overall advantage of around five percent (84.4 unblocked shot attempts per 60 minutes versus 80.1) when the matchup is controlled.&lt;/p&gt;
+&lt;h2 id=&#34;playoffs&#34;&gt;Playoffs&lt;/h2&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure&gt;
+
+
+  &lt;a data-fancybox=&#34;&#34; href=&#34;playoffs.png&#34; &gt;
+&lt;img src=&#34;playoffs.png&#34; alt=&#34;&#34; &gt;&lt;/a&gt;
+
+
+
+&lt;/figure&gt;
+
+&lt;p&gt;Lastly, we can take a look at playoff games, from the 2015 through 2018 seasons, and compare to what we saw at the beginning with regular season play (both at 5v5). Overall, the difference is not tremendous. In the regular season, home teams saw about a five percent decrease in offense when the matchup was controlled as compared to when it was not; that difference is slightly smaller in the playoffs with a three percent decrease. The home team advantage when the matchup &lt;em&gt;is&lt;/em&gt; controlled was shown to be around 15 percent in the regular season, while it increases to about 23 percent in the playoffs (41.3 unblocked shot attempts per 60 minutes for the home team versus 33.6 for the away team).&lt;/p&gt;
+&lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;Since the 2020 playoffs have started in the bubble, with &amp;ldquo;home&amp;rdquo; teams playing with no fans and often in a building that is not actually their home building, many fans, writers, and analysts have been publicly wondering about the value of being the home team. These home teams in the bubble are certainly missing some advantages of being in their own arenas (the routine, the energy of the fans, the possible penalty implications), but the advantage of having the last line change&amp;mdash;and therefore controlling the matchups for an average of 18 5v5 minutes per game&amp;mdash;cannot be discounted.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Play-by-play data sourced via the &lt;a href=&#34;https://evolving-hockey.com&#34;&gt;Evolving-Hockey&lt;/a&gt; scraper, position data sourced from their website. Coach data sourced from &lt;a href=&#34;https://naturalstattrick.com&#34;&gt;Natural Stat Trick&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>The State of Goalie Pulling in the NHL</title>
@@ -20,6 +428,12 @@
       <description>
 
 
+&lt;p&gt;&lt;div class=&#34;alert alert-note&#34;&gt;
+  &lt;div&gt;
+    A Markdown aside is useful for displaying notices, hints, or definitions to your readers.
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/p&gt;
 &lt;p&gt;When people ask me how to get into sports analytics, I always suggest starting with a question that they’re interested in exploring and using that question as a framework for learning the domain knowledge and the technical skills they need. I feel comfortable giving this advice because it’s exactly how I got into hockey analytics: I was curious about goalie pulling, and I couldn’t find enough data to satisfy my curiosity. There are plenty of articles on when teams should pull their goalies, but aside from a &lt;a href=&#34;https://fivethirtyeight.com/features/nhl-coaches-are-pulling-goalies-earlier-than-ever/&#34;&gt;2015 article on FiveThirtyEight&lt;/a&gt; by Michael Lopez and Noah Davis, I couldn’t find much data on when NHL teams were actually pulling their goalies and if game trends were catching up to the mathematical recommendations. I presented some data on the topic at the &lt;a href=&#34;http://meghan.rbind.io/talk/seahac/&#34;&gt;Seattle Hockey Analytics Conference&lt;/a&gt; in March 2019, but the following analysis is broader and includes more seasons of data.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Read the entire article on Hockey-Graphs &lt;a href=&#34;https://hockey-graphs.com/2020/05/18/the-state-of-goalie-pulling-in-the-nhl/&#34;&gt;here&lt;/a&gt;.&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;The Tableau dashboard that accompanies this article should show below and is also available &lt;a href=&#34;https://public.tableau.com/views/GoaliePullTimes2018-19/GoaliePullTimes18-19?:display_count=y&amp;amp;publish=yes&amp;amp;:toolbar=n&amp;amp;:origin=viz_share_link&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
