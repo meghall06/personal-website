@@ -22,19 +22,7 @@
 
 &lt;!-- raw HTML omitted --&gt;
 &lt;p&gt;I keep a running list of hockey things that I want to look into, and now that playoff bubble hockey has begun, with many people discussing what &amp;ldquo;home field&amp;rdquo; advantage looks like in a different building with no fans, it seems like a good time to cross off &amp;ldquo;last change&amp;rdquo; from the list. My curiosity about the effect of this advantage spawned some analysis that led to the Twitter thread linked above and now this article!&lt;/p&gt;
-&lt;h2&gt;Table of Contents&lt;/h2&gt;
-&lt;nav id=&#34;TableOfContents&#34;&gt;
-  &lt;ul&gt;
-    &lt;li&gt;&lt;a href=&#34;#introduction&#34;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#league-averages&#34;&gt;League Averages&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#teams-and-players&#34;&gt;Teams and Players&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#coaches&#34;&gt;Coaches&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#special-teams&#34;&gt;Special Teams&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#playoffs&#34;&gt;Playoffs&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#conclusion&#34;&gt;Conclusion&lt;/a&gt;&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/nav&gt;
-
+&lt;!-- raw HTML omitted --&gt;
 &lt;div class=&#34;alert alert-note&#34;&gt;
   &lt;div&gt;
     &lt;strong&gt;A brief review of NHL rules:&lt;/strong&gt; At the beginning of each period and after each stoppage, play resumes with a faceoff. There are, on average, 60 faceoffs in a game. One advantage for the home team is that they get the last line change, thus determining the player matchup until one of the teams makes another change. They control the matchup beginning at every faceoff, except those following an icing by the home team (when a player dumps the puck, untouched, over the center line and then the goal line), which happens, on average, four times per game.
