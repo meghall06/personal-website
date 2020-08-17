@@ -5,12 +5,246 @@
     <link>/categories/hockey-analysis/</link>
       <atom:link href="/categories/hockey-analysis/index.xml" rel="self" type="application/rss+xml" />
     <description>hockey analysis</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2020</copyright><lastBuildDate>Mon, 03 Aug 2020 00:00:00 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><copyright>© 2020</copyright><lastBuildDate>Mon, 17 Aug 2020 00:00:00 +0000</lastBuildDate>
     <image>
       <url>/img/icon-192.png</url>
       <title>hockey analysis</title>
       <link>/categories/hockey-analysis/</link>
     </image>
+    
+    <item>
+      <title>NHL Shot Locations by Arena</title>
+      <link>/post/shot-locations/</link>
+      <pubDate>Mon, 17 Aug 2020 00:00:00 +0000</pubDate>
+      <guid>/post/shot-locations/</guid>
+      <description>
+
+
+&lt;div id=&#34;if-you-just-want-to-see-the-interactive-data-scroll-down&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;(If you just want to see the interactive data, scroll down!)&lt;/h3&gt;
+&lt;p&gt;&lt;div class=&#34;alert alert-note&#34;&gt;
+  &lt;div&gt;
+    This data set includes all regular season NHL games from the 2015 season through the 2019 season, until the pause. “Shots” encompasses all unblocked shot attempts: goals, shots on goal, and missed shots. Blocked shots are excluded because those are recorded at the location of the block, not the location of the shot.
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/p&gt;
+&lt;p&gt;In the play-by-play game data made public by the NHL, most events include a location: an X coordinate (measuring from the center line, 0 to 100) and a Y coordinate (measuring from mid-rink, -43 to 43) to represent where on the ice the event took place. These locations are manually recorded, and since humans make mistakes, we would expect to see some random error that would even itself out over time. But by looking at all the shot locations &lt;em&gt;per arena&lt;/em&gt; (i.e., all the shots recorded in an arena for a given season, for both the home team and all the away teams), we can investigate to see whether there is systematic error in certain arenas. That is, do certain arenas record shots less accurately?&lt;/p&gt;
+&lt;p&gt;We can look at this by comparing the distributions of shot locations in the entire league to each home arena. For example, when looking at the X coordinates in the graph below, the most popular recorded location for a shot is at 79 feet (for context, the goal line is at 89 feet). League-wide, over this time frame, 2.7% of all shots were recorded at that coordinate. However, the individual arena values range from 2.1% (Toronto) to 3.7% (Pittsburgh).&lt;/p&gt;
+&lt;p&gt;You can see the full distribution below for the X coordinate. The dark line is the league average, while the gray lines represent each individual arena.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/img/home.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Two initial reactions might be: those differences don’t look that large &lt;em&gt;or&lt;/em&gt; maybe there are true characteristics that drive those discrepancies. Perhaps Pittsburgh, for example, takes so many more shots closer to the net that it skews the average shot location for all the shots recorded at that arena.&lt;/p&gt;
+&lt;p&gt;However, we can test that by looking at the exact same distribution, but this time focused on &lt;em&gt;away teams&lt;/em&gt; rather than by home arenas. So instead of being driven by all the shots recorded by the home arena, the individual lines below encompass all the shots recorded while a certain team was the away team.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/img/away.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;There is &lt;em&gt;much&lt;/em&gt; less variation than in the first graph, so it’s clear that there are some differences in recorded shot locations among arenas.&lt;/p&gt;
+&lt;p&gt;This question of possible systematic error is not a new one—Gabe Desgardins wrote &lt;a href=&#34;https://www.arcticicehockey.com/2010/10/18/1756880/clean-up-your-act-madison-square-garden&#34;&gt;an article for Arctic Ice Hockey&lt;/a&gt; back in 2010 that focused on the shot locations in Madison Square Garden in particular, and the graphs in that piece inspired my approach here. &lt;a href=&#34;http://hockeyanalytics.com/Research_files/Product_Recall_for_Shot_Quality.pdf&#34;&gt;Alan Ryder in 2007&lt;/a&gt; also found systematic bias in shot locations, particularly at MSG, and many others, including &lt;a href=&#34;https://arxiv.org/pdf/1412.1035.pdf&#34;&gt;Michael Schuckers in 2014&lt;/a&gt;, have written about rink effects in the recording of events generally. I hadn’t seen shot location data like this recently and wanted to update it for the last handful of seasons.&lt;/p&gt;
+&lt;p&gt;&lt;div class=&#34;alert alert-note&#34;&gt;
+  &lt;div&gt;
+    Why does this matter? Expected goals models that use public data rely heavily on shot location, as it’s an important feature in those models. Being aware of possible systematic bias among arenas can add context to the results.
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/p&gt;
+&lt;p&gt;In order to summarize the differences per team over this time period, we can create a measure of comparison by finding the absolute value of the difference between the league average and the team’s value at each coordinate and summing those values. The top and bottom 10 teams (i.e., the teams that had the largest and smallest differences from the average, respectively) are shown below for the X coordinate, which has more variation.&lt;/p&gt;
+&lt;div class = &#34;row&#34;&gt;
+&lt;div class = &#34;col-md-6&#34;&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+Team
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+Measure
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+T.B
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.341
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+CAR
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.219
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+NYR
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.213
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+ARI
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.209
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+BOS
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.208
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+ANA
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.205
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+PHI
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.201
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+STL
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.185
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+MTL
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.184
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+TOR
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.165
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class = &#34;col-md-6&#34;&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+Team
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+Measure
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+EDM
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.079
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+L.A
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.092
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+NYI
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.093
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+NSH
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.098
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+CGY
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.102
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+WSH
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.103
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+VGK
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.103
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+COL
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.107
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+DET
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.112
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+S.J
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+0.119
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;You can explore this data by team and by year in the dashboard below, which is also available &lt;a href=&#34;https://public.tableau.com/views/NHLShotLocationsbyArena/ShotLocations?:language=en&amp;amp;:display_count=y&amp;amp;:origin=viz_share_link&#34;&gt;here&lt;/a&gt;. (If you’re on reading this on mobile, clicking the link will likely give you a better viewing experience.)&lt;/p&gt;
+&lt;div style=&#34;align: center; margin-left: -50px;&#34;&gt;
+&lt;iframe src=&#34;https://public.tableau.com/views/NHLShotLocationsbyArena/ShotLocations?:showVizHome=no&amp;:embed=true&#34; width=&#34;950px&#34; height=&#34;700px&#34; frameborder=&#34;0&#34;&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>Examining the Effect of the Last Change in Hockey</title>
@@ -416,12 +650,6 @@
       <description>
 
 
-&lt;p&gt;&lt;div class=&#34;alert alert-note&#34;&gt;
-  &lt;div&gt;
-    A Markdown aside is useful for displaying notices, hints, or definitions to your readers.
-  &lt;/div&gt;
-&lt;/div&gt;
-&lt;/p&gt;
 &lt;p&gt;When people ask me how to get into sports analytics, I always suggest starting with a question that they’re interested in exploring and using that question as a framework for learning the domain knowledge and the technical skills they need. I feel comfortable giving this advice because it’s exactly how I got into hockey analytics: I was curious about goalie pulling, and I couldn’t find enough data to satisfy my curiosity. There are plenty of articles on when teams should pull their goalies, but aside from a &lt;a href=&#34;https://fivethirtyeight.com/features/nhl-coaches-are-pulling-goalies-earlier-than-ever/&#34;&gt;2015 article on FiveThirtyEight&lt;/a&gt; by Michael Lopez and Noah Davis, I couldn’t find much data on when NHL teams were actually pulling their goalies and if game trends were catching up to the mathematical recommendations. I presented some data on the topic at the &lt;a href=&#34;http://meghan.rbind.io/talk/seahac/&#34;&gt;Seattle Hockey Analytics Conference&lt;/a&gt; in March 2019, but the following analysis is broader and includes more seasons of data.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Read the entire article on Hockey-Graphs &lt;a href=&#34;https://hockey-graphs.com/2020/05/18/the-state-of-goalie-pulling-in-the-nhl/&#34;&gt;here&lt;/a&gt;.&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;The Tableau dashboard that accompanies this article should show below and is also available &lt;a href=&#34;https://public.tableau.com/views/GoaliePullTimes2018-19/GoaliePullTimes18-19?:display_count=y&amp;amp;publish=yes&amp;amp;:toolbar=n&amp;amp;:origin=viz_share_link&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;

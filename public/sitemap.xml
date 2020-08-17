@@ -19,21 +19,26 @@
   
   <url>
     <loc>/categories/</loc>
-    <lastmod>2020-08-03T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/post/last-change/</loc>
-    <lastmod>2020-08-03T00:00:00+00:00</lastmod>
+    <lastmod>2020-08-17T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>/categories/hockey-analysis/</loc>
-    <lastmod>2020-08-03T00:00:00+00:00</lastmod>
+    <lastmod>2020-08-17T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/shot-locations/</loc>
+    <lastmod>2020-08-17T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>/post/</loc>
+    <lastmod>2020-08-17T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/last-change/</loc>
     <lastmod>2020-08-03T00:00:00+00:00</lastmod>
   </url>
   
