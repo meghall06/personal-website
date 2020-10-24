@@ -34,7 +34,7 @@ location: Carnegie Mellon Sports Analytics Conference
 math: true
 projects:
 - 
-publishDate: ""
+publishDate: "2020-10-24"
 slides: 
 summary: Level up your R programming in this workshop targeted to beginner and intermediate R users.
 tags: []
