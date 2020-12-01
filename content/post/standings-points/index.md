@@ -7,6 +7,7 @@ image:
 markup: mmark
 categories: ["tutorials"]
 math: true
+draft: true
 title: Learning Functions with NHL Standings Points
 ---
 
