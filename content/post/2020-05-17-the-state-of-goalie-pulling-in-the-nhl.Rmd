@@ -8,7 +8,7 @@ tags: []
 subtitle: ''
 summary: 'A broad analysis of when NHL teams pull their goalie.'
 authors: []
-lastmod: ''
+lastmod: '2020-05-18'
 featured: no
 image:
   caption: ''
