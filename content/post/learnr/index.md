@@ -5,6 +5,7 @@ date: '2020-06-29'
 markup: mmark
 math: yes
 categories: ["tutorials"]
+summary: 'Two tutorials available, using the package learnr, for learning R with hockey data.'
 image:
   caption: null
   placement: null

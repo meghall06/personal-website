@@ -5,6 +5,7 @@ date: '2020-08-03'
 markup: markdown
 math: yes
 categories: ["hockey analysis"]
+summary: 'Exploring the possible benefit of the home team having the last change in hockey.'
 image:
   caption: null
   placement: null
