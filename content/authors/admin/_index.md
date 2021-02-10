@@ -11,7 +11,7 @@ name: Meghan Hall
 organizations:
 - name: ""
   url: ""
-role: Hockey Analyst
+role: Hockey Analyst & R Educator
 social:
 - icon: envelope
   icon_pack: fas
@@ -31,6 +31,6 @@ user_groups:
 
 ---
 
-Meghan Hall is a higher education data professional by day and an amateur hockey analyst by night. She contributes to Hockey-Graphs and has written for Nightingale, the publication of the Data Visualization Society. She is also an enthusiastic user of both R and Tableau and loves helping other people learn these tools to make their work easier.
+Meghan Hall is a higher education data professional by day and an amateur hockey analyst by night. She contributes to [Hockey-Graphs](https://hockey-graphs.com/) and has written for Nightingale, the publication of the Data Visualization Society. She is also an enthusiastic user of both R and Tableau and loves helping other people learn these tools to make their work easier.
 
 She presented at the Seattle Hockey Analytics Conference in March 2019 on league-wide trends in goalie pulling and has presented on features of the penalty kill three times, at the Rochester Institute of Technology Sports Analytics Conference in August 2019, the Ottawa Hockey Analytics Conference in November 2019, and the Columbus Blue Jackets Hockey Analytics Conference (with Alison Lukan) in February 2020. She also presented virtually at Hockey (Analytics) Night in Canada in April 2020 on how and why to learn a programming language.
