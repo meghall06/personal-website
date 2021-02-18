@@ -1,5 +1,5 @@
 ---
-title: "Leveling Up with the Tidyverse <br> (and hockey data)"
+title: "Using R for Your Big Data Cup Project"
 subtitle: 'Meghan Hall'
 author: 'Carnegie Mellon Sports Analytics Conference <br> October 25, 2020 | #CMSAC20'
 institute: '`r icon::fa("twitter")`  @MeghanMHall <br> `r icon::fa("github")` meghall06 <br> `r icon::fa("link")` meghan.rbind.io'
