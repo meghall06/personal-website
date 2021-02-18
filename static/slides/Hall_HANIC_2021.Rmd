@@ -69,7 +69,7 @@ class: inverse, center, middle
 # Using R for Your Big Data Cup Project
 <img src="figs/hanic/puck.png" width="250px"/>
 ### A gentle intro and some tips & tricks
-Meghan Hall <br> `r icon::fa("twitter")` [@MeghanMHall](https://www.twitter.com) <br> [meghan.rbind.io](https://meghan.rbind.io/) <br> [Hockey (Analytics) Night in Canada](https://www.hanic-analytics.com) <br> Feb. 18, 2021
+Meghan Hall <br> `r icon::fa("twitter")` [@MeghanMHall](https://www.twitter.com/MeghanMHall) <br> [meghan.rbind.io](https://meghan.rbind.io/) <br> [Hockey (Analytics) Night in Canada](https://www.hanic-analytics.com) <br> Feb. 18, 2021
 
 ---
 background-image: url(figs/hanic/puck.png)
@@ -774,5 +774,5 @@ layout: false
 
 # Thanks!
 
-`r icon::fa("twitter")` [@MeghanMHall](https://www.twitter.com) <br> [meghan.rbind.io](https://meghan.rbind.io/) <br>
+`r icon::fa("twitter")` [@MeghanMHall](https://www.twitter.com/MeghanMHall) <br> [meghan.rbind.io](https://meghan.rbind.io/) <br>
 Slides created via the R package [xaringan](https://github.com/yihui/xaringan).
