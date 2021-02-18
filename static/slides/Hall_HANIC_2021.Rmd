@@ -7,7 +7,7 @@ date:
 output:
   xaringan::moon_reader:
     seal: false
-    css: xaringan-themer.css
+    css: xaringan-themer2.css
     lib_dir: libs_HANIC
     nature:
       titleSlideClass: ["left", "middle"]
