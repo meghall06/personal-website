@@ -1,5 +1,5 @@
 ---
-abstract: Why and how to get started with coding! This presentation was part of Meghan Chayka and Alison Lukan's HANIC (Hockey Analytics Night in Canada) and focused on how to move on from Excel in order to make your analysis more reproducible, efficient, and shareable. The slides are available at the link above and also [here](https://meghan.rbind.io/slides/hall_hanic_2020.html#1). Recorded video of the talk is available [here](https://www.youtube.com/watch?v=-Zl_b5Emvb0&feature=youtu.be).
+abstract: This presentation was part of a special edition of Meghan Chayka and Alison Lukan's HANIC (Hockey Analytics Night in Canada), all about the [Big Data Cup](https://www.stathletes.com/big-data-cup/). This is a quick and gentle intro to R, focused on the Big Data Cup data, and provides some more resources for learning. The slides are available at the link above and also [here](https://meghan.rbind.io/slides/hall_hanic_2021.html#1).
 
 address:
   city: 
@@ -26,21 +26,21 @@ links:
   icon_pack: fas
   name: Slides
   url: https://meghan.rbind.io/slides/hall_hanic_2021.html#1
-- icon: youtube
-  icon_pack: fab
-  name: Video
-  url: https://www.youtube.com/watch?v=-Zl_b5Emvb0&feature=youtu.be
+# - icon: youtube
+#   icon_pack: fab
+#   name: Video
+#   url: https://www.youtube.com/watch?v=-Zl_b5Emvb0&feature=youtu.be
 location: Hockey Analytics Night in Canada #HANIC
 math: true
 projects:
 - 
 publishDate: ""
 slides: 
-summary: Moving beyond Excel to make your analysis more reproducible, efficient, and shareable.
+summary: A short & gentle intro to R, plus some tips and tricks, geared around the Big Data Cup.
 tags: []
-title: Moving Beyond Excel for Your Hockey Analysis
+title: Using R for Your Big Data Cup Project
 url_code: ""
-#url_slides: "https://meghan.rbind.io/slides/hall_hanic_2020.html#1"
+#url_slides: "https://meghan.rbind.io/slides/hall_hanic_2021.html#1"
 url_video: ""
 ---
 
