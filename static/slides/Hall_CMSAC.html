@@ -4,6 +4,7 @@
     <title>Leveling Up with the Tidyverse   (and hockey data)</title>
     <meta charset="utf-8" />
     <meta name="author" content="Carnegie Mellon Sports Analytics Conference   October 25, 2020 | #CMSAC20" />
+    <script src="libs_CMSAC/header-attrs/header-attrs.js"></script>
     <link href="libs_CMSAC/font-awesome/css/fontawesome-all.min.css" rel="stylesheet" />
     <script src="libs_CMSAC/kePrint/kePrint.js"></script>
     <link href="libs_CMSAC/lightable/lightable.css" rel="stylesheet" />
@@ -108,7 +109,7 @@ Do you need to know anything about coding?
 
 --
 
-🕦&amp;nbsp; 5-minute breaks at 5:00 and 5:30
+🕗&amp;nbsp; 5-minute breaks at 5:00 and 5:30
 
 --
 
@@ -1342,7 +1343,7 @@ library(betweenthepipes)
 library(tidyverse)
 ```
 --
-🕑&amp;nbsp; For dealing with time (also part of the tidyverse)
+🕦&amp;nbsp; For dealing with time (also part of the tidyverse)
 
 
 ```r
@@ -6476,7 +6477,7 @@ summary %&gt;%
 
 # What are the benefits of creating a custom theme?
 
-🕢&amp;nbsp; Saves time!
+🕥&amp;nbsp; Saves time!
 
 &lt;br&gt;
 &lt;br&gt;
@@ -7111,13 +7112,13 @@ class: center, middle
 
 # Thanks!
 
-<i class="fab  fa-twitter "></i> [@MeghanMHall](https://twitter.com/MeghanMHall)
+`&lt;i class="fab  fa-twitter "&gt;&lt;/i&gt;`{=html} [@MeghanMHall](https://twitter.com/MeghanMHall)
 &lt;br&gt;
-<i class="fab  fa-github "></i> [meghall06](https://github.com/meghall06) 
+`&lt;i class="fab  fa-github "&gt;&lt;/i&gt;`{=html} [meghall06](https://github.com/meghall06) 
 &lt;br&gt;
-<i class="fas  fa-link "></i> [meghan.rbind.io](https://meghan.rbind.io)
+`&lt;i class="fas  fa-link "&gt;&lt;/i&gt;`{=html} [meghan.rbind.io](https://meghan.rbind.io)
 &lt;br&gt;
-<i class="fas  fa-envelope "></i> meghanhall6@gmail.com
+`&lt;i class="fas  fa-envelope "&gt;&lt;/i&gt;`{=html} meghanhall6@gmail.com
 &lt;br&gt;
 &lt;br&gt;
 Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan).
@@ -7171,30 +7172,20 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
 })();
 (function() {
   "use strict"
-  /* Replace <script> tags in slides area to make them executable
-   *
-   * Runs after post-processing of markdown source into slides and replaces only
-   * <script>s on the last slide of continued slides using the .has-continuation
-   * class added by xaringan. Finally, any <script>s in the slides area that
-   * aren't executed are commented out.
-   */
+  // Replace <script> tags in slides area to make them executable
   var scripts = document.querySelectorAll(
-    '.remark-slides-area .remark-slide-container:not(.has-continuation) script'
+    '.remark-slides-area .remark-slide-container script'
   );
   if (!scripts.length) return;
   for (var i = 0; i < scripts.length; i++) {
     var s = document.createElement('script');
     var code = document.createTextNode(scripts[i].textContent);
     s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
     scripts[i].parentElement.replaceChild(s, scripts[i]);
-  }
-  var scriptsNotExecuted = document.querySelectorAll(
-    '.remark-slides-area .remark-slide-container.has-continuation script'
-  );
-  if (!scriptsNotExecuted.length) return;
-  for (var i = 0; i < scriptsNotExecuted.length; i++) {
-    var comment = document.createComment(scriptsNotExecuted[i].outerHTML)
-    scriptsNotExecuted[i].parentElement.replaceChild(comment, scriptsNotExecuted[i])
   }
 })();
 (function() {
