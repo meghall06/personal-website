@@ -31,8 +31,6 @@ user_groups:
 
 ---
 
-I'm a higher education data professional by day and an amateur hockey analyst by night. I contribute to [Hockey-Graphs](https://hockey-graphs.com/) and have written for Nightingale, the publication of the Data Visualization Society. I'm also an enthusiastic user of both R and Tableau and love helping other people learn these tools to make their work easier.
+I am a higher ed data professional by day, a hockey analyst by night, and an enthusiastic R user and educator at all hours of the day. I regularly write and present on various aspects of hockey analysis, by contributing to [Hockey-Graphs](https://hockey-graphs.com/) and speaking at conferences like the Rochester Institute of Technology Sports Analytics Conference, the Ottawa Hockey Analytics Conference, and the Columbus Blue Jackets Hockey Analytics Conference. I also frequently deliver talks and workshops on R---for useR groups, R-Ladies groups, and conferences such as the Carnegie Mellon Sports Analytics Conference and Hockey (Analytics) Night in Canada. All articles and links to slides are available below.
 
-I presented at the Seattle Hockey Analytics Conference in March 2019 on league-wide trends in goalie pulling and have presented on features of the penalty kill three times, at the Rochester Institute of Technology Sports Analytics Conference in August 2019, the Ottawa Hockey Analytics Conference in November 2019, and the Columbus Blue Jackets Hockey Analytics Conference (with Alison Lukan) in February 2020. I also presented virtually at Hockey (Analytics) Night in Canada in April 2020 on how and why to learn a programming language.
-
-**Work with me!** I've given workshops on Tableau and R and am available for select consulting work, as well. My email is below if you'd like to chat.
+**Work with me!** I've available for workshops on Tableau and R and select consulting work, as well. My email is below if you'd like to chat.
