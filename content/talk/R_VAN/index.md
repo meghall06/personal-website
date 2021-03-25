@@ -1,5 +1,5 @@
 ---
-abstract: Canada's favorite sport isn't just fun to play and fun to watch, it's also a fun tool for learning and using R. I originally taught myself R in order to better analyze hockey, and in this workshop we'll discuss how R sparked my career path as a data analyst as well as work through beginner and intermediate data manipulation techniques from the tidyverse by calculating some box score hockey stats.
+abstract: Canada's favorite sport isn't just fun to play and fun to watch, it's also a fun tool for learning and using R. I originally taught myself R in order to better analyze hockey, and in this workshop we'll discuss how R sparked my career path as a data analyst as well as work through beginner and intermediate data manipulation techniques from the tidyverse by calculating some box score hockey stats. The slides are available at the link above and also [**here**](https://meghan.rbind.io/slides/hall_rladies_van_2021.html#1). The data is available in my `betweenthepipes` package (available on Github [**here**](https://github.com/meghall06/betweenthepipes)), and the full code for the entire workshop (including how to access the data) is available [**here**](https://github.com/meghall06/personal-website/blob/master/static/RLadies_VAN_code.R).
 
 address:
   city: 
@@ -25,7 +25,7 @@ links:
 - icon: desktop
   icon_pack: fas
   name: Slides
-  url: 
+  url: https://meghan.rbind.io/slides/hall_rladies_van_2021.html#1
 # - icon: youtube
 #   icon_pack: fab
 #   name: Video

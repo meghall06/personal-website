@@ -1,0 +1,923 @@
+---
+title: "How Hockey Taught Me R"
+subtitle: ""  
+author: "Meghan Hall"
+date: 
+output:
+  xaringan::moon_reader:
+    seal: false
+    css: ["xaringan-themer.css", "test.css"]
+    lib_dir: libs_RLadies_VAN
+    nature:
+      titleSlideClass: ["left", "middle"]
+      highlightStyle: github
+      highlightLines: true
+      highlightSpans: true
+      countIncrementalSlides: false
+      slideNumberFormat: "%current%"
+---
+```{r setup, include=FALSE}
+library(emo)
+library(icon)
+library(kableExtra)
+library(betweenthepipes)
+library(tidyverse)
+options(knitr.kable.NA = '')
+options(htmltools.dir.version = FALSE, htmltools.preserve.raw = FALSE)
+knitr::opts_chunk$set(fig.retina = 3, 
+                      warning = FALSE, 
+                      message = FALSE,
+                      fig.path = "figs/RLadies_VAN/")
+
+pbp <- pbp_example
+
+```
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+
+style_mono_accent(
+  header_font_google = google_font("Bebas Neue"),
+  text_font_google   = google_font("Lato", "400", "400i"),
+  code_font_google   = google_font("Roboto Mono"),
+  link_color = "#8797AF",
+  base_color = "#5C164E",
+  extra_fonts = list(
+    google_font("Lato")
+  ),
+  extra_css = list(
+    ".title-slide h2" = list("font-family" = "Lato"),
+    ".title-slide h3" = list("font-family" = "Lato")
+  )
+)
+```
+
+class: inverse, center, middle
+
+<img src="figs/RLadies_VAN/RLad_VAN.png" width="250px"/>
+
+# How Hockey Taught Me R
+
+Meghan Hall <br> `r icon::fa("twitter")` [@MeghanMHall](https://www.twitter.com/MeghanMHall) <br> `r icon::fa("link")` [meghan.rbind.io](https://meghan.rbind.io/) <br> R-Ladies Vancouver <br> Mar 25, 2021
+
+---
+background-image: url(figs/RLadies_VAN/RLad_VAN.png)
+background-position: 98% 2%
+background-size: 102px 115px
+padding-right: 10px
+layout: true
+<div class="my-footer"><span>tinyurl.com/rladies-van</span></div>
+---
+
+class: middle, center
+
+# Housekeeping
+
+--
+
+`r emo::ji("desktop_computer")`&nbsp; 
+<br>[tinyurl.com/rladies-van](https://tinyurl.com/rladies-van)
+
+<br>
+
+--
+
+`r emo::ji("package")`&nbsp; 
+```{r eval=FALSE, tidy=FALSE}
+devtools::install_github("meghall06/betweenthepipes")
+```
+<br>
+
+--
+
+`r emo::ji("alarm_clock")`&nbsp; 
+
+<br>
+
+--
+
+`r emo::ji("question")`&nbsp; 
+
+---
+
+class: middle, center
+
+# The Land Before R
+
+--
+
+`r emo::ji("graduation_cap")`&nbsp; 
+<br>
+the perils of Excel in a reporting-heavy office
+
+<br>
+--
+
+`r emo::ji("ice_hockey")`&nbsp;
+<br>
+the problem of "big" data and constantly having *more* data
+
+---
+
+class: middle, center
+
+# Why R?
+--
+
+`r emo::ji("unlock")`&nbsp; 
+<br>
+open source = free
+
+<br>
+
+--
+
+`r icon::fa("twitter")`&nbsp; 
+<br>
+community through `#rstats` and `R-Ladies`
+
+<br>
+
+---
+
+class: middle, center
+
+# Post-R
+
+--
+
+`r emo::ji("graduation_cap")`&nbsp; 
+<br>
+*everything* is streamlined
+
+<br>
+--
+
+`r emo::ji("ice_hockey")`&nbsp;
+<br>
+more analysis, more opportunities, more helping!
+
+---
+class: inverse, middle, center
+
+# What you're all here for
+
+---
+
+## Method endorsed by multiple professionals!
+
+<br>
+<br>
+.center[<img src="figs/RLadies_VAN/tweet.png" width="585px" height="285px"/>]
+
+---
+
+# Where does the data come from?
+
+```{r, echo=FALSE, out.width=180, fig.align='center'}
+knitr::include_graphics("figs/CMSAC/pipes_logo.png")
+```
+
+```{r eval=FALSE, tidy=FALSE}
+# install the package from github
+devtools::install_github("meghall06/betweenthepipes")
+
+# load the libraries
+library(betweenthepipes)
+library(tidyverse) #<<
+
+# add the data from the package to the global environment
+pbp <- pbp_example
+```
+
+--
+*scrape for yourself using the [Evolving Hockey](https://evolving-hockey.com/) [R scraper](https://github.com/evolvingwild/evolving-hockey/blob/master/EH_scrape_functions.R)*
+
+---
+
+# Tonight's exercises
+
+<br>
+<br>
+<br>
+<br>
+
+.center[.large[**goalie save percentage**]]
+
+<br>
+.center[team faceoff percentage]
+
+<br>
+.center[individual plus-minus]
+
+---
+
+# Goalie save percentage
+
+What is this data? How do we find saves??
+
+--
+
+```{r, eval = FALSE}
+pbp %>% 
+  count(game_id, game_date, home_team, away_team)
+```
+
+```{r, echo = FALSE}
+pbp %>% 
+  count(game_id, game_date, home_team, away_team) %>% 
+  kable("html") %>%
+  kable_styling(font_size = 16, position = "center", full_width = F) %>%
+  row_spec(0, bold = T, color = "white", background = "#5C164E")
+```
+
+---
+
+# Goalie save percentage
+
+What is this data? How do we find saves??
+
+```{r, eval = FALSE}
+pbp %>% 
+  count(event_type)
+```
+
+```{r, echo = FALSE}
+pbp %>% 
+  count(event_type) %>% 
+  arrange(desc(n)) %>% 
+  head(11) %>% 
+  kable("html") %>%
+  kable_styling(font_size = 15, position = "center", full_width = F) %>%
+  row_spec(0, bold = T, color = "white", background = "#5C164E")
+```
+
+---
+
+# Goalie save percentage
+
+What is this data? How do we find saves??
+
+```{r, eval = FALSE}
+pbp %>% 
+  count(event_type)
+```
+
+```{r, echo = FALSE}
+pbp %>% 
+  count(event_type) %>% 
+  arrange(desc(n)) %>% 
+  head(11) %>% 
+  kable("html") %>%
+  kable_styling(font_size = 15, position = "center", full_width = F) %>%
+  row_spec(c(0, 3, 11), bold = T, color = "white", background = "#5C164E")
+```
+
+---
+
+# Goalie save percentage
+
+`save percentage = SHOTs / (SHOTs + GOALs)`
+--
+```{r, eval = FALSE}
+pbp %>% 
+  filter(event_type `%in%` c("SHOT","GOAL")) %>% 
+  select(event_type, `contains("goalie")`, 
+         event_team, event_description)
+```
+
+```{r, echo = FALSE}
+pbp %>% 
+  filter(event_type %in% c("SHOT","GOAL")) %>% 
+  select(event_type, contains("goalie"), 
+         event_team, event_description) %>% 
+  head(5) %>% 
+  kable("html") %>%
+  kable_styling(font_size = 14, position = "center", full_width = F) %>%
+  row_spec(0, bold = T, color = "white", background = "#5C164E")
+```
+
+---
+
+# Goalie save percentage
+
+.large[what structure is my data in?]
+<br>
+<br>
+    *both goalies listed on the row*
+
+<br>
+--
+.large[what structure does my data **need** to be in?]
+<br>
+<br>
+    *the actual event goalie specified on the row*
+    
+<br>
+--
+.large[how do I get from point A to point B?]
+<br>
+<br>
+    *create a new variable*
+    
+---
+
+# Goalie save percentage
+
+```{r, eval = FALSE}
+pbp %>% 
+  filter(event_type %in% c("GOAL","SHOT")) %>% 
+  mutate(event_goalie = `case_when`(
+                          event_team == home_team ~ away_goalie,
+                          event_team == away_team ~ home_goalie)) %>% 
+  select(event_goalie, event_type)
+```
+
+--
+
+```{r, echo = FALSE}
+pbp %>% 
+  filter(event_type %in% c("GOAL","SHOT")) %>% 
+  mutate(event_goalie = case_when(event_team == home_team ~ away_goalie,
+                                  event_team == away_team ~ home_goalie)) %>% 
+  select(event_goalie, event_type) %>% 
+  head(8) %>% 
+  kable("html") %>%
+  kable_styling(font_size = 15, position = "center", full_width = F) %>%
+  row_spec(0, bold = T, color = "white", background = "#5C164E")
+```
+
+---
+
+# Goalie save percentage
+
+```{r, eval = FALSE}
+pbp %>% 
+  filter(event_type %in% c("GOAL","SHOT")) %>% 
+  mutate(event_goalie = case_when(
+                          event_team == home_team ~ away_goalie,
+                          event_team == away_team ~ home_goalie),
+         save = `ifelse`(event_type == "SHOT", 1, 0)) %>% 
+  select(event_goalie, event_type, save)
+```
+
+--
+
+```{r, echo = FALSE}
+pbp %>% 
+  filter(event_type %in% c("GOAL","SHOT")) %>% 
+  mutate(event_goalie = case_when(
+                          event_team == home_team ~ away_goalie,
+                          event_team == away_team ~ home_goalie),
+         save = ifelse(event_type == "SHOT", 1, 0)) %>% 
+  select(event_goalie, event_type, save) %>% 
+  head(8) %>% 
+  kable("html") %>%
+  kable_styling(font_size = 15, position = "center", full_width = F) %>%
+  row_spec(0, bold = T, color = "white", background = "#5C164E")
+```
+
+---
+
+# Goalie save percentage
+
+```{r, eval = FALSE}
+pbp %>% 
+  filter(event_type %in% c("GOAL","SHOT")) %>% 
+  mutate(event_goalie = case_when(
+                          event_team == home_team ~ away_goalie,
+                          event_team == away_team ~ home_goalie),
+         save = ifelse(event_type == "SHOT", 1, 0)) %>% 
+  select(event_goalie, event_type, save) %>% 
+  `group_by`(event_goalie) %>% 
+  `summarize`(saves = sum(save),
+              all_shots = n()) %>% 
+  `arrange`(desc(all_shots))
+```
+
+--
+
+```{r, echo = FALSE}
+pbp %>% 
+  filter(event_type %in% c("GOAL","SHOT")) %>% 
+  mutate(event_goalie = case_when(
+                          event_team == home_team ~ away_goalie,
+                          event_team == away_team ~ home_goalie),
+         save = ifelse(event_type == "SHOT", 1, 0)) %>% 
+  select(event_goalie, event_type, save) %>% 
+  group_by(event_goalie) %>% 
+  summarize(saves = sum(save),
+              all_shots = n()) %>%
+  arrange(desc(all_shots)) %>% 
+  head(4) %>% 
+  kable("html") %>%
+  kable_styling(font_size = 15, position = "center", full_width = F) %>%
+  row_spec(0, bold = T, color = "white", background = "#5C164E")
+```
+
+---
+
+# Goalie save percentage
+
+```{r, eval = FALSE}
+pbp %>% 
+  filter(event_type %in% c("GOAL","SHOT")) %>% 
+  mutate(event_goalie = case_when(
+                          event_team == home_team ~ away_goalie,
+                          event_team == away_team ~ home_goalie),
+         save = ifelse(event_type == "SHOT", 1, 0)) %>% 
+  select(event_goalie, event_type, save) %>% 
+  group_by(event_goalie) %>% 
+  summarize(saves = sum(save),
+              all_shots = n()) %>% 
+  arrange(desc(all_shots)) %>% 
+  `mutate(save_perc = saves / all_shots)`
+```
+
+--
+
+```{r, echo = FALSE}
+pbp %>% 
+  filter(event_type %in% c("GOAL","SHOT")) %>% 
+  mutate(event_goalie = case_when(
+                          event_team == home_team ~ away_goalie,
+                          event_team == away_team ~ home_goalie),
+         save = `ifelse`(event_type == "SHOT", 1, 0)) %>% 
+  select(event_goalie, event_type, save) %>% 
+  group_by(event_goalie) %>% 
+  summarize(saves = sum(save),
+              all_shots = n()) %>%
+  arrange(desc(all_shots)) %>% 
+  mutate(save_perc = saves / all_shots) %>% 
+  head(4) %>% 
+  kable("html") %>%
+  kable_styling(font_size = 15, position = "center", full_width = F) %>%
+  row_spec(0, bold = T, color = "white", background = "#5C164E")
+```
+
+---
+
+# Tonight's exercises
+
+<br>
+<br>
+<br>
+<br>
+
+.center[goalie save percentage]
+
+<br>
+.center[.large[**team faceoff percentage**]]
+
+<br>
+.center[individual plus-minus]
+
+---
+
+# Team faceoff percentage
+
+```{r, eval = FALSE}
+pbp %>% 
+  count(event_type)
+```
+
+```{r, echo = FALSE}
+pbp %>% 
+  count(event_type) %>% 
+  arrange(desc(n)) %>% 
+  head(10) %>% 
+  kable("html") %>%
+  kable_styling(font_size = 16, position = "center", full_width = F) %>%
+  row_spec(c(0, 2), bold = T, color = "white", background = "#5C164E")
+```
+
+---
+
+# Team faceoff percentage
+
+```{r, eval = FALSE}
+pbp %>% 
+  filter(event_type == "FAC") %>% 
+  select(event_index, event_type, event_player_1, event_player_2, 
+         event_team, event_description)
+```
+
+```{r, echo = FALSE}
+pbp %>% 
+  filter(event_type == "FAC") %>% 
+  select(event_index, event_type, event_player_1, event_player_2, event_team, event_description) %>% 
+  head(5) %>% 
+  kable("html") %>%
+  kable_styling(font_size = 14, position = "center", full_width = F) %>%
+  row_spec(0, bold = T, color = "white", background = "#5C164E")
+```
+
+---
+
+# Team faceoff percentage
+
+```{r, eval = FALSE}
+pbp %>% 
+  filter(event_type == "FAC") %>% 
+  mutate(loser = case_when(event_team == home_team ~ away_team,
+                           event_team == away_team ~ home_team)) %>% 
+  select(event_index, event_type, `winner = event_team`, loser)
+```
+
+```{r, echo = FALSE}
+pbp %>% 
+  filter(event_type == "FAC") %>% 
+  mutate(loser = case_when(event_team == home_team ~ away_team,
+                           event_team == away_team ~ home_team)) %>% 
+  select(event_index, event_type, winner = event_team, loser) %>% 
+  head(10) %>% 
+  kable("html") %>%
+  kable_styling(font_size = 14, position = "center", full_width = F) %>%
+  row_spec(0, bold = T, color = "white", background = "#5C164E")
+```
+
+---
+
+# Team faceoff percentage
+
+.large[what structure is my data in?]
+<br>
+<br>
+    *one row per faceoff—which is actually two data points (the winner and the loser)*
+
+<br>
+--
+.large[what structure does my data **need** to be in?]
+<br>
+<br>
+    *one row per each **team** in the faceoff (one row per data point!)*
+    
+<br>
+--
+.large[how do I get from point A to point B?]
+<br>
+<br>
+    *pivot!*
+    
+---
+
+# Team Faceoff Percentage
+
+.center[<img src="figs/RLadies_VAN/pivot.png" width="574px" height="236px"/>]
+.center[*[from R for Data Science](https://r4ds.had.co.nz/)*]
+
+--
+
+.center[<img src="figs/RLadies_VAN/pivot2.png" width="380px" height="202px"/>]
+
+---
+
+# Team faceoff percentage
+
+```{r, eval = FALSE}
+pbp %>% 
+  filter(event_type == "FAC") %>% 
+  mutate(loser = case_when(event_team == home_team ~ away_team,
+                           event_team == away_team ~ home_team)) %>% 
+  select(event_index, event_type, winner = event_team, loser) %>% 
+  pivot_longer(winner:loser, #<<
+                names_to = "result", values_to = "team") #<<
+```
+
+```{r, echo = FALSE}
+pbp %>% 
+  filter(event_type == "FAC") %>% 
+  mutate(loser = case_when(event_team == home_team ~ away_team,
+                           event_team == away_team ~ home_team)) %>% 
+  select(event_index, event_type, winner = event_team, loser) %>% 
+  pivot_longer(winner:loser, names_to = "result", values_to = "team") %>% 
+  head(8) %>% 
+  kable("html") %>%
+  kable_styling(font_size = 13, position = "center", full_width = F) %>%
+  row_spec(0, bold = T, color = "white", background = "#5C164E")
+```
+
+---
+
+# Team faceoff percentage
+
+```{r, eval = FALSE}
+pbp %>% 
+  filter(event_type == "FAC") %>% 
+  mutate(loser = case_when(event_team == home_team ~ away_team,
+                           event_team == away_team ~ home_team)) %>% 
+  select(event_index, event_type, winner = event_team, loser) %>% 
+  pivot_longer(winner:loser,
+                names_to = "result", values_to = "team") %>% 
+  mutate(win = ifelse(result == "winner", 1, 0)) %>% #<<
+  group_by(team) %>% #<<
+  summarize(wins = sum(win), #<<
+            faceoffs = n()) %>% #<<
+  mutate(fo_perc = wins / faceoffs) #<<
+```
+
+```{r, echo = FALSE}
+pbp %>% 
+  filter(event_type == "FAC") %>% 
+  mutate(loser = case_when(event_team == home_team ~ away_team,
+                           event_team == away_team ~ home_team)) %>% 
+  select(event_index, event_type, winner = event_team, loser) %>% 
+  pivot_longer(winner:loser, names_to = "result", values_to = "team") %>% 
+  mutate(win = ifelse(result == "winner", 1, 0)) %>% 
+  group_by(team) %>% 
+  summarize(wins = sum(win),
+            faceoffs = n()) %>% 
+  mutate(fo_perc = wins / faceoffs) %>% 
+  arrange(desc(faceoffs)) %>% 
+  head(4) %>% 
+  kable("html") %>%
+  kable_styling(font_size = 13, position = "center", full_width = F) %>%
+  row_spec(0, bold = T, color = "white", background = "#5C164E")
+```
+
+---
+
+# Tonight's exercises
+
+<br>
+<br>
+<br>
+<br>
+
+.center[goalie save percentage]
+
+<br>
+.center[team faceoff percentage]
+
+<br>
+.center[.large[**individual plus-minus**]]
+
+---
+
+# Individual plus-minus
+
+.center[<img src="figs/RLadies_VAN/plusminus.jpg" width="540px" height="462px"/>]
+
+---
+
+# Individual plus-minus
+
+```{r, eval = FALSE}
+pbp %>% 
+  filter(game_strength_state == "5v5" & event_type == "GOAL") %>% 
+  select(event_index, event_type, event_team, home_team, 
+         away_team, home_goalie, away_goalie, contains("_on_"))
+```
+
+```{r, echo = FALSE}
+pbp %>% 
+  filter(game_strength_state == "5v5" & event_type == "GOAL") %>% 
+  select(event_index, event_type, event_team, home_team, 
+         away_team, home_on_1, home_on_2, away_on_1, away_on_2) %>% 
+  head(10) %>% 
+  kable("html") %>%
+  kable_styling(font_size = 12, position = "center", full_width = F) %>%
+  row_spec(0, bold = T, color = "white", background = "#5C164E")
+```
+
+---
+
+# Team faceoff percentage
+
+.large[what structure is my data in?]
+<br>
+<br>
+    *one row per goal—which contains **many** data points*
+
+<br>
+--
+.large[what structure does my data **need** to be in?]
+<br>
+<br>
+    *one row per each player on the ice*
+    
+<br>
+--
+.large[how do I get from point A to point B?]
+<br>
+<br>
+    *pivot again, with a twist*
+    
+---
+
+# Individual plus-minus
+
+```{r, eval = FALSE}
+pbp %>% 
+  filter(game_strength_state == "5v5" & event_type == "GOAL") %>% 
+  select(event_index, event_type, event_team, home_team, 
+         away_team, home_goalie, away_goalie, contains("_on_")) %>% 
+  rename_at(vars(contains("_on_")), ~str_replace(., "on_", "")) #<<
+```
+
+```{r, echo = FALSE}
+pbp %>% 
+  filter(game_strength_state == "5v5" & event_type == "GOAL") %>% 
+  select(event_index, event_type, event_team, home_team, away_team, home_goalie, 
+         away_goalie, contains("_on_")) %>% 
+  rename_at(vars(contains("_on_")), ~str_replace(., "on_", "")) %>% 
+  select(event_index:home_2, away_1, away_2) %>% 
+  head(5) %>% 
+  kable("html") %>%
+  kable_styling(font_size = 12, position = "center", full_width = F) %>%
+  row_spec(0, bold = T, color = "white", background = "#5C164E")
+```
+    
+---
+
+# Individual plus-minus
+
+```{r, eval = FALSE}
+pbp %>% 
+  filter(game_strength_state == "5v5" & event_type == "GOAL") %>% 
+  select(event_index, event_type, event_team, home_team, 
+         away_team, home_goalie, away_goalie, contains("_on_")) %>% 
+  rename_at(vars(contains("_on_")), ~str_replace(., "on_", "")) %>%
+  pivot_longer(-c(starts_with("event")), #<<
+          names_to = c("home_away", ".value"), names_sep = "_") #<<
+```
+
+```{r, echo = FALSE}
+pbp %>% 
+  filter(game_strength_state == "5v5" & event_type == "GOAL") %>% 
+  select(event_index, event_type, event_team, home_team, 
+         away_team, home_goalie, away_goalie, contains("_on_")) %>% 
+  rename_at(vars(contains("_on_")), ~str_replace(., "on_", "")) %>% 
+  pivot_longer(-c(starts_with("event")), names_to = c("home_away", ".value"), names_sep = "_") %>% 
+  select(-c(`4`:`7`)) %>% 
+  head(5) %>% 
+  kable("html") %>%
+  kable_styling(font_size = 12, position = "center", full_width = F) %>%
+  row_spec(0, bold = T, color = "white", background = "#5C164E")
+```
+
+---
+
+# Individual plus-minus
+
+```{r, eval = FALSE}
+pbp %>% 
+  filter(game_strength_state == "5v5" & event_type == "GOAL") %>% 
+  select(event_index, event_type, event_team, home_team, 
+         away_team, home_goalie, away_goalie, contains("_on_")) %>% 
+  rename_at(vars(contains("_on_")), ~str_replace(., "on_", "")) %>%
+  pivot_longer(-c(starts_with("event")),
+        names_to = c("home_away", ".value"), names_sep = "_") %>% 
+  pivot_longer(`1`:`7`, names_to = NULL, values_to = "player", #<<
+               values_drop_na = TRUE) #<<
+```
+
+```{r, echo = FALSE}
+pbp %>% 
+  filter(game_strength_state == "5v5" & event_type == "GOAL") %>% 
+  select(event_index, event_type, event_team, home_team, 
+         away_team, home_goalie, away_goalie, contains("_on_")) %>% 
+  rename_at(vars(contains("_on_")), ~str_replace(., "on_", "")) %>% 
+  pivot_longer(-c(starts_with("event")), names_to = c("home_away", ".value"), names_sep = "_") %>% 
+  pivot_longer(`1`:`7`, names_to = NULL, values_to = "player", 
+               values_drop_na = TRUE) %>% 
+  head(5) %>% 
+  kable("html") %>%
+  kable_styling(font_size = 13, position = "center", full_width = F) %>%
+  row_spec(0, bold = T, color = "white", background = "#5C164E")
+```
+
+---
+
+# Individual plus-minus
+
+```{r, eval = FALSE}
+pbp %>% 
+  filter(game_strength_state == "5v5" & event_type == "GOAL") %>% 
+  select(event_index, event_type, event_team, home_team, 
+         away_team, home_goalie, away_goalie, contains("_on_")) %>% 
+  rename_at(vars(contains("_on_")), ~str_replace(., "on_", "")) %>%
+  pivot_longer(-c(starts_with("event")),
+        names_to = c("home_away", ".value"), names_sep = "_") %>% 
+  pivot_longer(`1`:`7`, names_to = NULL, values_to = "player",
+               values_drop_na = TRUE) %>% 
+  filter(player != goalie) %>% #<<
+  mutate(plus_minus = ifelse(event_team == team, 1, -1)) #<<
+```
+
+```{r, echo = FALSE}
+pbp %>% 
+  filter(game_strength_state == "5v5" & event_type == "GOAL") %>% 
+  select(event_index, event_type, event_team, home_team, 
+         away_team, home_goalie, away_goalie, contains("_on_")) %>% 
+  rename_at(vars(contains("_on_")), ~str_replace(., "on_", "")) %>% 
+  pivot_longer(-c(starts_with("event")), names_to = c("home_away", ".value"), names_sep = "_") %>% 
+  pivot_longer(`1`:`7`, names_to = NULL, values_to = "player", 
+               values_drop_na = TRUE) %>% 
+  filter(player != goalie) %>% 
+  mutate(plus_minus = ifelse(event_team == team, 1, -1)) %>% 
+  head(5) %>% 
+  kable("html") %>%
+  kable_styling(font_size = 13, position = "center", full_width = F) %>%
+  row_spec(0, bold = T, color = "white", background = "#5C164E")
+```
+
+---
+
+# Individual plus-minus
+
+```{r, eval = FALSE}
+pbp %>% 
+  filter(game_strength_state == "5v5" & event_type == "GOAL") %>% 
+  select(event_index, event_type, event_team, home_team, 
+         away_team, home_goalie, away_goalie, contains("_on_")) %>% 
+  rename_at(vars(contains("_on_")), ~str_replace(., "on_", "")) %>% 
+  pivot_longer(-c(starts_with("event")), 
+        names_to = c("home_away", ".value"), names_sep = "_") %>% 
+  pivot_longer(`1`:`7`, names_to = NULL, values_to = "player", 
+               values_drop_na = TRUE) %>% 
+  filter(player != goalie) %>% 
+  mutate(plus_minus = ifelse(event_team == team, 1, -1)) %>% 
+  group_by(player, team) %>% #<<
+  summarize(plus_minus = sum(plus_minus)) %>% #<<
+  arrange(desc(abs(plus_minus))) #<<
+```
+
+```{r, echo = FALSE}
+pbp %>% 
+  filter(game_strength_state == "5v5" & event_type == "GOAL") %>% 
+  select(event_index, event_type, event_team, home_team, 
+         away_team, home_goalie, away_goalie, contains("_on_")) %>% 
+  rename_at(vars(contains("_on_")), ~str_replace(., "on_", "")) %>% 
+  pivot_longer(-c(starts_with("event")), names_to = c("home_away", ".value"), names_sep = "_") %>% 
+  pivot_longer(`1`:`7`, names_to = NULL, values_to = "player", values_drop_na = TRUE) %>% 
+  filter(player != goalie) %>% 
+  mutate(plus_minus = ifelse(event_team == team, 1, -1)) %>% 
+  group_by(player, team) %>% 
+  summarize(plus_minus = sum(plus_minus)) %>% 
+  arrange(desc(abs(plus_minus))) %>% 
+  head(3) %>% 
+  kable("html") %>%
+  kable_styling(font_size = 13, position = "center", full_width = F) %>%
+  row_spec(0, bold = T, color = "white", background = "#5C164E")
+```
+
+---
+
+# Even more exercises
+
+<br>
+
+.large[which players got the most points in these games?]
+<br>
+<br>
+
+<br>
+
+.large[how many standings points did each team get per game?]
+<br>
+<br>
+    
+<br>
+
+.large[which player had the highest average time on ice?]
+<br>
+<br>
+    
+<br>
+
+*all code available [here](https://github.com/meghall06/personal-website/blob/master/static/RLadies_VAN_code.R)*
+
+---
+
+# Tiny tips for success
+
+.large[code, code, code!]
+<br>
+<br>
+    *a little bit each day, constantly iterate*
+
+<br>
+--
+.large[use data you find interesting]
+<br>
+<br>
+    *[Data is Plural](https://www.data-is-plural.com/) is a weekly newsletter with interesting datasets*<br>
+    *[nflfastr](https://github.com/mrcaseb/nflfastR), [baseballr](http://billpetti.github.io/baseballr/)*
+    
+<br>
+--
+.large[focus first on the problems you have]
+<br>
+<br>
+    *RMarkdown templates, ggplot themes, internal packages*
+
+---
+
+class: center, middle, inverse
+
+# Thank you!
+
+Slides created via the R package [xaringan](https://github.com/yihui/xaringan).
+<br>
+`r icon::fa("twitter")` [@MeghanMHall](https://www.twitter.com/MeghanMHall)
