@@ -19,7 +19,7 @@ The `tidymodels` package, which is fairly new, was designed to make it easier to
 First, let's get our data prepped—we're using 2018-19 data so we can have a full season. We'll get the position data by downloading from <a href="http://www.naturalstattrick.com/playerteams.php?fromseason=20182019&thruseason=20182019&stype=2&sit=5v5&score=all&stdoi=bio&rate=n&team=ALL&pos=S&loc=B&toi=0&gpfilt=none&fd=&td=&tgp=410&lines=single&draftteam=ALL" target="_blank">Natural Stat Trick</a>, and we'll create our statistics from the raw play-by-play data, available via the <a href="https://twitter.com/EvolvingWild/status/1163503829993828353" target="_blank">Evolving Wild scraper</a>. (Could you download all these summary statistics from NST instead? Definitely. But this is about learning, and it's great R practice [pRactice?] to generate them yourself from the play-by-play data.)
 
 {{% alert note %}}
-One of the `tidymodels` packages called `dials` has a `margin()` function that will mask the `margin()` function in `ggplot2`. If you use the `margin()` function in your `ggplot2` custom theme like I do, just load `tidymodels` before `tidyverse` and you should be fine.
+One of the `tidymodels` packages called `dials` has a `margin()` function that will mask the `margin()` function in `ggplot2`. If you use the `margin()` function in your `ggplot2` custom theme like I do, just be sure to specify the package when you use it.
 {{% /alert %}}
 
 ```r
