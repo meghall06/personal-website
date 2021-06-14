@@ -30,7 +30,7 @@ links:
 #   icon_pack: fab
 #   name: Video
 #   url: https://www.youtube.com/watch?v=-Zl_b5Emvb0&feature=youtu.be
-location: R-Ladies Vancouver
+location: RStudio - R in Sports Analytics
 math: true
 projects:
 - 
