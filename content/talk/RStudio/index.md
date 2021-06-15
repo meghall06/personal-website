@@ -1,5 +1,5 @@
 ---
-abstract: R Markdown is a powerful yet underutilized tool for a powerful yet underutilized component of data science---communicating your work. R Markdown works seamlessly with other analytic work in R and knowing the basics allows you to extend that knowledge into producing PDFs, slides, websites, and more. The slides are available at the link above and also **here**.
+abstract: R Markdown is a powerful yet underutilized tool for a powerful yet underutilized component of data science---communicating your work. R Markdown works seamlessly with other analytic work in R and knowing the basics allows you to extend that knowledge into producing PDFs, slides, websites, and more. The slides are available at the link above and also [**here**](https://meghan.rbind.io/slides/RStudio/Hall_RStudio_2021.html#1).
 
 address:
   city: 
@@ -25,7 +25,7 @@ links:
 - icon: desktop
   icon_pack: fas
   name: Slides
-  url:
+  url: https://meghan.rbind.io/slides/RStudio/Hall_RStudio_2021.html#1
 # - icon: youtube
 #   icon_pack: fab
 #   name: Video
