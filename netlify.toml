@@ -3,12 +3,12 @@
   command = "hugo"
 
 [context.production.environment]
-  HUGO_VERSION = "0.76.5"
+  HUGO_VERSION = "0.85.0"
   HUGO_ENV = "production"
   HUGO_ENABLEGITINFO = "false"
   
 [context.branch-deploy.environment]
-  HUGO_VERSION = "0.76.5"
+  HUGO_VERSION = "0.85.0"
 
 [context.deploy-preview.environment]
-  HUGO_VERSION = "0.76.5"
+  HUGO_VERSION = "0.85.0"
