@@ -1,5 +1,5 @@
 ---
-title: R in spoRts
+title: R + spoRts
 description: |
   My personal blog.
 author: "Meghan Hall"
@@ -12,7 +12,7 @@ layout: list-sidebar # list, list-sidebar, list-grid
 
 # for list-sidebar layout
 sidebar: 
-  title: R in spoRts
+  title: R + spoRts
   description: |
     I write about a wide variety of topics—sometimes specifically about hockey, sometimes more generally about R.
   author: "Meghan Hall"

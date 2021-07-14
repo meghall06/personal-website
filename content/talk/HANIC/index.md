@@ -9,7 +9,7 @@ address:
   street: 
 all_day: true
 authors: []
-date: "2020-04-18"
+date: "2020-04-18T19:00:00"
 date_end: ""
 event: Hockey Analytics Night in Canada #HANIC
 event_url: https://hanic-analytics.com
@@ -30,7 +30,7 @@ links:
   icon_pack: fab
   name: Video
   url: https://www.youtube.com/watch?v=-Zl_b5Emvb0&feature=youtu.be
-location: Hockey Analytics Night in Canada #HANIC
+location: Virtual
 math: true
 projects:
 - 
@@ -44,4 +44,5 @@ url_code: ""
 url_video: ""
 ---
 
+Why and how to get started with coding! This presentation was part of Meghan Chayka and Alison Lukan's HANIC (Hockey Analytics Night in Canada) and focused on how to move on from Excel in order to make your analysis more reproducible, efficient, and shareable.
 

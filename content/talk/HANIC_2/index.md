@@ -9,7 +9,7 @@ address:
   street: 
 all_day: true
 authors: []
-date: "2021-02-18"
+date: "2021-02-18T19:00:00"
 date_end: ""
 event: Hockey Analytics Night in Canada #HANIC
 event_url: https://hanic-analytics.com
@@ -30,7 +30,7 @@ links:
 #   icon_pack: fab
 #   name: Video
 #   url: https://www.youtube.com/watch?v=-Zl_b5Emvb0&feature=youtu.be
-location: Hockey Analytics Night in Canada #HANIC
+location: Virtual
 math: true
 projects:
 - 
@@ -44,4 +44,4 @@ url_code: ""
 url_video: ""
 ---
 
-
+This presentation was part of a special edition of Meghan Chayka and Alison Lukan's HANIC (Hockey Analytics Night in Canada), all about the [Big Data Cup](https://www.stathletes.com/big-data-cup/). This is a quick and gentle intro to R, focused on the Big Data Cup data, and provides some more resources for learning.

@@ -1,5 +1,5 @@
 ---
-title: Talks
+title: Talking on R
 description: |
   This is a home for my talks and workshops.
 author: "Meghan Hall"
@@ -24,7 +24,7 @@ sidebar:
 cascade:
   author: "Meghan Hall"
   show_author_byline: true
-  show_post_date: true
+  show_post_date: false
   show_post_time: false
   show_comments: false # see site config to choose Disqus or Utterances
   # for single-sidebar layout
