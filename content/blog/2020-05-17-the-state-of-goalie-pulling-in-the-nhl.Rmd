@@ -1,0 +1,26 @@
+---
+title: The State of Goalie Pulling in the NHL
+author: ''
+date: '2020-05-18'
+slug: goalie-pulling
+categories: ["hockey analysis"]
+tags: []
+subtitle: ''
+summary: 'A broad analysis of when NHL teams pull their goalie.'
+authors: []
+lastmod: '2020-05-18'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+When people ask me how to get into sports analytics, I always suggest starting with a question that they’re interested in exploring and using that question as a framework for learning the domain knowledge and the technical skills they need. I feel comfortable giving this advice because it’s exactly how I got into hockey analytics: I was curious about goalie pulling, and I couldn’t find enough data to satisfy my curiosity. There are plenty of articles on when teams should pull their goalies, but aside from a [2015 article on FiveThirtyEight](https://fivethirtyeight.com/features/nhl-coaches-are-pulling-goalies-earlier-than-ever/) by Michael Lopez and Noah Davis, I couldn’t find much data on when NHL teams were actually pulling their goalies and if game trends were catching up to the mathematical recommendations. I presented some data on the topic at the [Seattle Hockey Analytics Conference](http://meghan.rbind.io/talk/seahac/) in March 2019, but the following analysis is broader and includes more seasons of data.
+
+**Read the entire article on Hockey-Graphs [here](https://hockey-graphs.com/2020/05/18/the-state-of-goalie-pulling-in-the-nhl/).**
+
+The Tableau dashboard that accompanies this article should show below and is also available [here](https://public.tableau.com/views/GoaliePullTimes2018-19/GoaliePullTimes18-19?:display_count=y&publish=yes&:toolbar=n&:origin=viz_share_link). 
+
+<div style="align: center; margin-left: -250px;"> <iframe src="https://public.tableau.com/views/GoaliePullTimes2018-19/GoaliePullTimes18-19?:showVizHome=no&:embed=true" width="1300px" height="1300px" frameborder="0"></iframe> </div>
