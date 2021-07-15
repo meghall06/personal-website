@@ -18,7 +18,7 @@ sidebar:
   author: "The R Markdown Team @RStudio"
   text_link_label: ""
   text_link_url: ""
-  show_sidebar_adunit: false # show ad container
+  show_sidebar_adunit: true # show ad container
 
 # set up common front matter for all individual pages inside project/
 cascade:    

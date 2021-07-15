@@ -4,7 +4,7 @@ diagram: yes
 date: '2020-03-09'
 markup: mmark
 math: yes
-categories: ["tutorials"]
+categories: ["R"]
 image:
   caption: null
   placement: null

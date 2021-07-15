@@ -6,7 +6,7 @@ image:
   placement: 
 markup: mmark
 math: true
-categories: ["tutorials"]
+categories: ["R"]
 title: Exploratory Data Analysis Using Tidyverse
 ---
 

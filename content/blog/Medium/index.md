@@ -6,6 +6,7 @@ image:
   placement: 
 markup: mmark
 math: true
+categories: ["data viz"]
 title: So You Want to Make a Hockey Data Viz?
 ---
 

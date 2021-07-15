@@ -4,6 +4,7 @@ subtitle: "An undergraduate course on data visualization in R."
 excerpt: "Course materials for 36-315, a full-credit undergraduate course at Carnegie Mellon University on data visualization in R."
 date: 2021-07-01
 author: "Meghan Hall"
+categories: ["R", "ggplot2"]
 draft: false
 links:
 - icon: door-open

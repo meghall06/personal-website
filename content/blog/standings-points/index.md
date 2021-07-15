@@ -5,7 +5,7 @@ image:
   caption: 
   placement: 
 markup: mmark
-categories: ["tutorials"]
+categories: ["R"]
 summary: 'Writing a user-defined function and applying it iteratively: an example with NHL standings points.'
 math: true
 title: Learning Iterative User-Defined Functions with NHL Standings Points

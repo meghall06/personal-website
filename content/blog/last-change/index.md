@@ -2,7 +2,8 @@
 title: "Examining the Effect of the Last Change in Hockey"
 diagram: yes
 date: '2020-08-03'
-markup: markdown
+#markup: markdown
+#layout: single-sidebar
 math: yes
 categories: ["hockey analysis"]
 summary: 'Exploring the possible benefit of the home team having the last change in hockey.'
@@ -17,11 +18,10 @@ image:
 
 I keep a running list of hockey things that I want to look into, and now that playoff bubble hockey has begun, with many people discussing what "home field" advantage looks like in a different building with no fans, it seems like a good time to cross off "last change" from the list. My curiosity about the effect of this advantage spawned some analysis that led to the Twitter thread linked above and now this article!
 
+#### Table of Contents
 {{% toc %}}
 
-{{< alert note >}}
 **A brief review of NHL rules:** At the beginning of each period and after each stoppage, play resumes with a faceoff. There are, on average, 60 faceoffs in a game. One advantage for the home team is that they get the last line change, thus determining the player matchup until one of the teams makes another change. They control the matchup beginning at every faceoff, except those following an icing by the home team (when a player dumps the puck, untouched, over the center line and then the goal line), which happens, on average, four times per game.
-{{< /alert >}}
 
 *All data is from the 2015-2019 seasons and references 5v5 play by the home team in the regular season, unless otherwise indicated.*
 

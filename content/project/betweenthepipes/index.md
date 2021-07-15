@@ -4,6 +4,7 @@ subtitle: "A package to facilitate learning the tidyverse with hockey data."
 excerpt: "I built this package to hold sample data and learnr tutorials, all about learning the tidyverse with hockey data."
 date: 2020-07-01
 author: "Meghan Hall"
+categories: ["R"]
 draft: false
 links:
 - icon: github
