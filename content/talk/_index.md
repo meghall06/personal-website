@@ -6,7 +6,7 @@ author: "Meghan Hall"
 show_post_thumbnail: true
 show_author_byline: false
 show_post_date: true
-show_post_time: false
+show_post_time: true
 # for listing page layout
 layout: list-sidebar
 
@@ -23,8 +23,8 @@ sidebar:
 # set up common front matter for all pages inside talk/
 cascade:
   author: "Meghan Hall"
-  show_author_byline: true
-  show_post_date: false
+  show_author_byline: false
+  show_post_date: true
   show_post_time: false
   show_comments: false # see site config to choose Disqus or Utterances
   # for single-sidebar layout
