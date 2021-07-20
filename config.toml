@@ -1,7 +1,7 @@
 baseURL = "https://meghan.rbind.io/"
 theme = "hugo-apero"
 languageCode = "en"
-title = "Hugo Apéro"
+title = "Meghan Hall"
 author = "Meghan Hall"
 copyright = "" # set to override the auto generated copyright using org info and now year
 googleAnalytics = ""
