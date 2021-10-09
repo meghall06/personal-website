@@ -94,7 +94,6 @@ UConn Sports Analytics Symposium<br> October 9, 2021 <br> <br> `r icons::fontawe
 ---
 layout: true
 <div class="my-footer"><span>tinyurl.com/ucsas21</span></div>
-
 ---
 
 # About ~~me~~ you
@@ -111,7 +110,7 @@ layout: true
 ---
 
 layout: true
-<div class="my-footer"><span></span></div>
+<div class="my-footer"><span>tinyurl.com/ucsas21</span></div>
 
 ---
 
