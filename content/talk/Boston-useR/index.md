@@ -1,0 +1,44 @@
+---
+title: "The Power of Internal Packages"
+all_day: yes
+date: "2022-04-13T12:00:00"
+authors: []
+date_end: ''
+event: Greater Boston useR Group
+featured: no
+links:
+- icon: desktop
+  icon_pack: fas
+  name: Slides
+  url: https://meghan.rbind.io/slides/Boston_useR/Hall_Boston_useR_2022.html#1
+- icon: github
+  icon_pack: fab
+  name: Slide Code
+  url: https://github.com/meghall06/personal-website/blob/master/static/slides/Boston_useR/Hall_Boston_useR_2022.Rmd
+location: Virtual
+math: yes
+projects:
+- ~
+publishDate: '2022-04-13'
+slides: null
+summary: A short introduction to creating internal organizational packages.
+tags: []
+address:
+  city: null
+  country: null
+  postcode: ''
+  region: null
+  street: null
+url_code: ''
+url_video: ''
+---
+
+The goal of this talk is to hopefully convince you that you can make your life a little bit easier by creating an internal package! An internal package is an R package, created by you, that’s just for you, to serve your work. And depending on your specific working scenario, that "you" can be substituted for you and your direct report, you and a handful of the colleagues that you closely collaborate with, or even you and your whole team. 
+
+Here is a common scenario that I think lends itself perfectly to a starter internal package: You have a data set that you use in lots of different places. You have some common tasks you do—chunks of code that calculate or evaluate certain things. And maybe you have a plot theme that you use a lot. I’m very familiar with this scenario because it’s exactly what happened to me. I had a handful of data sets that I used in multiple RStudio projects, as well as some common calculations and functions that I used. The definitions and the specifics and the use cases for those calculations were documented somewhere, but in a package, the documentation can live right with the data and the code, so someone doesn’t have to go looking. And I also had a common ggplot theme that I used, one that incorporated our colors and fonts, that gave me perfectly sized plots for slide decks. I found myself copying and pasting that theme all the time.
+
+Having an internal package allows you to have all of those things right at your fingertips. You install and load your own package, and then everything is right there: your data sets, your functions, your themes, and your documentation. It’s useful for you, of course, most importantly, but it’s also useful to other people if they’re involved in your workflow.
+
+One of my favorite resources on this topic is [Emily Riederer's post and talk](https://emilyriederer.netlify.app/post/team-of-packages/) on creating a team of internal packages. She does a fantastic job delineating all the various roles that internal packages can hold and how they can be stewards of institutional knowledge and enforce best practices.
+
+Knowing the vast scope of possibilities for internal packages can be a bit overwhelming, so my first tip for creating is to lower your expectations! We’re used to complex packages that hold many different functions and serve lots of people’s needs, which are by definition very broad. But your package can and should be very narrow! Remember, this is for a small audience. Initially, you don’t need to anticipate every possible edge case. You can certainly iterate and build more complexity over time, but I would encourage you to start small. Just add a (well-documented!) data set and a function! The `usethis` package really helps with this workflow. [This](https://rstudio4edu.github.io/rstudio4edu-book/data-pkg.html) is my favorite resource for adding data sets to a package, and [this](https://r-pkgs.org/r.html) is a comprehensive guide to adding functions.

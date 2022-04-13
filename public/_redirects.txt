@@ -1,1 +1,0 @@
-http://meghan.rbind.io/*      https://meghan.rbind.io/:splat  301!

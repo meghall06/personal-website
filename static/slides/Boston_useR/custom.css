@@ -1,0 +1,69 @@
+
+blockquote {
+	border-top: solid 5px;
+	border-top-color: #003C71;
+	border-left: none;
+	font-style: italic;
+	font-size: 1.6rem;
+	text-align: center;
+	background-color: #B7B09C;
+	margin: 0.25em 10px;
+  padding: 0.1em 10px;
+	color: #4E3629;
+	font-family: Acme;
+}
+
+.frame h1 {
+  color: #4E3629;
+  padding-bottom: 1.0em !important;
+  border-bottom: 3px solid;
+  border-bottom-color: #4E3629;
+}
+
+div.my-footer {
+    background-color: #4E3629;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    height: 30px;
+    width: 100%;
+}
+
+div.my-footer span {
+    font-size: 10pt;
+    color: #CCB3A3;
+    position: absolute;
+    left: 15px;
+    bottom: 7px;
+}
+
+.remark-slide-number {
+  bottom: 3px;
+  opacity: 0.75;
+  color: #CCB3A3;
+  position: absolute;
+  right: 20px;
+  font-family: Ubuntu;
+}
+
+.inversecode { 
+  font-size: 0.9rem;
+  font-family: 'Roboto Mono';
+  color: #FFC72C;
+}
+
+.huge { 
+  font-size: 40px;
+}
+
+.large { 
+  font-size: 32px;
+}
+
+.medium { 
+  font-size: 22px;
+}
+
+.tiny .remark-code { 
+  font-size: 75%;
+}
