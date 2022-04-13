@@ -1,7 +1,7 @@
 ---
 title: "Meghan Hall"
 subtitle: "Data analyst & R educator"
-description: "I work in data (in sports and in higher ed) and love using as well as teaching R--particularly the tidyverse and R Markdown. <br>Likes: messy data, clean plots, and `ggplot2`."
+description: "I work in data in higher ed and love using as well as teaching R--particularly the tidyverse and R Markdown. <br>Likes: messy data, clean plots, and `ggplot2`."
 images:
   - img/header.jpg
 image_left: false

@@ -19,19 +19,6 @@ output:
 ```{r setup, include=FALSE}
 library(emo)
 library(icons)
-# library(kableExtra)
-# library(tidyverse)
-# library(janitor)
-# library(hockeyR)
-# library(sportyR)
-# library(gt)
-# library(gtExtras)
-# library(ggtext)
-# library(showtext)
-# 
-# font_add_google(name = "Ubuntu",   # Name of the font on the Google Fonts site
-#                 family = "ubuntu")
-# showtext_auto()
 
 options(knitr.kable.NA = '')
 options(htmltools.dir.version = FALSE, htmltools.preserve.raw = FALSE)
