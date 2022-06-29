@@ -1,0 +1,212 @@
+---
+aliases: 
+  - /blog/mixed-effects-models
+title: A Beginner's Introduction to Mixed Effects Models
+author: Meghan Hall
+date: '2022-06-28'
+slug: []
+summary: 'A brief introduction to mixed effects models and how to run them in R, with a silly hockey example.'
+categories: ["R"]
+tags: []
+layout: single-sidebar
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(tidyverse)
+library(kableExtra)
+library(ggtext)
+library(lme4)
+library(tidymodels)
+library(multilevelmod)
+
+data_raw <- read_csv("mixed_model.csv")
+```
+
+## When are mixed effects appropriate?
+
+Venturing beyond the safe and comfortable land of a basic linear regression model generally requires a good reason (of which there are many!). I recently ran up against one of those boundaries thanks to the structure of the data that I was working with, and I ended up learning a lot about and eventually building a mixed effects model. I’m really proud of that model, but sadly, it’s confidential and also likely boring if you aren’t in my line of work.
+
+So to illustrate some of what I learned about mixed effects models (also sometimes known as multilevel models), I’m going to use a small and silly hockey example. (Silly because this example is small, just for tutorial purposes. An actual model to gain insights on this dependent variable would have more data, selected with more care. Make no conclusions from this!) I’ll use this example to discuss when you might want to use a mixed effects model, what exactly we mean by *mixed effects*, and how to run this kind of model in R. I’ve also included some of my favorite resources on this topic at the end.
+
+My data set for this example has 80 observations and five variables (a sample is shown below). **Points per 60**, abbreviated as *pp60*, is our dependent variable: it’s the measure of a player’s total points in a given season per 60 minutes of game play. We also have two independent variables: the player’s **position** (either D for defenseman or F for forward) and their **time on ice** (abbreviated as *toi*), the average minutes they played per game.
+
+```{r kable}
+data_raw %>% 
+  filter(player %in% c("Auston Matthews","Connor Brown")) %>%  
+  kable("html") %>%
+  kable_styling(font_size = 16, position = "center", full_width = F) %>%
+  row_spec(0, bold = T, color = "white", background = "#B54948")
+```
+
+One of the basic assumptions of a linear regression model is that your observations are independent of each other. The glimpse of the data set above should set off immediate alarm bells because these observations are not independent: we have four observations per player (one for each of the previous four seasons), and I wouldn’t be comfortable saying that a player’s offensive performance this year is necessarily fully independent from his performance last year. This is a good example of longitudinal data, where there are repeated observations over time of the same subject, and longitudinal data is a good use case for a mixed effects model.
+
+## What *are* mixed effects, exactly?
+
+Before we continue through this example, what exactly are these mixed effects that we’re referring to here? A mixed effects model contains both fixed and random effects. Fixed effects are the same as what you’re used to in a standard linear regression model: they’re exploratory/independent variables that we assume have some sort of effect on the response/dependent variable. These are often the variables that we’re interested in making conclusions about.
+
+Where a mixed effects model differentiates itself is through the inclusion of *random effects*, which allow us to skirt past that independence assumption. Random effects are simply categorical variables that we’re interested in controlling for---even if we aren’t particularly interested in quantifying their impacts or knowing more about the specific levels---because we know they’re likely influencing the patterns that might emerge. This variable often has many possible levels, and there’s likely just a sample of the population in your data. In the example we’re going through today, the random effect is the **player**.
+
+In this example, given the repeated observations, I want to allow for the possibility that there is some type of individual player effect that is not measured by my other (independent, fixed) variables. I’m not particularly interested in *quantifying* the effect of “being Player X” on scoring rate, I just want to address that the effect exists. (In contrast, I *am* interested in the effect of position and the effect of time on ice, our two fixed variables.)
+
+For example, Connor Brown and Auston Matthews are both forwards who averaged around 20 minutes per game last year. By the two fixed effects included in this very small model, they would produce a very similar response variable. But as anyone who watches hockey can tell you, Auston Matthews is much more offensively talented than Connor Brown, and in this model, the random effect of the player will address some of that. Random effects are useful for capturing the impact of persistent characteristics that might not be observable elsewhere in the explanatory data. In this example, it can be thought of as a proxy for player "talent" in a way.
+
+If those random effects are correlated with variables of interest, leaving them out could lead to biased fixed effects Including them can help more reliably isolate the influence of the fixed effects of interest and more accurately model a clustered system.
+
+## Prepping the data
+
+We can plot this data to understand it a bit better. We have four observations each for 20 separate players, 10 forwards and 10 defensemen, and we can see that in general, forwards tend to score more points and defensemen tend to play more minutes.
+
+```{r plot, fig.height=4}
+data_raw %>% 
+  mutate(position = ifelse(position == "F", "forwards", "defensemen")) %>% 
+  ggplot(aes(x = season, y = pp60, group = player, color = toi)) +
+  scico::scale_color_scico(palette = "lajolla") +
+  geom_line() +
+  geom_point() +
+  facet_wrap(~position) +
+  labs(y = "points per 60 minutes", color = "time\non ice") +
+  theme_linedraw() +
+  theme(axis.ticks = element_blank(),
+        axis.title.x = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.grid.major.x = element_blank(),
+        strip.background = element_blank(),
+        strip.text = element_textbox(
+          size = 11,
+          color = "white", fill = "#B54948", box.color = "black",
+          halign = 0.5, linetype = 1, r = unit(5, "pt"), width = unit(1, "npc"),
+          padding = margin(2, 0, 1, 0), margin = margin(3, 3, 3, 3)
+        ))
+```
+
+Because this data is so small, I don't need to do much to get it in better shape for modeling---I'm just going to make sure the position variable is a factor. This `df` data frame will be the basis of my models.
+
+```{r changes, echo=TRUE}
+df <- data_raw %>% 
+  mutate(position = factor(position))
+```
+
+## Running the model with `lme4`
+
+The `lme4` package in R was built for mixed effects modeling (more resources for this package are listed below). If you've used the `lm` function to build models in R, the model formulas will likely look familiar.
+
+The simplest version of a mixed effects model uses random intercepts. In this case, the random effect allows each group (or player, in this case) to have a different intercept in the model, while the effects of the other variables remain fixed. The code below creates the `m1` model with `pp60` as the response variable, `position` and `toi` as the fixed effects, and `(1 | player)` as the random effect for the intercept. The `|` is just a special interaction to make sure that the model has different effects for each level of the grouping factor (in this case, for each player).
+
+```{r m1, echo = TRUE}
+m1 <- lmer(pp60 ~ position + toi + (1 | player), 
+           data = df)
+
+summary(m1)
+```
+
+`summary(m1)`, as shown above, will produce a familiar-looking results table where you can examine the fixed effects. Being a forward is associated with a higher scoring rate, which makes sense. There's also some information about the random effects, mainly how much variance we have among the levels and how much residual variance there is. We can tell in this example that the player is explaining a lot of the variance left over from the fixed effects.
+
+To view the individual random effects, use the `ranef` function from the `lme4` package. We can see from this sample that players known to be offensive stars, like Auston Matthews and Connor McDavid, have understandably high values.
+
+```{r ranef, echo = TRUE, eval = FALSE}
+ranef(m1)
+```
+
+```{r ranef-table}
+ranef(m1) %>% 
+  as_tibble() %>% 
+  head(10) %>% 
+  kable("html") %>%
+  kable_styling(font_size = 16, position = "center", full_width = F) %>%
+  row_spec(0, bold = T, color = "white", background = "#bb0000")
+```
+
+Just like with other models, this model can be predicted with `predict(m1)`. If you don't want random effects to be included in your prediction, use `predict(m1, re.form = NA)`.
+
+## Running the model with `tidymodels`
+
+If you're familiar with and prefer using the [tidymodels](https://www.tidymodels.org/) framework, you can use the `lmer` engine to run this model. You'll need both the `tidymodels` and `multilevelmod` packages installed.
+
+Set the specification with `set_engine("lmer")` and then `fit` like you usually would with `tidymodels`.
+
+```{r tidy, echo = TRUE}
+lmer_spec <- 
+  linear_reg() %>% 
+  set_engine("lmer")
+
+using_tidymodels <- 
+  lmer_spec %>% 
+  fit(pp60 ~ position + toi + (1 | player),
+      data = df)
+
+using_tidymodels
+```
+
+The code above results in the same model and the same fixed effects we saw before. Other elements of the `tidymodels` workflows are available; more details are [here](https://multilevelmod.tidymodels.org/articles/multilevelmod.html#models-using-lmer-glmer-and-stan_glmer).
+
+To get the random effects of a given model built this way, run `lme4::ranef(using_tidymodels$fit)`.
+
+## More applications
+
+This particular example is focused on longitudinal data, but mixed effects models are useful whenever there's *any* kind of clustering effect where the group is likely affecting the outcome. These effects can even be nested (e.g., studying test scores within schools that are within districts). Generally if the data has some sort of nested/hierarchical structure, that’s when you’ll start to see the "multilevel model" terminology, although the principles are the same.
+
+More details on those multilevel models are available at the links below, but the model formulas would be very similar. If you have nested groups, a random effect structured like `(1 | v1 / v2)` would mean intercepts varying among v1 *and* v2 *within* v1.
+
+If it's not apparently obvious, how can you tell if your data is clustered? You can start by plotting it! The data behind our example is plotted below. Each color in the plot is a different player, and just by a little manual inspection, we can see that the data appears to be clustered.
+
+```{r cluster, fig.height = 4}
+data_raw %>% 
+  mutate(position = ifelse(position == "F", "forwards", "defensemen")) %>% 
+  arrange(position, player) %>% 
+  group_by(position) %>% 
+  mutate(id = ifelse(lag(player) == player, 0, 1),
+         id = ifelse(is.na(id), 1, id),
+         id = cumsum(id)) %>% 
+  ggplot(aes(y = pp60, x = toi, color = as.character(id))) + 
+  geom_point() + 
+  facet_wrap(~position) +
+  labs(y = "points per 60 minutes", x = "time on ice") +
+  theme_linedraw() +
+  theme(axis.ticks = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.grid.major.x = element_blank(),
+        legend.position = "none",
+        strip.background = element_blank(),
+        strip.text = element_textbox(
+          size = 11,
+          color = "white", fill = "#B54948", box.color = "black",
+          halign = 0.5, linetype = 1, r = unit(5, "pt"), width = unit(1, "npc"),
+          padding = margin(2, 0, 1, 0), margin = margin(3, 3, 3, 3)
+        ))
+```
+
+You can also investigate clustering by creating a simple null model, which only has the intercept and the random effect. The `summ` function within the `jtools` package will helpfully provide the ICC, or intraclass correlation coefficient, which can help identify clustering. This data has a value of 0.89, which is quite high and good evidence that a mixed effects model is necessary.
+
+```{r icc, echo = TRUE}
+m0 <- lmer(pp60 ~ 1 + (1 | player), 
+           data = df)
+jtools::summ(m0)
+```
+
+## Varying slopes
+
+The simple example above used a varying intercept, where each player (our random effect) had an adjustment to the overall intercept. But more complexity can be added to a mixed effects model by also incorporating random slopes, which would allow the effect of the selected variable(s) to vary across subjects.
+
+If, for example, we wanted to incorporate an `age` variable into our model and we wanted the influence of that variable to vary by player, it would be incorporated like so, before the `| player`:
+
+```{r slope, eval = FALSE, echo = TRUE}
+m_slope <- lmer(pp60 ~ position + toi + age + (1 + age | player), 
+                data = df)
+```
+
+Those resulting random effects would be available just like with the intercepts, by using `ranef(m_slope)`.
+
+## Resources
+
+This was intended to be a beginner's guide to mixed effects modeling with a simple example. For more details, both technical and theoretical, I found all of the following resources helpful:
+
+- [An interactive visualization](http://mfviz.com/hierarchical-models/): particularly useful for understanding random intercepts vs. slopes
+- [Beyond multiple linear regression](https://bookdown.org/roback/bookdown-BeyondMLR/): especially chapters 8 & 9, lots of examples and good interpretation notes
+- [Mixed models with R](https://m-clark.github.io/mixed-models-with-R/introduction.html): great online book
+- [Ch. 9 of Data Analysis in R](https://bookdown.org/steve_midway/DAR/random-effects.html): useful for theory
+- [{lme4} vignette](https://cran.r-project.org/web/packages/lme4/vignettes/lmer.pdf): pretty technical but helpful formulas in table 2
+- [Introduction to mixed effects modeling](https://www.lcampanelli.org/mixed-effects-modeling-lme4/): useful walkthrough
+- [Introduction to linear mixed models](https://ourcodingclub.github.io/tutorials/mixed-models/): good tutorial
+- [A video on multilevel modeling with lme4](https://www.youtube.com/watch?v=8r9bUKUVecc&ab_channel=MikeCrowson)
