@@ -126,7 +126,9 @@ To reference the feature in slides, you use `.fragment.semi-fade-out`. So I sear
 
 One of the most useful features of Quarto reveal.js slides is [absolute position](https://quarto.org/docs/presentations/revealjs/advanced.html#absolute-position), which allows you to specifically place elements on a slide.
 
-I used this to place images, of course, but I also used it to annotate screenshots with text, place my `.sectionhead` on each slide, and in cases like the slide below, add a little outline for emphasis.
+{{< figure src="featured.png" lightbox="true" >}}
+
+I used this to place images, of course, but I also used it to annotate screenshots and code with text (like in the example above), place my `.sectionhead` on each slide, and in cases like the slide below, add a little outline for emphasis.
 
 {{< figure src="box.png" lightbox="true" >}}
 
