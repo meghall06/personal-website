@@ -14,3 +14,11 @@ $buttonHoverTextColorCustom: #f9f9f8;
 $buttonBgColorCustom: #103742;
 $buttonHoverBgColorCustom: #c4001a;
 $borderColorCustom: #c4beb9;
+
+blockquote {
+  border-left: 10px solid #5C164E !important;
+  border-right: 10px solid #5C164E !important;
+  text-align: center;
+  padding: 0.5em 10px;
+  font-size: 1.25em;
+}
