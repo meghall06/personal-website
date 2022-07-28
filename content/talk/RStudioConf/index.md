@@ -10,11 +10,11 @@ links:
 - icon: desktop
   icon_pack: fas
   name: Slides
-  url: 
+  url: https://meghan.rbind.io/slides/rstudioconf/Hall.html#/section
 - icon: github
   icon_pack: fab
-  name: Repo
-  url: 
+  name: Slide Code
+  url: https://github.com/meghall06/personal-website/blob/master/static/slides/rstudioconf/Hall.qmd
 - icon: desktop
   icon_pack: fas
   name: Conf website
