@@ -1,0 +1,700 @@
+---
+title: ""
+author: ""
+format: 
+  revealjs:
+    footer: "[meghan.rbind.io](https://meghan.rbind.io/)&nbsp;&nbsp;&nbsp;"
+    theme: [night, custom.scss]
+    preview-links: auto
+    chalkboard: 
+      boardmarker-width: 5
+from: markdown+emoji
+header-includes: |
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+        rel="stylesheet"/>
+execute:
+  echo: true
+---
+
+# {background-image="talk2.png" background-size="75%" fig-alt="Talk title: Cultivating Your Own R Ecosystem as a Solo Contributor"}
+
+# {background-image="talk2.png" background-size="75%" fig-alt="Talk title: Cultivating Your Own R Ecosystem as a Solo Contributor"}
+
+::: {.absolute top="70" left="40%"}
+::: {style="font-size: 1.3em"}
+<i class="fa fa-star"></i> @MeghanMHall <i class="fa fa-star"></i>
+:::
+:::
+
+## 
+
+::: {.absolute top="-10%" left="0%"}
+::: {style="text-align: center"}
+![](laptop.png){fig-alt="A Mac laptop with R stickers on it"}
+:::
+:::
+
+::: {.absolute top="8%" left="22%"}
+::: {style="font-size: 0.75em; transform: rotate(30deg)"}
+<i class="fa-solid fa-share"></i>
+:::
+:::
+
+::: {.absolute top="12%" left="18%"}
+::: {style="font-size: 0.45em; text-align: center"}
+now a<br>vintage<br>sticker!
+:::
+:::
+
+. . .
+
+::: {.absolute top="30%" left="60%"}
+::: {style="text-align: center"}
+**this 2015<br>MacBook<br>Air is why I<br>learned R**
+:::
+:::
+
+---
+
+## 
+
+::: {.absolute top="-10%" left="0%"}
+::: {style="text-align: center"}
+![](laptop.png){fig-alt="A Mac laptop with R stickers on it"}
+:::
+:::
+
+::: {.absolute top="25%" left="60%"}
+::: {style="text-align: center; font-size: 1.5em"}
+<i class="fa fa-hockey-puck"></i>
+:::
+:::
+
+. . .
+
+::: {.absolute top="25%" left="70%"}
+::: {style="text-align: center; font-size: 1.5em"}
+<i class="fa fa-chart-column"></i>
+:::
+:::
+
+. . .
+
+::: {.absolute top="25%" left="80%"}
+::: {style="text-align: center; font-size: 1.5em"}
+<i class="fa fa-file-excel"></i>
+:::
+:::
+
+. . .
+
+::: {.absolute top="40%" left="69%"}
+::: {style="text-align: center; font-size: 2em"}
+<i class="fa fa-face-frown-open"></i>
+:::
+:::
+
+---
+
+## 
+
+::: {.absolute top="-10%" left="0%"}
+::: {style="text-align: center"}
+![](laptop.png){fig-alt="A Mac laptop with R stickers on it"}
+:::
+:::
+
+::: {.absolute top="25%" left="60%"}
+::: {style="text-align: center; font-size: 1.5em"}
+<i class="fa fa-hockey-puck"></i>
+:::
+:::
+
+::: {.absolute top="25%" left="70%"}
+::: {style="text-align: center; font-size: 1.5em"}
+<i class="fa fa-chart-column"></i>
+:::
+:::
+
+::: {.absolute top="25%" left="80%"}
+::: {style="text-align: center; font-size: 1.5em"}
+<i class="fa fa-laptop-code"></i>
+:::
+:::
+
+. . .
+
+::: {.absolute top="40%" left="69%"}
+::: {style="text-align: center; font-size: 2em"}
+<i class="fa fa-face-smile"></i>
+:::
+:::
+
+---
+
+::: {.absolute top="25%" left="15%" width="70%"}
+::: {.topbanner}
+::: {style="font-size: 1.5em"}
+you *can*
+
+use R for your entire 
+
+data analysis workflow!
+:::
+:::
+:::
+
+---
+
+::: {.absolute top="25%" left="15%" width="70%"}
+::: {.topbanner}
+::: {style="font-size: 1.5em"}
+you *don't have to*
+
+use R for your entire 
+
+data analysis workflow!
+:::
+:::
+:::
+
+---
+
+## 
+
+::: {.absolute top="-6%" left="-10%" width="50%"}
+::: {.leftbanner}
+::: {style="font-size: 1.5em"}
+**Struggles**
+:::
+:::
+:::
+
+---
+
+## 
+
+::: {.absolute top="-6%" left="-10%" width="50%"}
+::: {.leftbanner}
+::: {style="font-size: 1.5em"}
+**Struggles**
+
+<br>
+
+[do as much in R as possible]{style="font-size: 0.5em"}
+
+[focus on what's realistic, not ideal]{style="font-size: 0.5em"}
+:::
+:::
+:::
+
+---
+
+## 
+
+::: {.absolute top="-6%" left="-10%" width="50%"}
+::: {.leftbanner}
+::: {style="font-size: 1.5em"}
+**Struggles**
+
+<br>
+
+[do as much in R as possible]{style="font-size: 0.5em"}
+
+[focus on what's realistic, not ideal]{style="font-size: 0.5em; opacity:0.25"}
+:::
+:::
+:::
+
+::: {.absolute top="20%" left="45%"}
+::: {style="font-size: 1em; color: #ffffff"}
+1. can't access data through R
+:::
+:::
+
+---
+
+## 
+
+::: {.absolute top="-6%" left="-10%" width="50%"}
+::: {.leftbanner}
+::: {style="font-size: 1.5em"}
+**Struggles**
+
+<br>
+
+[do as much in R as possible]{style="font-size: 0.5em"}
+
+[focus on what's realistic, not ideal]{style="font-size: 0.5em; opacity:0.25"}
+:::
+:::
+:::
+
+::: {.absolute top="15%" left="45%"}
+::: {style="font-size: 1em; color: #ffffff"}
+`00-setup.R`
+
+`01-prep.R`
+
+`02-analysis.R`
+
+`03-dashboard.R`
+:::
+:::
+
+---
+
+## 
+
+::: {.absolute top="-6%" left="-10%" width="50%"}
+::: {.leftbanner}
+::: {style="font-size: 1.5em"}
+**Struggles**
+
+<br>
+
+[do as much in R as possible]{style="font-size: 0.5em"}
+
+[focus on what's realistic, not ideal]{style="font-size: 0.5em; opacity:0.25"}
+:::
+:::
+:::
+
+::: {.absolute top="15%" left="45%"}
+::: {style="font-size: 1em; color: #ffffff"}
+`00-setup.R`
+
+[`01-prep.R`]{style="opacity:0.25"}
+
+[`02-analysis.R`]{style="opacity:0.25"}
+
+[`03-dashboard.R`]{style="opacity:0.25"}
+
+
+- document *all* report decisions: name, location, filters, run date, effective date
+- save data prep work for R
+:::
+:::
+
+---
+
+## 
+
+::: {.absolute top="-6%" left="-10%" width="50%"}
+::: {.leftbanner}
+::: {style="font-size: 1.5em; color: #febd4c"}
+**Struggles**
+:::
+:::
+:::
+
+::: {.absolute top="20%" left="0%"}
+::: {style="text-align: center"}
+![](ss1.png){fig-alt="RStudio screenshot showing examples of report comments: report name, location, dates"}
+:::
+:::
+
+---
+
+## 
+
+::: {.absolute top="-6%" left="-10%" width="50%"}
+::: {.leftbanner}
+::: {style="font-size: 1.5em"}
+**Struggles**
+
+<br>
+
+[do as much in R as possible]{style="font-size: 0.5em"}
+
+[focus on what's realistic, not ideal]{style="font-size: 0.5em; opacity:0.25"}
+:::
+:::
+:::
+
+::: {.absolute top="20%" left="45%"}
+::: {style="font-size: 1em; color: #ffffff"}
+1. can't access data through R
+:::
+:::
+
+::: {.absolute top="40%" left="45%"}
+::: {style="font-size: 1em; color: #ffffff"}
+2. need to dashboard elsewhere
+:::
+:::
+
+---
+
+## 
+
+::: {.absolute top="-6%" left="-10%" width="50%"}
+::: {.leftbanner}
+::: {style="font-size: 1.5em"}
+**Struggles**
+
+<br>
+
+[do as much in R as possible]{style="font-size: 0.5em"}
+
+[focus on what's realistic, not ideal]{style="font-size: 0.5em; opacity:0.25"}
+:::
+:::
+:::
+
+::: {.absolute top="15%" left="45%"}
+::: {style="font-size: 1em; color: #ffffff"}
+[`00-setup.R`]{style="opacity:0.25"}
+
+[`01-prep.R`]{style="opacity:0.25"}
+
+[`02-analysis.R`]{style="opacity:0.25"}
+
+`03-dashboard.R`
+
+
+- handle relational data, aggregations, calculations, etc. in R
+- save all data files in a specific folder
+:::
+:::
+
+---
+
+## 
+
+::: {.absolute top="-6%" left="-10%" width="50%"}
+::: {.leftbanner}
+::: {style="font-size: 1.5em; color: #febd4c"}
+**Struggles**
+:::
+:::
+:::
+
+::: {.absolute top="20%" left="0%"}
+::: {style="text-align: center"}
+![](ss2.png){fig-alt="RStudio screenshot showing bare example of a dashboarding file, including an export to a special For Tableau folder"}
+:::
+:::
+
+---
+
+## 
+
+::: {.absolute top="-6%" left="-10%" width="50%"}
+::: {.leftbanner}
+::: {style="font-size: 1.5em"}
+**Struggles**
+
+<br>
+
+[do as much in R as possible]{style="font-size: 0.5em; opacity:0.25"}
+
+[focus on what's realistic, not ideal]{style="font-size: 0.5em"}
+:::
+:::
+:::
+
+::: {.absolute top="20%" left="45%"}
+::: {style="font-size: 1em; color: #ffffff"}
+1. can't access data through R
+:::
+:::
+
+::: {.absolute top="40%" left="45%"}
+::: {style="font-size: 1em; color: #ffffff"}
+2. need to dashboard elsewhere
+:::
+:::
+
+::: {.absolute top="65%" left="45%"}
+::: {style="font-size: 1em; color: #ffffff"}
+3. no git/version control
+:::
+:::
+
+---
+
+## 
+
+::: {.absolute top="-6%" left="-10%" width="50%"}
+::: {.leftbanner}
+::: {style="font-size: 1.5em"}
+**Struggles**
+
+<br>
+
+[do as much in R as possible]{style="font-size: 0.5em; opacity:0.25"}
+
+[focus on what's realistic, not ideal]{style="font-size: 0.5em"}
+:::
+:::
+:::
+
+::: {.absolute top="15%" left="45%"}
+::: {style="font-size: 1em; color: #ffffff"}
+[`00-setup.R`]{style="opacity:0.25"}
+
+`01-prep.R`
+
+`02-analysis.R`
+
+[`03-dashboard.R`]{style="opacity:0.25"}
+
+
+- collaborate with yourself: use dated comments for major decisions
+- link to supporting documentation
+:::
+:::
+
+---
+
+## 
+
+::: {.absolute top="-6%" left="-10%" width="50%"}
+::: {.leftbanner}
+::: {style="font-size: 1.5em"}
+**Struggles**
+
+<br>
+
+[do as much in R as possible]{style="font-size: 0.5em; opacity:0.25"}
+
+[**focus on what's realistic, not ideal**]{style="font-size: 0.5em; color:#e8563c; text-decoration: underline"}
+:::
+:::
+:::
+
+::: {.absolute top="15%" left="45%"}
+::: {style="font-size: 1em; color: #ffffff"}
+[`00-setup.R`]{style="opacity:0.25"}
+
+`01-prep.R`
+
+`02-analysis.R`
+
+[`03-dashboard.R`]{style="opacity:0.25"}
+
+
+- collaborate with yourself: use dated comments for major decisions
+- link to supporting documentation
+:::
+:::
+
+---
+
+## 
+
+::: {.absolute top="-6%" left="-10%" width="50%"}
+::: {.leftbanner}
+::: {style="font-size: 1.5em"}
+**Big Wins**
+:::
+:::
+:::
+
+---
+
+## 
+
+::: {.absolute top="-6%" left="-10%" width="50%"}
+::: {.leftbanner}
+::: {style="font-size: 1.5em"}
+**Big Wins**
+
+<br>
+
+[ease the burden of repeated reporting]{style="font-size: 0.47em"}
+
+[transfer institutional knowledge]{style="font-size: 0.47em"}
+:::
+:::
+:::
+
+---
+
+## 
+
+::: {.absolute top="-6%" left="-10%" width="50%"}
+::: {.leftbanner}
+::: {style="font-size: 1.5em"}
+**Big Wins**
+
+<br>
+
+[ease the burden of repeated reporting]{style="font-size: 0.47em"}
+
+[transfer institutional knowledge]{style="font-size: 0.47em"}
+:::
+:::
+:::
+
+::: {.absolute top="20%" left="45%"}
+::: {style="font-size: 1em; color: #ffffff"}
+1. develop internal packages
+:::
+:::
+
+::: {.absolute top="40%" left="49%"}
+::: {style="font-size: 0.9em; color: #ffffff"}
+::: {.incremental}
+- have easy access to common data sets used across multiple projects
+- document data definitions and calculations
+- track common analysis functions (and ggplot themes!)
+:::
+:::
+:::
+
+---
+
+## 
+
+::: {.absolute top="-6%" left="-10%" width="50%"}
+::: {.leftbanner}
+::: {style="font-size: 1.5em; color: #febd4c"}
+**Big Wins**
+:::
+:::
+:::
+
+::: {.absolute top="40%" left="0%" width="100%"}
+::: {style="text-align: center"}
+```{r}
+#| eval: false
+#| code-line-numbers: "1-6|2|5|6"
+gender_plot +
+  mypackage::theme_brown()
+
+ggsave("gender.png", 
+       path = glue("../../Presentations/{current_year}/Images for slides"),
+       width = 10, height = 5.6, units = "in", dpi = 200)
+```
+:::
+:::
+
+---
+
+## 
+
+::: {.absolute top="-6%" left="-10%" width="50%"}
+::: {.leftbanner}
+::: {style="font-size: 1.5em"}
+**Big Wins**
+
+<br>
+
+[ease the burden of repeated reporting]{style="font-size: 0.47em"}
+
+[transfer institutional knowledge]{style="font-size: 0.47em"}
+:::
+:::
+:::
+
+::: {.absolute top="20%" left="45%"}
+::: {style="font-size: 1em; color: #ffffff"}
+1. develop internal packages
+:::
+:::
+
+::: {.absolute top="40%" left="45%"}
+::: {style="font-size: 1em; color: #ffffff"}
+2. leverage parameterized reporting with R Markdown/Quarto
+:::
+:::
+
+. . .
+
+::: {.absolute top="65%" left="49%"}
+::: {style="font-size: 0.9em; color: #ffffff"}
+- many output formats!
+- useful when you have code + text + updating data + varying parameters
+:::
+:::
+
+---
+
+## 
+
+::: {.absolute top="-6%" left="-10%" width="50%"}
+::: {.leftbanner}
+::: {style="font-size: 1.5em; color: #febd4c"}
+**Big Wins**
+:::
+:::
+:::
+
+::: {.absolute top="33%" left="0%" width="100%"}
+::: {style="text-align: center"}
+```{r}
+#| eval: false
+#| code-line-numbers: "1-9|3|4|2|5|9"
+render <- function(division, year) {
+  rmarkdown::render(
+    "MyRMarkdownPDF.Rmd", 
+    params = list(division = division, year = year),
+    output_file = glue("{year}/{division}_{year}.pdf")
+  )
+}
+
+purrr::map2(unique(data$sal_division), "2021-22", render)
+```
+:::
+:::
+
+. . .
+
+::: {.absolute top="53%" left="42%"}
+::: {style="text-align: center; font-size: 1.25em"}
+<i class="fa-brands fa-r-project"></i> <i class="fa-solid fa-file-code"></i> <i class="fa-solid fa-arrow-right"></i> <i class="fa-solid fa-file-pdf"></i> <i class="fa-solid fa-file-pdf"></i> <i class="fa-solid fa-file-pdf"></i> <i class="fa-solid fa-file-pdf"></i>
+:::
+:::
+
+---
+
+::: {.absolute top="10%" left="15%" width="70%"}
+::: {.topbanner}
+::: {style="font-size: 1.5em"}
+less time reproducing
+
+your own analysis
+
+=
+
+more time for the
+
+work you find important
+:::
+:::
+:::
+
+---
+
+<br>
+<br>
+
+::: {style="text-align: center; font-size: 1.5em"}
+::: {.absolute top="5%" left="33%"}
+**Thank you!**
+:::
+:::
+
+<br>
+
+::: {.absolute top="30%" left="25%" width="50%"}
+::: {.box}
+::: {style="font-size: 1em"}
+**MEGHAN HALL**<br>
+<i class="fa-brands fa-twitter"></i> [@MeghanMHall](https://twitter.com/meghanmhall)<br>
+<i class="fa-brands fa-github"></i> [meghall06](https://github.com/meghall06)<br>
+<i class="fa-solid fa-link"></i> [meghan.rbind.io](https://meghan.rbind.io/)<br>
+<i class="fa-solid fa-envelope"></i> meghanhall6 AT gmail
+:::
+:::
+:::
+
+<br>
+
+::: {style="text-align: center; font-size: 0.5em"}
+::: {.absolute top="85%" left="38%"}
+slides made with [Quarto](https://quarto.org/) :tada:
+:::
+:::
