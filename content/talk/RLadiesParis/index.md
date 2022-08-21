@@ -15,14 +15,10 @@ links:
   icon_pack: fas
   name: Slides
   url: https://meghan.rbind.io/talk/rladiesparis
-- icon: github
-  icon_pack: fab
-  name: Repo
-  url: https://meghan.rbind.io/talk/rladiesparis
 - icon: link
   icon_pack: fas
   name: Workshop Website
-  url: https://meghan.rbind.io/talk/rladiesparis
+  url: https://meghan.quarto.pub/keeping-it-tidy/
 location: virtual
 math: yes
 projects:
@@ -40,6 +36,8 @@ address:
 url_code: ''
 url_video: ''
 ---
+
+{{< figure src="featured.png" lightbox="true" >}}
 
 Join me on September 8 at 1pm EST / 7pm CEST! This workshop is targeted toward beginners and will serve as an introduction to the tidyverse, a collection of packages designed to aid in the cleaning and wrangling of data. In order to give you the tools to embark upon your own analysis on your own data, we will work through a sample data set and discuss methods for modifying, aggregating, reshaping, and visualizing data.
 
