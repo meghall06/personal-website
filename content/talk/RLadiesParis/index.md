@@ -14,7 +14,7 @@ links:
 - icon: desktop
   icon_pack: fas
   name: Slides
-  url: https://meghan.rbind.io/talk/rladiesparis
+  url: https://meghan.rbind.io/slides/rladiesparis/rladiesparis.html#/title-slide
 - icon: link
   icon_pack: fas
   name: Workshop Website

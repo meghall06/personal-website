@@ -1,0 +1,1308 @@
+---
+title: "Keeping it Tidy"
+subtitle: "<span style='font-size: 0.75em'>*Using the Tidyverse to Organize, Transform, and Visualize Data*</style>"
+author: "Meghan Hall<br>R-Ladies Paris<br>September 8, 2022"
+format: 
+  revealjs:
+    logo: corgi.png
+    footer: "[meghan.quarto.pub/keeping-it-tidy](https://meghan.quarto.pub/keeping-it-tidy/)&nbsp;&nbsp;&nbsp;"
+    theme: [night, custom.scss]
+    preview-links: auto
+    chalkboard: 
+      boardmarker-width: 5
+header-includes: |
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+        rel="stylesheet"/>
+from: markdown+emoji
+execute:
+  echo: true
+---
+
+## Workshop details
+
+```{r setup}
+#| echo: false
+library(tidyverse)
+library(showtext)
+
+breed_rank <- read_csv("https://raw.githubusercontent.com/meghall06/rladiesparis/master/breed_rank.csv")
+breed_traits <- read_csv("https://raw.githubusercontent.com/meghall06/rladiesparis/master/breed_traits.csv")
+
+# Add Google fonts
+font_add_google("Prompt", "prompt")
+
+showtext_auto()
+
+theme_tidy_dog <- function () { 
+  theme_linedraw(base_size=13, base_family="prompt") %+replace% 
+    theme(
+      axis.title = element_text(hjust = 0),
+      panel.background = element_rect(fill='#F9E0D9', color = NA),
+      plot.background = element_rect(fill='#F9E0D9', color=NA),
+      legend.background = element_rect(fill="transparent", color=NA),
+      legend.key = element_rect(fill="transparent", color=NA),
+      axis.ticks = element_blank(),
+      panel.grid.major = element_line(color = "grey90", size = 0.3), 
+      panel.grid.minor = element_blank(),
+      plot.title = element_text(size = 15, hjust = 0, vjust = 0.5, face = "bold", 
+                                margin = margin(b = 0.2, unit = "cm")),
+      plot.subtitle = element_text(size = 10, hjust = 0, vjust = 0.5, 
+                                   margin = margin(b = 0.2, unit = "cm")),
+    )
+}
+```
+
+<br>
+<br>
+
+::: {.incremental}
+- Intro :wave:
+- Coding along :computer:
+- Workshop materials :arrow_down:
+- Questions :question:
+:::
+
+---
+
+## Why R?
+
+<br>
+<br>
+
+::: {style="text-align: center"}
+R is an open-source ([**free**]{style="color:#6A395B"}!) scripting language for working with data
+
+<br>
+
+Wonderfully efficient and :sparkles:reproducible:sparkles:
+:::
+
+---
+
+## Getting R
+
+<br/>
+<br/>
+
+You need the R [**language**](https://cloud.r-project.org/)
+<br/>
+<br/>
+
+And also an IDE (I recommend [**RStudio**](https://www.rstudio.com/products/rstudio/download/#download))
+
+<br/>
+<br/>
+
+Both are free, helpful installation guide [**here**](https://stat545.com/install.html)
+
+---
+
+## Using R
+
+::: columns
+::: {.column width="50%"}
+::: {.fragment}
+<br>
+<br>
+You use R via *packages*
+:::
+::: {.fragment}
+<br/>
+...which contain *functions*
+:::
+::: {.fragment}
+<br>
+...which are just *verbs*
+:::
+:::
+
+::: {.column width="50%"}
+::: {.fragment}
+<br>
+<br>
+`mutate()`, `filter()`, `summarize()`
+:::
+::: {.fragment}
+<br>
+`function(argument)`
+:::
+:::
+:::
+
+---
+
+## Why the tidyverse?
+
+::: columns
+::: {.column width="50%"}
+![](tidyverse.png){.absolute height="574" width="499" fig-alt="The tidyverse"}
+:::
+
+::: {.column width="50%"}
+<br>
+<br>
+An opinionated set of packages that work together and are designed for common data science tasks
+:::
+:::
+
+---
+
+## Why the tidyverse?
+
+::: columns
+::: {.column width="50%"}
+![](tidyverse.png){.absolute height="574" width="499" fig-alt="The tidyverse"}
+:::
+
+::: {.column width="50%"}
+<br>
+<br>
+An [**opinionated**]{style="color:#6A395B"} set of packages that work together and are designed for common data science tasks
+<br>
+<br>
+[**tidy data!**]{style="color:#6A395B"}
+:::
+:::
+
+---
+
+## Why the tidyverse?
+
+<br>
+
+::: {style="text-align: center"}
+`library(tidyverse)`
+![](packages1.png){fig-alt="The packages loaded with the tidyverse: ggplot2, tibble, tidyr, readr, purrr, dplyr, stringr, forcats"}
+:::
+
+---
+
+## Why the tidyverse?
+
+<br>
+
+::: {style="text-align: center"}
+`library(tidyverse)`
+![](packages2.png){fig-alt="The packages loaded with the tidyverse: ggplot2, tibble, tidyr, readr, purrr, dplyr, stringr, forcats"}
+:::
+
+. . .
+
+::: {style="text-align: center"}
+`tidyverse_packages()`
+![](packages3.png){fig-alt="List of other optional tidyverse packages, including broom, rvest"}
+:::
+
+---
+
+## Common `dplyr` verbs
+
+<br>
+
+`filter()` keeps or discards rows (aka observations)
+
+`select()` keeps or discards columns (aka variables)
+
+`arrange()` sorts data set by certain variable(s)
+
+`count()` tallies data set by certain variable(s)
+
+`mutate()` creates new variables
+
+`summarize()` aggregates data 
+
+. . .
+
+::: {.absolute top="53%" left="-5%"}
+::: {style="font-size: 3em; color:#6A395B"}
+[
+:::
+:::
+
+these two can be modified by `group_by()`
+
+---
+
+## Common operators
+
+<br>
+
+`<-` is the assignment operator (think "save as")
+
+shortcut: `option -`
+
+. . .
+
+<br>
+
+` |> ` is the pipe to chain operations together (think recipe instructions)
+
+shortcut: `cmd shift m`
+
+. . .
+
+<br>
+
+what about `%>%`? tidyverse-specific pipe, fine to use!
+
+---
+
+## Today's data
+
+<br>
+
+courtesy of [**#TidyTuesday**](https://github.com/rfordatascience/tidytuesday)
+
+<br>
+
+data is from the [**American Kennel Club**](https://github.com/rfordatascience/tidytuesday/blob/master/data/2022/2022-02-01/readme.md)
+
+<br>
+
+. . .
+
+```{r readr}
+#| eval: false
+library(tidyverse)
+breed_rank <- read_csv("https://raw.githubusercontent.com/meghall06/rladiesparis/master/breed_rank.csv")
+breed_traits <- read_csv("https://raw.githubusercontent.com/meghall06/rladiesparis/master/breed_traits.csv")
+```
+
+---
+
+## Today's data
+
+::: {style="text-align: center"}
+`breed_rank`
+:::
+
+::: {style="font-size: 0.75em"}
+```{r breed-rank-kable}
+#| echo: false
+knitr::kable(breed_rank |> head(4))
+```
+:::
+
+---
+
+## Today's data
+
+::: {style="text-align: center"}
+`breed_traits`
+:::
+
+::: {style="font-size: 0.75em"}
+```{r breed-traits-kable}
+#| echo: false
+knitr::kable(breed_traits |> head(4) |> select(1:5))
+```
+:::
+
+---
+
+## Today's data
+
+per the [**tidyverse style guide**](https://style.tidyverse.org/syntax.html) variable names should use snake case 
+
+otherwise variables need to be referred to within `` `back ticks` ``
+
+<br>
+
+. . .
+
+```{r janitor}
+#| code-line-numbers: "1-4|3|4"
+library(janitor)
+
+breed_traits <- breed_traits |> 
+  janitor::clean_names()
+```
+
+. . .
+
+::: {style="font-size: 0.75em"}
+```{r janitor-kable}
+#| echo: false
+knitr::kable(breed_traits |> head(2) |> select(1:3))
+```
+:::
+
+---
+
+## Today's data
+
+::: {style="font-size: 0.75em"}
+| | |
+|:--|:--|
+|affectionate_with_family   |openness_to_strangers      |
+|good_with_young_children   |playfulness_level          |
+|good_with_other_dogs       |watchdog_protective_nature |
+|shedding_level                 |adaptability_level         |
+|coat_grooming_frequency        |trainability_level         |
+|drooling_level                 |energy_level               |
+|coat_type                  |barking_level              |
+|coat_length                |mental_stimulation_needs   |
+:::
+
+---
+
+## Today's data
+
+::: {style="font-size: 0.75em"}
+| | |
+|:--|:--|
+|affectionate_with_family   |openness_to_strangers      |
+|good_with_young_children   |playfulness_level          |
+|good_with_other_dogs       |watchdog_protective_nature |
+|**shedding_level**             |adaptability_level         |
+|**coat_grooming_frequency**    |trainability_level         |
+|**drooling_level**             |energy_level               |
+|coat_type                  |barking_level              |
+|coat_length                |mental_stimulation_needs   |
+:::
+
+<br>
+
+::: {style="text-align: center"}
+let's investigate some tidy (and *un*tidy) dogs!
+:::
+
+---
+
+## Data verification
+
+use `View(breed_traits)` to look :eyes: at your data
+
+. . .
+
+also useful: `count()`
+
+```{r count-1}
+#| eval: false
+breed_traits |> 
+  count(shedding_level)
+```
+
+. . .
+
+::: {style="font-size: 0.75em"}
+```{r count-1-kable}
+#| echo: false
+knitr::kable(breed_traits |> count(shedding_level))
+```
+:::
+
+---
+
+## Data verification
+
+use `View(breed_traits)` to look :eyes: at your data
+
+also useful: `count()`
+
+```{r count-1}
+#| eval: false
+```
+
+::: {style="font-size: 0.75em"}
+```{r count-2-kable}
+#| echo: false
+knitr::kable(breed_traits |> count(shedding_level)) |> kableExtra::row_spec(1, bold = T, color = "#6A395B", background = "#F8F2F3")
+```
+:::
+
+---
+
+## Data verification
+
+```{r filter-1}
+#| eval: false
+#| code-line-numbers: "1-4|2|3-4"
+breed_traits |> 
+  filter(shedding_level == 0) |> 
+  select(breed, shedding_level, coat_grooming_frequency, 
+         drooling_level)
+```
+
+. . .
+
+::: {style="font-size: 0.65em"}
+```{r filter-1-kable}
+#| echo: false
+knitr::kable(breed_traits |> 
+  filter(shedding_level == 0) |> 
+  select(breed, shedding_level, coat_grooming_frequency, drooling_level))
+```
+:::
+
+. . .
+
+![](https://www.akc.org/wp-content/uploads/2017/11/Plott-On-White-02.jpg){.absolute top="65%" left="5%" width="30%" height="30%" fig-alt="A cute Plott Hound lounging on the grass"}
+
+```{r filter-2}
+#| code-line-numbers: "1-2|2|1"
+breed_traits <- breed_traits |> 
+  filter(shedding_level != 0)
+```
+
+. . .
+
+```{r count-1}
+#| eval: false
+```
+
+::: {style="font-size: 0.65em"}
+```{r count-1-kable}
+#| echo: false
+```
+:::
+
+---
+
+## A new variable with `mutate()`
+
+```{r mutate-1}
+#| code-line-numbers: "1-4|1|2-3|4"
+untidy_scores <- breed_traits |> 
+  mutate(untidy_score = shedding_level + 
+           coat_grooming_frequency + drooling_level) |> 
+  select(breed, untidy_score)
+```
+
+<br>
+
+. . .
+
+::: {style="font-size: 0.75em"}
+```{r mutate-1-kable}
+#| echo: false
+knitr::kable(untidy_scores |> head(5))
+```
+:::
+
+---
+
+## Sorting with `arrange()`
+
+```{r arrange-1}
+#| code-line-numbers: "1-2|2|1"
+#| eval: false
+untidy_scores |> 
+  arrange(untidy_score)
+```
+
+<br>
+
+. . .
+
+::: {style="font-size: 0.75em"}
+```{r arrange-1-kable}
+#| echo: false
+knitr::kable(untidy_scores |> arrange(untidy_score) |> head(6))
+```
+:::
+
+---
+
+## Sorting with `arrange()`
+
+```{r arrange-2}
+#| code-line-numbers: "2"
+#| eval: false
+untidy_scores |> 
+  arrange(desc(untidy_score))
+```
+
+<br>
+
+. . .
+
+::: {style="font-size: 0.75em"}
+```{r arrange-2-kable}
+#| echo: false
+knitr::kable(untidy_scores |> arrange(desc(untidy_score)) |> head(6))
+```
+:::
+
+---
+
+## Bar chart
+
+<br>
+
+can we plot the scores of the untidiest dogs?
+
+```{r untidy-dogs}
+#| code-line-numbers: "1-2|1|2"
+untidy_dogs <- untidy_scores |> 
+  slice_max(untidy_score, n = 6, with_ties = FALSE)
+```
+
+. . .
+
+::: {style="font-size: 0.75em"}
+```{r untidy-dogs-kable}
+#| echo: false
+knitr::kable(untidy_dogs)
+```
+:::
+
+---
+
+## Bar chart
+
+::: {.panel-tabset}
+
+### Basic
+
+```{r bar-basic}
+#| code-line-numbers: "1-3|2|3"
+#| output-location: fragment
+#| fig-height: 4
+#| fig-align: center
+untidy_dogs |> 
+  ggplot(aes(x = untidy_score, y = breed)) +
+  geom_bar(stat = "identity")
+```
+
+### Custom
+
+```{r bar-custom}
+#| code-fold: true
+#| code-summary: "expand for full code"
+#| fig-height: 4.5
+#| fig-align: center
+untidy_dogs |> 
+  ggplot(aes(x = untidy_score, y = reorder(breed, untidy_score), 
+             label = untidy_score)) +
+  geom_bar(stat = "identity", fill = "#6A395B") +
+  geom_label(family = "prompt") +
+  scale_x_continuous(expand = expansion(mult = c(0, 0.1))) +
+  labs(title = "The untidiest dogs",
+       subtitle = "Based on drooling, shedding, and grooming frequency",
+       x = "Untidiness score", y = NULL) +
+  theme_tidy_dog()
+```
+
+:::
+
+---
+
+## Tidy data
+
+<br>
+
+Bernese Mountain Dogs are the untidiest of all---how does their popularity rank change over time?
+
+. . .
+
+::: {style="font-size: 0.75em"}
+```{r bernese-kable-1}
+#| echo: false
+knitr::kable(breed_rank |> filter(str_detect(Breed, "Bernese")))
+```
+:::
+
+. . .
+
+<br>
+
+`ggplot(aes(x = ??, y = ??))`
+
+---
+
+## Tidy data
+
+>There are three interrelated rules which make a dataset tidy:<br>
+1. Each variable must have its own column.<br>
+2. Each observation must have its own row.<br>
+3. Each value must have its own cell.<br>
+- [**R for Data Science**](https://r4ds.had.co.nz/tidy-data.html)
+
+. . .
+
+::: {style="font-size: 0.75em"}
+```{r bernese-kable-1}
+#| echo: false
+```
+:::
+
+---
+
+## Tidy data
+
+>There are three interrelated rules which make a dataset tidy:<br>
+1. Each variable must have its own column.<br>
+2. Each observation must have its own row.<br>
+3. Each value must have its own cell.<br>
+- [**R for Data Science**](https://r4ds.had.co.nz/tidy-data.html)
+
+::: {style="font-size: 0.75em"}
+```{r bernese-kable-2}
+#| echo: false
+knitr::kable(breed_rank |> filter(str_detect(Breed, "Bernese"))) |>  kableExtra::column_spec(2, bold = T, color = "#6A395B", background = "#F8F2F3")
+```
+:::
+
+<br>
+
+how does this violate the tidy data rules?
+
+---
+
+## `pivot_longer()` for tidy data
+
+```{r pivot-longer}
+#| code-line-numbers: "1-4|1|2|3-4"
+ranks_pivoted <- breed_rank |> 
+  pivot_longer(`2013 Rank`:`2020 Rank`,
+               names_to = "year",
+               values_to = "rank")
+```
+
+. . .
+
+::: {style="font-size: 0.75em"}
+```{r bernese-kable-3}
+#| echo: false
+knitr::kable(ranks_pivoted |> filter(str_detect(Breed, "Bernese")))
+```
+:::
+
+---
+
+## `pivot_longer()` for tidy data
+
+```{r pivot-longer-2}
+#| code-line-numbers: "1-3|1|2|3"
+ranks_pivoted <- ranks_pivoted |> 
+  rename(breed = Breed) |> 
+  mutate(year = parse_number(year))
+```
+
+. . .
+
+::: {style="font-size: 0.75em"}
+```{r pivot-longer-2-kable}
+#| echo: false
+knitr::kable(ranks_pivoted |> filter(str_detect(breed, "Bernese")))
+```
+:::
+
+---
+
+## `pivot_longer()` for tidy data
+
+<br>
+
+Bernese Mountain Dogs are the untidiest of all---how does their popularity rank change over time?
+
+::: {style="font-size: 0.75em"}
+```{r pivot-longer-3-kable}
+#| echo: false
+knitr::kable(ranks_pivoted |> filter(str_detect(breed, "Bernese")) |> head(5))
+```
+:::
+
+`ggplot(aes(x = year, y = rank))`
+
+---
+
+## Dot plot
+
+::: {.panel-tabset}
+
+### Basic
+
+```{r dot-basic}
+#| code-line-numbers: "1-5|2|3|4-5"
+#| output-location: fragment
+#| fig-height: 3.5
+#| fig-align: center
+ranks_pivoted |> 
+  filter(str_detect(breed, "Bernese")) |> 
+  ggplot(aes(x = year, y = rank, label = rank)) +
+  geom_point(size = 3) +
+  geom_text(vjust = 2)
+```
+
+### Custom
+
+```{r dot-custom}
+#| code-fold: true
+#| code-summary: "expand for full code"
+#| fig-height: 4.5
+#| fig-align: center
+ranks_pivoted |> 
+  filter(str_detect(breed, "Bernese")) |> 
+  ggplot(aes(x = year, y = rank, label = rank)) +
+  geom_point(size = 3) +
+  geom_text(vjust = 2) +
+  scale_y_reverse(limits = c(50, 1)) +
+  scale_x_continuous(breaks = seq(2013, 2020, 1)) +
+  labs(x = NULL, y = "Popularity Rank",
+       title = "Popularity of Bernese Mountain Dogs") +
+  theme_tidy_dog()
+```
+
+:::
+
+---
+
+## Line graph
+
+can we plot the popularity ranking of the untidiest dogs?
+
+. . .
+
+::: columns
+::: {.column width="50%"}
+::: {style="text-align: center"}
+`untidy_dogs`
+:::
+
+::: {style="font-size: 0.65em"}
+```{r untidy-dogs-kable}
+#| echo: false
+```
+:::
+:::
+
+::: {.column width="50%"}
+::: {style="text-align: center"}
+`ranks_pivoted`
+:::
+
+::: {style="font-size: 0.65em"}
+```{r ranks-pivoted-kable}
+#| echo: false
+knitr::kable(ranks_pivoted |> head(6))
+```
+:::
+:::
+:::
+
+. . .
+
+```{r line-graph}
+#| code-line-numbers: "1-2|1|2"
+untidy_popularity <- ranks_pivoted |> 
+  filter(breed %in% untidy_dogs$breed)
+```
+
+---
+
+## Line graph
+
+<br>
+
+check that this filtered the way we wanted it to!
+
+```{r count-check}
+#| eval: false
+untidy_popularity |> 
+  count(breed)
+```
+
+. . .
+
+::: {style="font-size: 0.75em"}
+```{r count-check-kable}
+#| echo: false
+knitr::kable(untidy_popularity |> count(breed))
+```
+:::
+
+---
+
+## Line graph
+
+::: {.panel-tabset}
+
+### Basic
+
+```{r line-basic}
+#| code-line-numbers: "1-4|2|3-4"
+#| output-location: fragment
+#| fig-height: 4
+#| fig-align: center
+untidy_popularity |> 
+  ggplot(aes(x = year, y = rank, group = breed, color = breed)) +
+  geom_line() +
+  geom_point(size = 3)
+```
+
+### Custom
+
+```{r line-custom}
+#| code-fold: true
+#| code-summary: "expand for full code"
+#| fig-height: 4.5
+#| fig-align: center
+untidy_popularity |> 
+  mutate(label = ifelse(year == 2020, breed, NA)) |> 
+  ggplot(aes(x = year, y = rank, group = breed, color = breed,
+             label = label)) +
+  geom_line() +
+  geom_point(size = 3) +
+  geom_text(hjust = -0.1, family = "prompt") +
+  scale_color_viridis_d(option = "A") +
+  scale_x_continuous(expand = expansion(mult = c(0.025, 0.5)),
+                     breaks = seq(2013, 2020, 1)) +
+  scale_y_reverse() +
+  labs(title = "Popularity over time of the untidiest dogs",
+       subtitle = "Based on drooling, shedding, and grooming frequency",
+       x = NULL,
+       y = "Popularity Rank") +
+  theme_tidy_dog() +
+  theme(legend.position = "none")
+```
+
+:::
+
+---
+
+## Relational data: `left_join()`
+
+can we plot the *average* popularity ranking against the `tidy_scores` for *all* dogs?
+
+. . .
+
+```{r summ-1}
+#| code-line-numbers: "1-3|1|2-3"
+avg_ranks <- ranks_pivoted |> 
+  group_by(breed) |> 
+  summarize(avg_rank = mean(rank))
+```
+
+. . .
+
+::: {style="font-size: 0.55em"}
+```{r summ-1-kable}
+#| echo: false
+knitr::kable(avg_ranks |> head(9)) |> kableExtra::row_spec(9, bold = T, color = "#6A395B", background = "#F8F2F3")
+```
+:::
+
+---
+
+## Relational data: `left_join()`
+
+can we plot the *average* popularity ranking against the `tidy_scores` for *all* dogs?
+
+```{r summ-2}
+#| code-line-numbers: "3"
+avg_ranks <- ranks_pivoted |> 
+  group_by(breed) |> 
+  summarize(avg_rank = mean(rank, na.rm = TRUE))
+```
+
+::: {style="font-size: 0.55em"}
+```{r summ-1-kable}
+#| echo: false
+```
+:::
+
+---
+
+## Relational data: `left_join()`
+
+can we plot the *average* popularity ranking against the `tidy_scores` for *all* dogs?
+
+::: columns
+::: {.column width="50%"}
+::: {style="text-align: center"}
+`avg_ranks`
+:::
+
+::: {style="font-size: 0.65em"}
+```{r avg-ranks-kable}
+#| echo: false
+knitr::kable(avg_ranks |> head(5))
+```
+:::
+:::
+
+::: {.column width="50%"}
+::: {style="text-align: center"}
+`untidy_scores`
+:::
+
+::: {style="font-size: 0.65em"}
+```{r untidy_scores-kable}
+#| echo: false
+knitr::kable(untidy_scores |> head(5))
+```
+:::
+:::
+:::
+
+---
+
+## Relational data: `left_join()`
+
+other join types are available, but `left_join()` is the most common (more info in [**R4DS**](https://r4ds.had.co.nz/relational-data.html))
+
+```{r left-join-1}
+#| code-line-numbers: "1-2|1|2"
+tidy_and_rank <- avg_ranks |> 
+  left_join(untidy_scores, by = "breed")
+```
+
+. . .
+
+can specify **keys** with `by = "var"` 
+
+- multiple: `by = c("var1","var2")`
+
+- different names: `by = c("var_left" = "var_right")`
+
+. . .
+
+::: {style="font-size: 0.55em"}
+```{r tidy-and-rank-kable}
+#| echo: false
+knitr::kable(tidy_and_rank |> head(2))
+```
+:::
+
+---
+
+## Relational data: `left_join()`
+
+check that this worked the way we wanted it to!
+
+```{r count-check-2}
+#| eval: false
+tidy_and_rank |> 
+  count(untidy_score)
+```
+
+. . .
+
+::: {style="font-size: 0.55em"}
+```{r count-check-2-kable}
+#| echo: false
+knitr::kable(tidy_and_rank |> 
+  count(untidy_score))|> kableExtra::row_spec(10, bold = T, color = "#6A395B", background = "#F8F2F3")
+```
+:::
+
+---
+
+## Relational data: `left_join()`
+
+```{r na-1}
+#| eval: false
+tidy_and_rank |> 
+  filter(is.na(untidy_score))
+```
+
+. . .
+
+::: {style="font-size: 0.55em"}
+```{r na-1-kable}
+#| echo: false
+knitr::kable(tidy_and_rank |> 
+  filter(is.na(untidy_score)))
+```
+:::
+
+. . .
+
+```{r na-2}
+tidy_and_rank <- tidy_and_rank |> 
+  filter(!is.na(untidy_score))
+```
+
+. . .
+
+::: {style="font-size: 0.55em"}
+```{r na-2-kable}
+#| echo: false
+knitr::kable(tidy_and_rank |> count(untidy_score))
+```
+:::
+
+---
+
+## Jitter plot
+
+::: {.panel-tabset}
+
+### Basic
+
+```{r jitter-basic}
+#| code-line-numbers: "1-3|2|3"
+#| output-location: fragment
+#| fig-height: 4
+#| fig-align: center
+tidy_and_rank |> 
+  ggplot(aes(x = untidy_score, y = avg_rank)) +
+  geom_jitter(width = 0.1)
+```
+
+### Custom
+
+```{r jitter-custom}
+#| code-fold: true
+#| code-summary: "expand for full code"
+#| fig-height: 4.5
+#| fig-align: center
+tidy_and_rank |>  
+  ggplot(aes(x = untidy_score, y = avg_rank)) +
+  scale_x_continuous(breaks = seq(3, 11, 1)) +
+  geom_jitter(size = 3, width = 0.1, alpha = 0.7, color = "#6A395B") +
+  scale_y_reverse(breaks = c(200, 150, 100, 50, 1)) +
+  labs(title = "Dog breed popularity compared to their untidiness score",
+       subtitle = "Ranking based on 2013-2020 data; tidy score based on drooling, shedding, grooming frequency",
+       x = "Untidiness Score",
+       y = "Average Popularity Rank") +
+  theme_tidy_dog()
+```
+
+:::
+
+---
+
+## `pivot_wider()`
+
+which breeds have had the biggest jump in popularity?
+
+. . .
+
+::: {style="text-align: center"}
+`ranks_pivoted`
+:::
+
+::: {style="font-size: 0.65em"}
+```{r ranks-pivoted-2-kable}
+#| echo: false
+knitr::kable(ranks_pivoted |> head(9))
+```
+:::
+
+---
+
+## `pivot_wider()`
+
+which breeds have had the biggest jump in popularity?
+
+::: {style="text-align: center"}
+`ranks_pivoted`
+:::
+
+::: {style="font-size: 0.65em"}
+```{r ranks-pivoted-3-kable}
+#| echo: false
+knitr::kable(ranks_pivoted |> head(9)) |> kableExtra::row_spec(c(1,8,9), bold = T, color = "#6A395B", background = "#F8F2F3")
+```
+:::
+
+---
+
+## `pivot_wider()`
+
+<br>
+
+will all deliver the same results:
+
+1. `filter(year %in% c(2013, 2020))`
+
+2. `filter(year == 2013 | year == 2020)`
+
+3. `filter(year == min(year) | year == max(year))`
+
+. . .
+
+most robust option :point_up:
+
+---
+
+## `pivot_wider()`
+
+```{r pivot-wider}
+#| code-line-numbers: "1-7|1|2|3-4|5|6|7"
+rank_change <- ranks_pivoted |>  
+  filter(year == min(year) | year == max(year)) |> 
+  pivot_wider(names_from = "year",
+              values_from = "rank") |>  
+  mutate(change = `2013` - `2020`) |> 
+  filter(`2020` <= 50) |>  
+  slice_max(change, n = 6)
+```
+
+. . .
+
+::: {style="font-size: 0.65em"}
+```{r rank-change-kable}
+#| echo: false
+knitr::kable(rank_change)
+```
+:::
+
+---
+
+## Dumbbell plot
+
+<br>
+
+useful plot type for showing change between two points
+
+. . .
+
+<br>
+
+to be honest: it's easier to make these with `ggalt::geom_dumbbell()`
+
+<br>
+
+but we can use `ggplot2` to learn a) how to combine multiple geoms and b) how inherited `aes` works
+
+---
+
+## Dumbbell plot
+
+::: {.panel-tabset}
+
+### Basic
+
+```{r dumbbell-basic}
+#| code-line-numbers: "1-7|2|3|4-5|6-7"
+#| output-location: fragment
+#| fig-height: 3
+#| fig-align: center
+rank_change |>  
+  ggplot(aes(y = breed)) +
+  geom_segment(aes(yend = breed, x = `2013`, xend = `2020`)) +
+  geom_point(aes(x = `2013`), color = "#c991b8", size = 3) +
+  geom_point(aes(x = `2020`), color = "#6A395B", size = 3) +
+  geom_label(aes(x = `2020`, label = `2020`), vjust = -0.5) +
+  geom_label(aes(x = `2013`, label = `2013`), vjust = -0.5)
+```
+
+### Custom
+
+```{r dumbbell-custom}
+#| code-fold: true
+#| code-summary: "expand for full code"
+#| fig-height: 4.5
+#| fig-align: center
+rank_change |>  
+  mutate(middle = `2020` + (change / 2)) |>  
+  ggplot(aes(y = reorder(breed, -`2020`))) +
+  geom_segment(aes(yend = reorder(breed, -`2020`), x = `2013`, xend = `2020`), 
+               color = "grey20") +
+  geom_point(aes(x = `2013`), color = "#c991b8", size = 3) +
+  geom_point(aes(x = `2020`), color = "#6A395B", size = 3) +
+  geom_label(aes(x = `2020`, label = `2020`), family = "prompt", vjust = -0.5) +
+  geom_label(aes(x = `2013`, label = `2013`), family = "prompt", vjust = -0.5) +
+  geom_text(aes(x = middle, label = str_c("+", change)), family = "prompt", 
+            vjust = -0.75, size = 3.5) +
+  scale_x_reverse() +
+  labs(x = "Popularity Ranking",
+       y = NULL,
+       title = "Dog breeds with the biggest jump in popularity from 2013",
+       subtitle = "Among the top 50 in 2020") +
+  theme_tidy_dog() +
+  theme(panel.grid.major.y = element_blank())
+```
+
+:::
+
+---
+
+## Go forth and code!
+
+![](corgi.gif){.absolute top="30%" left="25%" fig-alt="Two corgis trotting on a treadmill."}
+
+---
+
+## `ggplot` theme
+
+<br>
+
+::: {style="font-size: 0.75em"}
+```{r theme}
+#| eval: false
+library(showtext)
+
+# Add Google fonts
+font_add_google("Prompt", "prompt")
+
+showtext_auto()
+
+theme_tidy_dog <- function () { 
+  theme_linedraw(base_size=13, base_family="prompt") %+replace% 
+    theme(
+      axis.title = element_text(hjust = 0),
+      panel.background = element_rect(fill='#F9E0D9', color = NA),
+      plot.background = element_rect(fill='#F9E0D9', color=NA),
+      legend.background = element_rect(fill="transparent", color=NA),
+      legend.key = element_rect(fill="transparent", color=NA),
+      axis.ticks = element_blank(),
+      panel.grid.major = element_line(color = "grey90", size = 0.3), 
+      panel.grid.minor = element_blank(),
+      plot.title = element_text(size = 15, hjust = 0, vjust = 0.5, face = "bold", 
+                                margin = margin(b = 0.2, unit = "cm")),
+      plot.subtitle = element_text(size = 10, hjust = 0, vjust = 0.5, 
+                                   margin = margin(b = 0.2, unit = "cm")),
+    )
+}
+```
+:::
+
+---
+
+## Resources
+
+[**R for Data Science**](https://r4ds.had.co.nz/): the ultimate guide
+
+<br>
+
+[**R for Excel users**](https://rstudio-conf-2020.github.io/r-for-excel/): a very useful workshop
+
+<br>
+
+[**STAT 545**](https://stat545.com/): online book on reproducible data analysis
+
+<br>
+
+the [**RStudio Education**](https://education.rstudio.com/) site
+
+<br>
+
+the [**Learn `tidyverse`**](https://www.tidyverse.org/learn/) site
+
+---
+
+<br>
+<br>
+
+::: {style="text-align: center; font-size: 1.5em; color:#6A395B"}
+::: {.absolute top="5%" left="33%"}
+**Thank you!**
+:::
+:::
+
+<br>
+
+::: {.absolute top="30%" left="25%" width="50%"}
+::: {.box}
+::: {style="font-size: 1em"}
+**MEGHAN HALL**<br>
+<i class="fa-brands fa-twitter"></i> [@MeghanMHall](https://twitter.com/meghanmhall)<br>
+<i class="fa-brands fa-github"></i> [meghall06](https://github.com/meghall06)<br>
+<i class="fa-solid fa-link"></i> [meghan.rbind.io](https://meghan.rbind.io/)<br>
+<i class="fa-solid fa-envelope"></i> meghanhall6 AT gmail
+:::
+:::
+:::
+
+<br>
+
+::: {style="text-align: center; font-size: 0.5em"}
+::: {.absolute top="85%" left="38%"}
+slides made with [Quarto](https://quarto.org/) :tada:
+:::
+:::
