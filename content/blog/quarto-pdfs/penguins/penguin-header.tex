@@ -1,0 +1,23 @@
+\let\paragraph\oldparagraph
+\let\subparagraph\oldsubparagraph
+
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage[parfill=0pt]{parskip}
+\usepackage{fontspec}
+
+\setsansfont{Prompt}[
+    Path=Prompt/,
+    Scale=0.9,
+    Extension = .ttf,
+    UprightFont=*-Regular,
+    BoldFont=*-Bold,
+    ItalicFont=*-Italic,
+    ]
+
+\definecolor{Chinstrap}{HTML}{C25BCC}
+\definecolor{Gentoo}{HTML}{047075}
+\definecolor{Adelie}{HTML}{FF6600}
+
+\titleformat{\section}
+  {\sffamily\Large\bfseries}{\thesection}{1em}{}[{\titlerule[0.8pt]}]
