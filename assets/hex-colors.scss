@@ -14,6 +14,10 @@ $buttonHoverTextColorCustom: #f9f9f8;
 $buttonBgColorCustom: #103742;
 $buttonHoverBgColorCustom: #c4001a;
 $borderColorCustom: #c4beb9;
+$code-block-bg: #F8F2F3;
+$code-block-border: true;
+$code-block-border-right: $headlineColorCustom !important;
+$code-block-border-radius: 10px;
 
 blockquote {
   border-left: 10px solid #5C164E !important;
@@ -21,4 +25,21 @@ blockquote {
   text-align: center;
   padding: 0.5em 10px;
   font-size: 1.25em;
+}
+
+/* customizes the code blocks */
+
+pre {
+  border-radius: 10px !important;
+  border: 2px solid $headlineColorCustom !important;
+  background: #F8F2F3 !important;
+}
+
+/* customizes the `code` in text */
+
+.post-body>p>code, .page-body>p>code {
+  border-radius: 25px !important;
+  background: #F8F2F3 !important;
+  padding: 1px 5px 1px 5px !important;
+  border: 1px solid $headlineColorCustom !important;
 }
