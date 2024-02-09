@@ -1,0 +1,31 @@
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">$title$</h1>
+            <p class="subtitle lead">$subtitle$</p>
+                                <div class="quarto-categories">
+                                  $for(categories)$
+                <div class="quarto-category">$categories$</div>$endfor$
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>$if(author)$
+      <div class="quarto-title-meta-heading">Presenter</div>
+      <div class="quarto-title-meta-contents">
+               <p>$author$</p>$endif$
+            </div>
+    </div>
+      
+      <div>$if(date)$
+      <div class="quarto-title-meta-heading">Event Date</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">$date$</p>$endif$
+      </div>
+    </div>
+    
+      
+    </div>

@@ -1,0 +1,136 @@
+/*-- scss:defaults --*/
+
+$body-bg: #F9E0D9;
+$body-color: #37392E;
+$link-color: #6A395B;
+$presentation-heading-color: #6A395B;
+$code-block-bg: #F8F2F3;
+$code-block-border-color: #000000;
+$code-block-border-radius: 10px;
+$code-color: $presentation-heading-color;
+$code-bg: #F8F2F3;
+$tabset-border-color: $presentation-heading-color;
+
+/*-- scss:rules --*/
+
+.reveal .slide-number {
+  color: $link-color;
+}
+
+.reveal .footer {
+  font-size: 0.35em !important;
+  text-align: right !important;
+}
+
+.reveal .slide-logo {
+  display: block;
+  position: fixed;
+  bottom: 0px;
+  right: 0px !important;
+  left: 50%;
+  max-height: 3.2rem;
+  height: 100%;
+  width: auto;
+  text-align: center;
+}
+
+.reveal .slides section .fragment.semi-fade-out {
+	opacity: 1;
+	visibility: inherit;
+
+	&.visible {
+		opacity: 0.25;
+		visibility: inherit;
+	}
+}
+
+.panel-tabset [role="tablist"] {
+  border-bottom: 5px solid $tabset-border-color;
+  list-style: none;
+  margin: 0;
+  padding-bottom: 5px;
+  width: 100%;
+}
+
+.panel-tabset [role="tab"] {
+  border: 1px solid $tabset-border-color;
+  border-top-color: $tabset-border-color;
+  display: block;
+  padding: 1em 1em;
+  text-decoration: none;
+  font-size: 0.75em;
+  border-radius: 10px;
+  background-color: #ffffff;
+  margin: 2px;
+}
+
+.panel-tabset [role="tab"][aria-selected="true"] {
+  background-color: $presentation-heading-color;
+  color: $body-bg;
+}
+
+details > summary {
+  color: $presentation-heading-color;
+  font-size: 0.75em;
+  border-radius: 20px;
+  background-color: $code-bg;
+  padding-left: 10px;
+  font-family: $font-family-monospace;
+}
+
+details {
+  margin-bottom: 0px;
+}
+
+.box {
+  border-radius: 25px;
+  background-color: $code-bg;
+  padding: 2% 2px 2% 20px;
+  text-align: left;
+  vertical-align: center;
+  border: 5px solid $presentation-heading-color;
+}
+
+tbody, tfoot, tr, td {
+    border-style: none !important;
+    padding-bottom: 2px !important;
+}
+
+/* removes the code numbers */
+
+pre.numberSource code > span > a:first-child::before {
+    display: none!important;
+}
+
+/* increases the padding in the code blocks to compensate for missing #s */
+/* also adds the border */
+
+.reveal pre.sourceCode code {
+    padding-left: 60px !important;
+    background-color: #f8f2f3;
+    border: 1px solid $presentation-heading-color;
+    border-radius: 0.25rem;
+}
+
+/* css styles */
+
+code {
+  border-radius: 20px;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+summary {
+  color: #ffffff;
+}
+
+blockquote {
+  border-left: 10px solid $presentation-heading-color !important;
+  text-align: left;
+  background-color: $code-bg !important;
+  color: $body-color !important;
+  padding: 0;
+  font-size: 0.65em;
+  font-style: italic !important;
+  border-radius: 20px;
+}

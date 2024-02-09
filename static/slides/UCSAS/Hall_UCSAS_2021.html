@@ -1,0 +1,1990 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>An Introduction to Hockey Analytics with R</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Meghan Hall" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <script src="libs/kePrint/kePrint.js"></script>
+    <link href="libs/lightable/lightable.css" rel="stylesheet" />
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="custom.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+class: inverse, left, middle
+
+# An Introduction to Hockey Analytics with R
+## Meghan Hall
+
+UConn Sports Analytics Symposium&lt;br&gt; October 9, 2021 &lt;br&gt; &lt;br&gt; &lt;svg viewBox="0 0 512 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"&gt;&lt;/path&gt;&lt;/svg&gt; [@MeghanMHall](https://www.twitter.com/MeghanMHall) &lt;br&gt; &lt;svg viewBox="0 0 496 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"&gt;&lt;/path&gt;&lt;/svg&gt;  [meghall6](https://github.com/meghall06) &lt;br&gt; &lt;svg viewBox="0 0 640 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M624 416H381.54c-.74 19.81-14.71 32-32.74 32H288c-18.69 0-33.02-17.47-32.77-32H16c-8.8 0-16 7.2-16 16v16c0 35.2 28.8 64 64 64h512c35.2 0 64-28.8 64-64v-16c0-8.8-7.2-16-16-16zM576 48c0-26.4-21.6-48-48-48H112C85.6 0 64 21.6 64 48v336h512V48zm-64 272H128V64h384v256z"&gt;&lt;/path&gt;&lt;/svg&gt;  [meghan.rbind.io](https://meghan.rbind.io/)
+
+---
+layout: true
+&lt;div class="my-footer"&gt;&lt;span&gt;tinyurl.com/ucsas21&lt;/span&gt;&lt;/div&gt;
+---
+
+# About ~~me~~ you
+
+&lt;br&gt;
+&lt;br&gt;
+
+.large[You know a bit about R...]
+
+&lt;br&gt;
+
+.large[...and a bit about hockey]
+
+---
+
+layout: true
+&lt;div class="my-footer"&gt;&lt;span&gt;tinyurl.com/ucsas21&lt;/span&gt;&lt;/div&gt;
+
+---
+
+.left[# About me]
+
+&lt;br&gt;
+
+.pull-left[
+## 💰 🎉&amp;nbsp;
+data manager in higher ed
+
+data scientist at Zelus Analytics
+
+]
+
+--
+
+.pull-right[
+## 🎉 💰&amp;nbsp;
+hockey analysis
+
+courses + tutorials + workshops
+]
+
+---
+
+# Today's agenda
+
+&lt;br&gt;
+
+.large[Explore how R makes hockey analysis easier]&lt;br&gt;
+.medium[Data manipulation, via the ⭐`tidyverse`⭐ and data visualization]
+
+&lt;br&gt;
+
+.large[Go through a basic hockey analysis question]
+
+--
+
+&lt;br&gt;
+
+.large[*A Day in the Life of an NHL Power Play*]
+
+---
+
+# Data sources
+
+&lt;br&gt;
+
+&lt;img src="figs/data.gif" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Data sources
+
+.large[Aggregate data freely available for most leagues]&lt;br&gt;
+.medium[league websites, eliteprospects.com]&lt;br&gt;
+.medium[some event data for AHL &amp; CHL]&lt;br&gt;
+.medium[no TOI 😑]
+
+&lt;br&gt;
+
+.large[[Big Data Cup](https://github.com/bigdatacup/Big-Data-Cup-2021)]
+
+&lt;br&gt;
+
+.large[Specialty sources, usually for a fee]&lt;br&gt;
+.medium[[Their Hockey Counts](https://theirhockeycounts.com/index.html#about)]&lt;br&gt;
+.medium[[CHL microstats](https://www.patreon.com/user/overview?u=13951676)]&lt;br&gt;
+.medium[[NHL microstats](https://www.patreon.com/CSznajder)]&lt;br&gt;
+
+---
+
+# hockeyR
+
+&lt;img src="figs/hockeyR.png" width="20%" style="display: block; margin: auto;" /&gt;
+
+.large[From Dan Morse: [hockeyr.netlify.app/](https://hockeyr.netlify.app/)]
+
+&lt;br&gt;
+
+.large[Various functions to scrape NHL play-by-play data]
+
+&lt;br&gt;
+
+.large[Other helper functions to assist with analysis]
+
+---
+
+# Today's packages
+
+
+```r
+library(tidyverse)
+library(janitor)
+library(hockeyR)
+library(sportyR)
+library(gt)
+library(gtExtras)
+library(ggtext)
+```
+
+---
+
+# hockeyR
+
+sample functions from `hockeyR`
+
+```r
+scrape_game(2020020322)
+
+scrape_day(day = "2021-02-27")
+
+scrape_season(season = 2020, type = "REG")
+```
+
+--
+&lt;br&gt;
+today's data
+
+```r
+pbp &lt;- scrape_day(day = "2021-02-27")
+```
+
+---
+
+# What is play-by-play data?
+
+.medium[`pbp` from `hockeyR` has 105 variables]&lt;br&gt;
+One row per event, with location (`x` and `y`), players on ice, etc.
+
+--
+
+&lt;table class="table" style="font-size: 16px; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; event_type &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; n &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; CHANGE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4401 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; FACEOFF &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 813 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; SHOT &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 778 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; STOP &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 629 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HIT &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 606 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; BLOCKED_SHOT &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 346 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; MISSED_SHOT &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 300 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; GIVEAWAY &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 222 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; TAKEAWAY &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 156 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; GOAL &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 93 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; PENALTY &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 91 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; PERIOD_END &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 48 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; GAME_END &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; GAME_SCHEDULED &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; CHALLENGE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; SHOOTOUT_COMPLETE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# What is play-by-play data?
+
+.medium[`pbp` from `hockeyR` has 105 variables]&lt;br&gt;
+One row per event, with location (`x` and `y`), players on ice, etc.
+
+&lt;br&gt;
+
+.large[Tracking data??]
+
+---
+
+# The data we want
+
+
+```r
+powerplay &lt;- pbp %&gt;% 
+  mutate(length = lead(period_seconds) - period_seconds,
+         PP_team = case_when((event_team_type == "home" &amp; 
+                                strength_state == "5v4") | 
+                               (event_team_type == "away" &amp; 
+                                  strength_state == "4v5") 
+                             ~ home_abbreviation,
+                             TRUE ~ away_abbreviation)) %&gt;% 
+  filter(strength_state %in% c("5v4","4v5") &amp; 
+           (length &gt; 0 | event_type %in% c("GOAL","SHOT"))) %&gt;% 
+  select(event_type, event_team_abbr, event_team_type, 
+         home_abbreviation, away_abbreviation, PP_team,
+         length, strength_state, x:y_fixed, home_on_1:away_on_7, 
+         event_idx, game_id, period) %&gt;% 
+  remove_empty("cols")
+```
+
+---
+
+# The data we want
+
+&lt;table class="table" style="font-size: 16px; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; event_type &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; PP_team &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; length &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; home_on_1 &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; home_on_2 &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; game_id &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; event_idx &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; FACEOFF &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Jacob.Bryson &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Curtis.Lazar &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; SHOT &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Jacob.Bryson &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Curtis.Lazar &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 38 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; CHANGE &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 34 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Jacob.Bryson &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Cody.Eakin &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 39 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; CHANGE &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Cody.Eakin &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Tobias.Rieder &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 40 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; CHANGE &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Cody.Eakin &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Tobias.Rieder &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 41 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; CHANGE &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Curtis.Lazar &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Rasmus.Ristolainen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 42 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; GIVEAWAY &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 31 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Curtis.Lazar &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Rasmus.Ristolainen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 43 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; BLOCKED_SHOT &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Curtis.Lazar &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Rasmus.Ristolainen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 44 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; SHOT &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Curtis.Lazar &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Rasmus.Ristolainen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 45 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; FACEOFF &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Jacob.Bryson &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Cody.Eakin &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 50 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# The question we have
+
+.large[*A Day in the Life of an NHL Power Play*]
+
+&lt;br&gt;
+
+--
+
+.large[Position breakdown of a power play: usually 4F/1D, sometimes 3F/2D]
+
+&lt;br&gt;
+
+.large[How does that vary among these teams for this one day of games?]
+
+---
+
+# The data we have
+
+what is missing and what structure do we need?
+
+&lt;table class="table" style="font-size: 16px; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; event_type &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; PP_team &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; length &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; home_on_1 &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; home_on_2 &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; game_id &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; event_idx &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; FACEOFF &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Jacob.Bryson &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Curtis.Lazar &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; SHOT &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Jacob.Bryson &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Curtis.Lazar &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 38 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; CHANGE &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 34 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Jacob.Bryson &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Cody.Eakin &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 39 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; CHANGE &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Cody.Eakin &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Tobias.Rieder &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 40 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; CHANGE &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Cody.Eakin &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Tobias.Rieder &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 41 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; CHANGE &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Curtis.Lazar &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Rasmus.Ristolainen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 42 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; GIVEAWAY &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 31 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Curtis.Lazar &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Rasmus.Ristolainen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 43 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; BLOCKED_SHOT &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Curtis.Lazar &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Rasmus.Ristolainen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 44 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; SHOT &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Curtis.Lazar &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Rasmus.Ristolainen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 45 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; FACEOFF &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Jacob.Bryson &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Cody.Eakin &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 50 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Changing the level of observation
+
+
+```r
+player &lt;- powerplay %&gt;% 
+  mutate(PP_1 = ifelse(PP_team == home_abbreviation, home_on_1, 
+                       away_on_1),
+         PP_2 = ifelse(PP_team == home_abbreviation, home_on_2, 
+                       away_on_2),
+         PP_3 = ifelse(PP_team == home_abbreviation, home_on_3, 
+                       away_on_3),
+         PP_4 = ifelse(PP_team == home_abbreviation, home_on_4, 
+                       away_on_4),
+         PP_5 = ifelse(PP_team == home_abbreviation, home_on_5, 
+                       away_on_5)) %&gt;% 
+  select(game_id, event_idx, contains("PP"), length) %&gt;% 
+  pivot_longer(PP_1:PP_5, values_to = "player")
+```
+
+---
+
+# Changing the level of observation
+
+&lt;table class="table" style="font-size: 16px; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; game_id &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; event_idx &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; PP_team &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; length &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; name &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; player &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PP_1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Kevin.Hayes &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PP_2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; James.van.Riemsdyk &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PP_3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Ivan.Provorov &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PP_4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Sean.Couturier &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PP_5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Joel.Farabee &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 38 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PP_1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Kevin.Hayes &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 38 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PP_2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; James.van.Riemsdyk &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 38 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PP_3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Ivan.Provorov &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 38 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PP_4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Sean.Couturier &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 38 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PP_5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Joel.Farabee &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Adding position data
+
+
+```r
+roster &lt;- get_rosters(team = "all", season = 2021)
+```
+--
+
+```r
+position &lt;- roster %&gt;% 
+  select(player, position) %&gt;% 
+  unique()
+```
+--
+&lt;table class="table" style="font-size: 16px; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; player &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; position &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Andrew Agozzino &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; LW &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; David Backes &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; C &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Simon Benoit &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; D &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Sam Carrick &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; C &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Max Comtois &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; LW &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chase De Leo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; C &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Nicolas Deslauriers &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; LW &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Jamie Drysdale &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; D &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Haydn Fleury &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; D &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Adding position data
+
+
+```r
+position %&gt;% 
+  get_dupes(player)
+```
+
+```
+## # A tibble: 2 x 3
+##   player        dupe_count position
+##   &lt;chr&gt;              &lt;int&gt; &lt;chr&gt;   
+## 1 Sebastian Aho          2 F       
+## 2 Sebastian Aho          2 D
+```
+
+--
+
+
+```r
+position &lt;- position %&gt;% 
+  filter(!(player == "Sebastian Aho" &amp; position == "D"))
+
+position &lt;- position %&gt;% 
+  mutate(player = str_replace_all(player, " ", "."),
+         player = str_replace_all(player, "-", "."),
+         player = str_replace_all(player, "'", "."))
+```
+
+--
+
+&lt;table class="table" style="font-size: 16px; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; player &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; position &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Andrew.Agozzino &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; LW &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Adding position data
+
+joining data by name can be 🥴
+
+```r
+player %&gt;% 
+  left_join(position, by = "player") %&gt;% 
+  filter(is.na(position)) %&gt;% 
+  select(player) %&gt;% 
+  unique()
+```
+
+--
+
+&lt;table class="table" style="font-size: 16px; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; player &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Josh.Norris &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Mitchell.Marner &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Nick.Caamano &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Cal.Foote &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Alex.Wennberg &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Dominik.Kubalik &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Matt.Dumba &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Adding position data
+
+
+```r
+position &lt;- position %&gt;% 
+  mutate(player = case_when(player == "Joshua.Norris" ~ "Josh.Norris",
+                      player == "Mitch.Marner" ~ "Mitchell.Marner",
+                      player == "Callan.Foote" ~ "Cal.Foote",
+                      player == "Nicholas.Caamano" ~ "Nick.Caamano",
+                      player == "Alexander.Wennberg" ~ "Alex.Wennberg",
+                      player == "Dominik.Kubalík" ~ "Dominik.Kubalik",
+                      player == "Mathew.Dumba" ~ "Matt.Dumba",
+                      TRUE ~ player))
+```
+
+--
+
+
+```r
+player &lt;- player %&gt;% 
+  left_join(position, by = "player") %&gt;% 
+  mutate(forward = ifelse(str_detect(position, "D"), 0, 1))
+```
+
+---
+
+# Adding position data
+
+&lt;table class="table" style="font-size: 16px; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; game_id &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; event_idx &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; PP_team &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; length &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; name &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; player &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; position &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; forward &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PP_1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Kevin.Hayes &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; RW &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PP_2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; James.van.Riemsdyk &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; LW &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PP_3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Ivan.Provorov &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; D &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PP_4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Sean.Couturier &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; C &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PP_5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Joel.Farabee &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; LW &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 38 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PP_1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Kevin.Hayes &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; RW &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 38 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PP_2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; James.van.Riemsdyk &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; LW &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 38 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PP_3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Ivan.Provorov &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; D &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 38 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PP_4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Sean.Couturier &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; C &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 38 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PP_5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Joel.Farabee &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; LW &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Changing the level of detail
+
+
+```r
+fwd &lt;- player %&gt;% 
+  group_by(game_id, event_idx, PP_team) %&gt;%
+  summarize(fwds = sum(forward),
+            length = mean(length)) %&gt;% 
+  group_by(PP_team, fwds) %&gt;% 
+  summarize(time = sum(length)) %&gt;% 
+  add_tally(time, n = "total_time") %&gt;% 
+  mutate(perc = time / total_time) %&gt;% 
+  filter(fwds == 4)
+```
+
+---
+
+# Changing the level of detail
+
+
+```r
+fwd &lt;- player %&gt;% 
+  `group_by(game_id, event_idx, PP_team)` %&gt;% 
+  `summarize(fwds = sum(forward),`
+            `length = mean(length))` %&gt;% 
+  group_by(PP_team, fwds) %&gt;% 
+  summarize(time = sum(length)) %&gt;% 
+  add_tally(time, n = "total_time") %&gt;% 
+  mutate(perc = time / total_time) %&gt;% 
+  filter(fwds == 4)
+```
+
+&lt;table class="table" style="font-size: 16px; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; game_id &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; event_idx &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; PP_team &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; fwds &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; length &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 38 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 39 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 34 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 40 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2020020322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 41 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Changing the level of detail
+
+
+```r
+fwd &lt;- player %&gt;% 
+  group_by(game_id, event_idx, PP_team) %&gt;% 
+  summarize(fwds = sum(forward),
+            length = mean(length)) %&gt;% 
+  `group_by(PP_team, fwds)` %&gt;% 
+  `summarize(time = sum(length))` %&gt;% 
+  add_tally(time, n = "total_time") %&gt;% 
+  mutate(perc = time / total_time) %&gt;% 
+  filter(fwds == 4)
+```
+
+&lt;table class="table" style="font-size: 16px; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; PP_team &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; fwds &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; time &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; ARI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 74 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; ARI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 166 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; BUF &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 101 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; BUF &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 174 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 32 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Changing the level of detail
+
+
+```r
+fwd &lt;- player %&gt;% 
+  group_by(game_id, event_idx, PP_team) %&gt;% 
+  summarize(fwds = sum(forward),
+            length = mean(length)) %&gt;% 
+  group_by(PP_team, fwds) %&gt;% 
+  summarize(time = sum(length)) %&gt;% 
+  `add_tally(time, n = "total_time")` %&gt;% 
+  `mutate(perc = time / total_time)` %&gt;% 
+  filter(fwds == 4)
+```
+
+&lt;table class="table" style="font-size: 16px; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; PP_team &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; fwds &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; time &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; total_time &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; perc &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; ARI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 74 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 240 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3083333 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; ARI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 166 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 240 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.6916667 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; BUF &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 101 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 275 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3672727 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; BUF &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 174 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 275 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.6327273 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 32 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 250 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1280000 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Changing the level of detail
+
+
+```r
+fwd &lt;- player %&gt;% 
+  group_by(game_id, event_idx, PP_team) %&gt;%
+  summarize(fwds = sum(forward),
+            length = mean(length)) %&gt;% 
+  group_by(PP_team, fwds) %&gt;% 
+  summarize(time = sum(length)) %&gt;% 
+  add_tally(time, n = "total_time") %&gt;% 
+  mutate(perc = time / total_time) %&gt;% 
+  filter(fwds == 4)
+```
+
+&lt;table class="table" style="font-size: 16px; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; PP_team &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; fwds &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; time &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; total_time &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; perc &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; ARI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 166 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 240 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.6916667 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; BUF &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 174 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 275 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.6327273 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 218 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 250 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.8720000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; CBJ &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 319 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 350 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9114286 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; CGY &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 373 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 373 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0000000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; CHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 120 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 120 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0000000 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Using `team_logos_colors`
+
+
+```r
+logos &lt;- team_logos_colors
+```
+
+--
+
+&lt;table class="table" style="font-size: 16px; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; team_abbr &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; team_color1 &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; team_color2 &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #661414 !important;"&gt; team_logo_espn &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; ANA &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; #F47A38 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; #B9975B &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; https://a.espncdn.com/i/teamlogos/nhl/500/ANA.png &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; ARI &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; #8C2633 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; #DDCBA4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; https://a.espncdn.com/i/teamlogos/nhl/500/ARI.png &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; BOS &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; #FFB81C &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; #000000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; https://a.espncdn.com/i/teamlogos/nhl/500/BOS.png &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; BUF &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; #002654 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; #FCB514 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; https://a.espncdn.com/i/teamlogos/nhl/500/BUF.png &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; CGY &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; #C8102E &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; #F1BE48 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; https://a.espncdn.com/i/teamlogos/nhl/500/CGY.png &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+--
+
+
+```r
+fwd &lt;- fwd %&gt;% 
+  left_join(select(logos, team_abbr, team_logo_espn, team_color1), 
+            by = c("PP_team" = "team_abbr"))
+```
+
+---
+
+# Tables with `gt`
+
+<div id="oxgmgugfnj" style="overflow-x:auto;overflow-y:auto;width:auto;height:450px;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#oxgmgugfnj .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 12px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: 250px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: black;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#oxgmgugfnj .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#oxgmgugfnj .gt_title {
+  color: #333333;
+  font-size: 14px;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#oxgmgugfnj .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 4px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#oxgmgugfnj .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: black;
+}
+
+#oxgmgugfnj .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#oxgmgugfnj .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#oxgmgugfnj .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#oxgmgugfnj .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#oxgmgugfnj .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#oxgmgugfnj .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#oxgmgugfnj .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#oxgmgugfnj .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#oxgmgugfnj .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#oxgmgugfnj .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#oxgmgugfnj .gt_row {
+  padding-top: 1px;
+  padding-bottom: 1px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 0px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#oxgmgugfnj .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#oxgmgugfnj .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#oxgmgugfnj .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#oxgmgugfnj .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#oxgmgugfnj .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#oxgmgugfnj .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#oxgmgugfnj .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: black;
+}
+
+#oxgmgugfnj .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#oxgmgugfnj .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#oxgmgugfnj .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#oxgmgugfnj .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#oxgmgugfnj .gt_left {
+  text-align: left;
+}
+
+#oxgmgugfnj .gt_center {
+  text-align: center;
+}
+
+#oxgmgugfnj .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#oxgmgugfnj .gt_font_normal {
+  font-weight: normal;
+}
+
+#oxgmgugfnj .gt_font_bold {
+  font-weight: bold;
+}
+
+#oxgmgugfnj .gt_font_italic {
+  font-style: italic;
+}
+
+#oxgmgugfnj .gt_super {
+  font-size: 65%;
+}
+
+#oxgmgugfnj .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+</style>
+<table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <th colspan="2" class="gt_heading gt_title gt_font_normal" style>Percentage of 5v4 Power Play Time With Four Forwards</th>
+    </tr>
+    <tr>
+      <th colspan="2" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style>Draw no conclusions, this is one night of games!</th>
+    </tr>
+  </thead>
+  
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left" style="background-color: #FFFFFF;"><img src="https://a.espncdn.com/i/teamlogos/nhl/500/CGY.png" style="height:25px;"></td>
+<td class="gt_row gt_right" style="background-color: #263238; color: #FFFFFF;">100&percnt;</td></tr>
+    <tr><td class="gt_row gt_left" style="background-color: #FFFFFF;"><img src="https://a.espncdn.com/i/teamlogos/nhl/500/CHI.png" style="height:25px;"></td>
+<td class="gt_row gt_right" style="background-color: #263238; color: #FFFFFF;">100&percnt;</td></tr>
+    <tr><td class="gt_row gt_left" style="background-color: #FFFFFF;"><img src="https://a.espncdn.com/i/teamlogos/nhl/500/COL.png" style="height:25px;"></td>
+<td class="gt_row gt_right" style="background-color: #263238; color: #FFFFFF;">100&percnt;</td></tr>
+    <tr><td class="gt_row gt_left" style="background-color: #FFFFFF;"><img src="https://a.espncdn.com/i/teamlogos/nhl/500/MTL.png" style="height:25px;"></td>
+<td class="gt_row gt_right" style="background-color: #263238; color: #FFFFFF;">100&percnt;</td></tr>
+    <tr><td class="gt_row gt_left" style="background-color: #FFFFFF;"><img src="https://a.espncdn.com/i/teamlogos/nhl/500/NYI.png" style="height:25px;"></td>
+<td class="gt_row gt_right" style="background-color: #263238; color: #FFFFFF;">100&percnt;</td></tr>
+    <tr><td class="gt_row gt_left" style="background-color: #FFFFFF;"><img src="https://a.espncdn.com/i/teamlogos/nhl/500/TOR.png" style="height:25px;"></td>
+<td class="gt_row gt_right" style="background-color: #263238; color: #FFFFFF;">100&percnt;</td></tr>
+    <tr><td class="gt_row gt_left" style="background-color: #FFFFFF;"><img src="https://a.espncdn.com/i/teamlogos/nhl/500/OTT.png" style="height:25px;"></td>
+<td class="gt_row gt_right" style="background-color: #2B383F; color: #FFFFFF;">98&percnt;</td></tr>
+    <tr><td class="gt_row gt_left" style="background-color: #FFFFFF;"><img src="https://a.espncdn.com/i/teamlogos/nhl/500/LA.png" style="height:25px;"></td>
+<td class="gt_row gt_right" style="background-color: #2C3940; color: #FFFFFF;">97&percnt;</td></tr>
+    <tr><td class="gt_row gt_left" style="background-color: #FFFFFF;"><img src="https://a.espncdn.com/i/teamlogos/nhl/500/DET.png" style="height:25px;"></td>
+<td class="gt_row gt_right" style="background-color: #2F3D44; color: #FFFFFF;">96&percnt;</td></tr>
+    <tr><td class="gt_row gt_left" style="background-color: #FFFFFF;"><img src="https://a.espncdn.com/i/teamlogos/nhl/500/NSH.png" style="height:25px;"></td>
+<td class="gt_row gt_right" style="background-color: #36464E; color: #FFFFFF;">92&percnt;</td></tr>
+    <tr><td class="gt_row gt_left" style="background-color: #FFFFFF;"><img src="https://a.espncdn.com/i/teamlogos/nhl/500/CBJ.png" style="height:25px;"></td>
+<td class="gt_row gt_right" style="background-color: #384850; color: #FFFFFF;">91&percnt;</td></tr>
+    <tr><td class="gt_row gt_left" style="background-color: #FFFFFF;"><img src="https://a.espncdn.com/i/teamlogos/nhl/500/CAR.png" style="height:25px;"></td>
+<td class="gt_row gt_right" style="background-color: #3E515A; color: #FFFFFF;">87&percnt;</td></tr>
+    <tr><td class="gt_row gt_left" style="background-color: #FFFFFF;"><img src="https://a.espncdn.com/i/teamlogos/nhl/500/SJ.png" style="height:25px;"></td>
+<td class="gt_row gt_right" style="background-color: #3F525B; color: #FFFFFF;">87&percnt;</td></tr>
+    <tr><td class="gt_row gt_left" style="background-color: #FFFFFF;"><img src="https://a.espncdn.com/i/teamlogos/nhl/500/WSH.png" style="height:25px;"></td>
+<td class="gt_row gt_right" style="background-color: #4D646F; color: #FFFFFF;">79&percnt;</td></tr>
+    <tr><td class="gt_row gt_left" style="background-color: #FFFFFF;"><img src="https://a.espncdn.com/i/teamlogos/nhl/500/WPG.png" style="height:25px;"></td>
+<td class="gt_row gt_right" style="background-color: #4E6671; color: #FFFFFF;">78&percnt;</td></tr>
+    <tr><td class="gt_row gt_left" style="background-color: #FFFFFF;"><img src="https://a.espncdn.com/i/teamlogos/nhl/500/ARI.png" style="height:25px;"></td>
+<td class="gt_row gt_right" style="background-color: #5C7886; color: #FFFFFF;">69&percnt;</td></tr>
+    <tr><td class="gt_row gt_left" style="background-color: #FFFFFF;"><img src="https://a.espncdn.com/i/teamlogos/nhl/500/BUF.png" style="height:25px;"></td>
+<td class="gt_row gt_right" style="background-color: #698491; color: #000000;">63&percnt;</td></tr>
+    <tr><td class="gt_row gt_left" style="background-color: #FFFFFF;"><img src="https://a.espncdn.com/i/teamlogos/nhl/500/NJD.png" style="height:25px;"></td>
+<td class="gt_row gt_right" style="background-color: #6E8895; color: #000000;">61&percnt;</td></tr>
+    <tr><td class="gt_row gt_left" style="background-color: #FFFFFF;"><img src="https://a.espncdn.com/i/teamlogos/nhl/500/PIT.png" style="height:25px;"></td>
+<td class="gt_row gt_right" style="background-color: #7D94A0; color: #000000;">56&percnt;</td></tr>
+    <tr><td class="gt_row gt_left" style="background-color: #FFFFFF;"><img src="https://a.espncdn.com/i/teamlogos/nhl/500/STL.png" style="height:25px;"></td>
+<td class="gt_row gt_right" style="background-color: #8096A2; color: #000000;">55&percnt;</td></tr>
+    <tr><td class="gt_row gt_left" style="background-color: #FFFFFF;"><img src="https://a.espncdn.com/i/teamlogos/nhl/500/PHI.png" style="height:25px;"></td>
+<td class="gt_row gt_right" style="background-color: #8CA1AB; color: #000000;">51&percnt;</td></tr>
+    <tr><td class="gt_row gt_left" style="background-color: #FFFFFF;"><img src="https://a.espncdn.com/i/teamlogos/nhl/500/DAL.png" style="height:25px;"></td>
+<td class="gt_row gt_right" style="background-color: #AFBDC4; color: #000000;">42&percnt;</td></tr>
+    <tr><td class="gt_row gt_left" style="background-color: #FFFFFF;"><img src="https://a.espncdn.com/i/teamlogos/nhl/500/FLA.png" style="height:25px;"></td>
+<td class="gt_row gt_right" style="background-color: #B0BEC5; color: #000000;">41&percnt;</td></tr>
+    <tr><td class="gt_row gt_left" style="background-color: #FFFFFF;"><img src="https://a.espncdn.com/i/teamlogos/nhl/500/TB.png" style="height:25px;"></td>
+<td class="gt_row gt_right" style="background-color: #B6C3C9; color: #000000;">40&percnt;</td></tr>
+    <tr><td class="gt_row gt_left" style="background-color: #FFFFFF;"><img src="https://a.espncdn.com/i/teamlogos/nhl/500/vgs.png" style="height:25px;"></td>
+<td class="gt_row gt_right" style="background-color: #C3CED3; color: #000000;">36&percnt;</td></tr>
+    <tr><td class="gt_row gt_left" style="background-color: #FFFFFF;"><img src="https://a.espncdn.com/i/teamlogos/nhl/500/MIN.png" style="height:25px;"></td>
+<td class="gt_row gt_right" style="background-color: #ECEFF1; color: #000000;">25&percnt;</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+
+---
+
+.h-1[# Tables with `gt`]
+
+.tiny[
+
+```r
+fwd %&gt;% 
+  ungroup() %&gt;% 
+  select(team_logo_espn, perc) %&gt;% 
+  arrange(desc(perc)) %&gt;% 
+  gt() %&gt;% 
+  tab_header(title = "Percentage of 5v4 Power Play Time With Four Forwards",
+             subtitle = "Draw no conclusions, this is one night of games!") %&gt;%
+  `gt_img_rows(columns = team_logo_espn, height = 25)` %&gt;% 
+  `fmt_percent(perc, decimals = 0)` %&gt;% 
+  `gt_color_rows(perc,`
+                `palette = "ggsci::blue_grey_material")` %&gt;% 
+  tab_style(style = list(cell_fill(color = "white")),
+    locations = cells_body(columns = c(team_logo_espn))) %&gt;% 
+  tab_options(table.font.size = 12,
+              heading.title.font.size = 14,
+              table.width = px(250),
+              column_labels.hidden = TRUE,
+              data_row.padding = px(1),
+              table_body.hlines.width = 0,
+              table.border.top.color = 'black',
+              table.border.top.width = 2,
+              heading.border.bottom.color = 'black',
+              heading.border.bottom.width = 2,
+              table_body.border.bottom.color = 'black',
+              table_body.border.bottom.width = 2)
+```
+]
+
+---
+
+# Plots with `ggplot2`
+
+&lt;img src="figs/bar-chart-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Plots with `ggplot2`
+
+
+```r
+fwd %&gt;% 
+  ggplot(aes(x = perc, y = reorder(PP_team, perc))) +
+  geom_bar(stat = "identity", `fill = fwd$team_color1`) +
+  scale_x_continuous(label = scales::percent,
+                     expand = expansion(mult = c(0, 0.05))) +
+  labs(x = NULL, y = NULL,
+       title = "Percentage of 5v4 power play time with four forwards",
+       subtitle = "Games on Feb. 27, 2021") +
+  theme_linedraw() +
+  ucsas_theme() +
+  theme(plot.title.position = "plot")
+```
+
+---
+
+# Shot plots with `sportyR`
+
+&lt;img src="figs/sportyR.png" width="20%" style="display: block; margin: auto;" /&gt;
+
+.large[From Ross Drucker  [&lt;svg viewBox="0 0 496 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"&gt;&lt;/path&gt;&lt;/svg&gt;](https://github.com/rossdrucker/sportyR#readme)]
+
+&lt;br&gt;
+
+.large[Functions to aid in plotting various sport courts/rinks/fields]
+
+---
+
+# Shot plots with `sportyR`
+
+`x_fixed` and `y_fixed` correct coordinates so home team shoots to the right, away team to the left&lt;br&gt;
+
+
+```r
+PP_shots &lt;- powerplay %&gt;% 
+  filter(event_type %in% c("SHOT","GOAL") &amp; 
+           event_team_abbr == PP_team)
+
+geom_hockey("nhl") +
+  geom_point(data = PP_shots, aes(x = x_fixed, y = y_fixed))
+```
+
+&lt;img src="figs/rink-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Shot plots with `sportyR`
+
+
+
+&lt;img src="figs/shot-plot-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Shot plots with `sportyR`
+
+
+```r
+PP_shots &lt;- powerplay %&gt;% 
+  filter(event_type %in% c("SHOT","GOAL") &amp; 
+           event_team_abbr == PP_team) %&gt;% 
+  mutate(x_rotate = ifelse(x &gt; 0, x * -1, x),
+         y_rotate = ifelse(x &gt; 0, y * -1, y)) %&gt;% 
+  arrange(desc(event_type))
+```
+
+--
+
+
+```r
+geom_hockey("nhl", `full_surf = FALSE`) +
+  geom_point(data = PP_shots, `aes(x = x_rotate, y = y_rotate)`,
+             size = 6,
+             color = ifelse(PP_shots$event_type == "GOAL", "#661414", "#A9A9A9"),
+             alpha = ifelse(PP_shots$event_type == "GOAL", 1, 0.5)) +
+  labs(title = "Shots and &lt;span style = 'color:#661414;'&gt;**goals**&lt;/span&gt; on the 5v4 power play",
+    subtitle = "On the night of February 27, 2021",
+    caption = "Data from hockeyR &amp; plot made with sportyR by @MeghanMHall") +
+  theme(plot.title = element_markdown(hjust = 0.5, vjust = 0.5, size = 16),
+        plot.subtitle = element_text(hjust = 0.5, face = "italic"),
+        plot.caption = element_text(hjust = 0.5))
+```
+
+---
+
+# What we did
+
+.large[Explored various data manipulation techniques with the `tidyverse`]&lt;br&gt;
+.medium[using `stringr` functions, `pivot_longer`, `left_join`]&lt;br&gt;
+.medium[and the `dplyr` verbs: `select`, `filter`, `mutate`, `group_by`, `summarize`]
+
+&lt;br&gt;
+
+.large[Made a table with `gt` and a plot with `ggplot2`]&lt;br&gt;
+.medium[using logos and colors available through `hockeyR`]
+
+&lt;br&gt;
+
+.large[Made a shot plot with `sportyR`]
+
+---
+
+# Questions??
+
+&lt;br&gt;
+
+&lt;img src="figs/data.gif" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+
+class: center, middle, inverse
+
+# Thank you!
+
+Slides created via the R package [xaringan](https://github.com/yihui/xaringan).
+&lt;br&gt;
+&lt;svg viewBox="0 0 512 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"&gt;&lt;/path&gt;&lt;/svg&gt; [@MeghanMHall](https://www.twitter.com/MeghanMHall)
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"highlightSpans": true,
+"countIncrementalSlides": false,
+"slideNumberFormat": "%current%"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

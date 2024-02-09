@@ -1,0 +1,16 @@
+---
+title: "Keeping it Tidy"
+subtitle: "RLadies Paris"
+author: "Meghan Hall"
+date: "2022-09-08"
+image: "featured.png"
+summary: Using the tidyverse to organize, transform, and visualize data.
+categories: ["R", "tidyverse"]
+extsite: "https://meghan.quarto.pub/keeping-it-tidy/"
+slides: "https://meghan.rbind.io/slides/rladiesparis/rladiesparis.html#/title-slide"
+---
+[{{< fa tv >}} SLIDES](https://meghan.rbind.io/slides/rladiesparis/rladiesparis.html#/title-slide){class="btn btn-secondary" target="_blank"} [{{< fa link >}} WORKSHOP WEBSITE](https://meghan.quarto.pub/keeping-it-tidy/){class="btn btn-secondary" target="_blank"}
+
+Join me on September 8 at 1pm EST / 7pm CEST! This workshop is targeted toward beginners and will serve as an introduction to the tidyverse, a collection of packages designed to aid in the cleaning and wrangling of data. In order to give you the tools to embark upon your own analysis on your own data, we will work through a sample data set and discuss methods for modifying, aggregating, reshaping, and visualizing data.
+
+Registration is required, and the event is free!

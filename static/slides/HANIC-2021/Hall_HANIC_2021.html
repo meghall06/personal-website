@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Using R for Your Big Data Cup Project</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Carnegie Mellon Sports Analytics Conference   October 25, 2020 | #CMSAC20" />
+    <script src="libs_HANIC/header-attrs/header-attrs.js"></script>
+    <link href="libs_HANIC/font-awesome/css/fontawesome-all.min.css" rel="stylesheet" />
+    <script src="libs_HANIC/kePrint/kePrint.js"></script>
+    <link href="libs_HANIC/lightable/lightable.css" rel="stylesheet" />
+    <link rel="stylesheet" href="xaringan-themer2.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+class: inverse, center, middle
+
+# Using R for Your Big Data Cup Project
+&lt;img src="figs/hanic/puck.png" width="250px"/&gt;
+### A gentle intro and some tips &amp; tricks
+Meghan Hall &lt;br&gt; <i class="fab  fa-twitter "></i> [@MeghanMHall](https://www.twitter.com/MeghanMHall) &lt;br&gt; [meghan.rbind.io](https://meghan.rbind.io/) &lt;br&gt; [Hockey (Analytics) Night in Canada](https://www.hanic-analytics.com) &lt;br&gt; Feb. 18, 2021
+
+---
+background-image: url(figs/hanic/puck.png)
+background-position: 98% 2%
+background-size: 114px 104px
+padding-right: 10px
+layout: true
+---
+
+## Can I teach you R in 10 minutes?
+
+...no &amp;nbsp; 😞
+
+--
+
+But we *can*...
+
+- talk about what's easier to do in R
+- go over some common functions you might use for this project
+- discuss a roadmap for learning more
+
+&lt;br&gt;
+
+--
+
+**Disclaimer** &lt;br&gt;
+*The speaker herein pledges as follows: no declarative statements will be uttered about how R is objectively "the best" and no moral judgments will be made on which software, IDE, programming language, packages, dark mode, etc. the viewer chooses to use and/or not use.*
+
+**tl;dr** &lt;br&gt;
+I don't care what you use for your project! Use Excel! Use Python! Use SAS! Use an abacus!
+
+--
+
+&lt;br&gt;
+
+But these are my 10 minutes, so we're going to talk about R.
+
+---
+
+## Step 0: How does one use R, exactly?
+
+1️⃣ &amp;nbsp; the language itself: [https://cloud.r-project.org/](https://cloud.r-project.org/)
+
+&lt;br&gt;
+
+2️⃣ &amp;nbsp; the IDE (integrated development environment): [https://rstudio.com/products/rstudio/download/](https://rstudio.com/products/rstudio/download/)
+
+---
+
+## Step 1: Data!
+
+
+```r
+library(tidyverse)
+library(janitor)
+
+scouting &lt;- read_csv("https://tinyurl.com/BDCscouting") %&gt;% 
+  clean_names()
+
+nwhl &lt;- read_csv("https://tinyurl.com/BDCnwhl") %&gt;% 
+  clean_names()
+
+women &lt;- read_csv("https://tinyurl.com/BDCwomens") %&gt;% 
+  clean_names()
+```
+
+---
+
+## Step 1: Data!
+
+
+```r
+*library(tidyverse)
+library(janitor) 
+
+scouting &lt;- read_csv("https://tinyurl.com/BDCscouting") %&gt;%
+  clean_names()
+
+nwhl &lt;- read_csv("https://tinyurl.com/BDCnwhl") %&gt;%
+  clean_names()
+
+women &lt;- read_csv("https://tinyurl.com/BDCwomens") %&gt;%
+  clean_names()
+```
+
+---
+
+## Step 1: Data!
+
+
+```r
+library(tidyverse) 
+library(janitor) 
+
+*scouting &lt;- read_csv("https://tinyurl.com/BDCscouting") %&gt;%
+  clean_names() 
+
+*nwhl &lt;- read_csv("https://tinyurl.com/BDCnwhl") %&gt;%
+  clean_names() 
+
+*women &lt;- read_csv("https://tinyurl.com/BDCwomens") %&gt;%
+  clean_names() 
+```
+
+---
+
+## Step 1: Data!
+
+
+```r
+library(tidyverse) 
+*library(janitor)
+
+scouting &lt;- read_csv("https://tinyurl.com/BDCscouting") %&gt;%
+* clean_names()
+
+nwhl &lt;- read_csv("https://tinyurl.com/BDCnwhl") %&gt;% 
+* clean_names()
+
+women &lt;- read_csv("https://tinyurl.com/BDCwomens") %&gt;% 
+* clean_names()
+```
+
+---
+
+## Step 2: Explore
+
+
+```r
+*View(scouting)
+
+*scouting %&gt;%
+* glimpse()
+
+scouting %&gt;% 
+  count(event)
+
+scouting %&gt;% 
+  count(event, detail_1)
+```
+
+---
+
+## Step 2: Explore
+
+
+```r
+View(scouting)
+
+scouting %&gt;%
+  glimpse() 
+
+*scouting %&gt;%
+* count(event)
+
+scouting %&gt;% 
+  count(event, detail_1)
+```
+
+&lt;table class="table" style="font-size: 14px; width: auto !important; "&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; event &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; n &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Dump In/Out &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4888 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Faceoff Win &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2441 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Goal &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 293 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Incomplete Play &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8890 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Penalty Taken &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 419 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Play &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 23778 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Puck Recovery &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20667 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Shot &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4887 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+## Step 2: Explore
+
+
+```r
+View(scouting)
+
+scouting %&gt;%
+  glimpse() 
+
+scouting %&gt;%
+  count(event) 
+
+*scouting %&gt;%
+* count(event, detail_1)
+```
+
+&lt;table class="table" style="font-size: 14px; width: auto !important; "&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; event &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; detail_1 &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; n &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Dump In/Out &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Lost &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4143 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Dump In/Out &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Retained &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 745 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Faceoff Win &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Backhand &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2179 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Faceoff Win &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Feet &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Faceoff Win &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Forehand &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 245 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Goal &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Deflection &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Goal &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Slapshot &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Goal &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Snapshot &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 148 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+## Step 3: A Question
+
+From the `scouting` data, among players who've taken at least 50 faceoffs, who has the best faceoff percentage?
+
+--
+
+(Is this the most *rigorous* Big Data Cup question? No, but I only have 10 minutes!)
+
+--
+
+&lt;table class="table" style="font-size: 14px; width: auto !important; "&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; game_date &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; team &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; player &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; event &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; player_2 &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 2019-09-20 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Sudbury Wolves &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Blake Murray &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Faceoff Win &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Connor Lockhart &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 2019-09-20 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Sudbury Wolves &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Macauley Carson &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Faceoff Win &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Austen Swankler &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 2019-09-20 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Sudbury Wolves &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Quinton Byfield &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Faceoff Win &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Chad Yetman &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 2019-09-20 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Sudbury Wolves &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Macauley Carson &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Faceoff Win &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Austen Swankler &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 2019-09-20 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Sudbury Wolves &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Quinton Byfield &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Faceoff Win &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Chad Yetman &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 2019-09-20 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Erie Otters &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Alex Gritz &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Faceoff Win &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Blake Murray &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 2019-09-20 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Erie Otters &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Connor Lockhart &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Faceoff Win &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Ethan Larmand &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 2019-09-20 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Erie Otters &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Austen Swankler &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Faceoff Win &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Macauley Carson &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 2019-09-20 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Erie Otters &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Chad Yetman &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Faceoff Win &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Quinton Byfield &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 2019-09-20 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Erie Otters &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Brendan Hoffmann &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Faceoff Win &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Blake Murray &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+## Step 3: A Question
+
+From the `scouting` data, among players who've taken at least 50 faceoffs, who has the best faceoff percentage?
+
+(Is this the most *rigorous* Big Data Cup question? No, but I only have 10 minutes!)
+
+&lt;table class="table" style="font-size: 14px; width: auto !important; "&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; game_date &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; team &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; player &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; event &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; player_2 &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 2019-09-20 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Sudbury Wolves &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Blake Murray &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Faceoff Win &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Connor Lockhart &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 2019-09-20 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Sudbury Wolves &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Macauley Carson &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Faceoff Win &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Austen Swankler &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; 2019-09-20 &lt;/td&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; Sudbury Wolves &lt;/td&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; Quinton Byfield &lt;/td&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; Faceoff Win &lt;/td&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; Chad Yetman &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 2019-09-20 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Sudbury Wolves &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Macauley Carson &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Faceoff Win &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Austen Swankler &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 2019-09-20 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Sudbury Wolves &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Quinton Byfield &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Faceoff Win &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Chad Yetman &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 2019-09-20 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Erie Otters &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Alex Gritz &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Faceoff Win &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Blake Murray &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 2019-09-20 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Erie Otters &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Connor Lockhart &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Faceoff Win &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Ethan Larmand &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 2019-09-20 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Erie Otters &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Austen Swankler &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Faceoff Win &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Macauley Carson &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; 2019-09-20 &lt;/td&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; Erie Otters &lt;/td&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; Chad Yetman &lt;/td&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; Faceoff Win &lt;/td&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; Quinton Byfield &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 2019-09-20 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Erie Otters &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Brendan Hoffmann &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Faceoff Win &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Blake Murray &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+## Step 3: A Question
+
+&lt;table class="table" style="font-size: 14px; width: auto !important; "&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; player &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; faceoffs &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; faceoff_wins &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; faceoff_perc &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ty Dellandrea &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 55 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 35 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.6363636 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Cole Schwindt &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 57 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 36 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.6315789 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Cam Hillis &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 104 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 64 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.6153846 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Lucas Theriault &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 52 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 29 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.5576923 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Keean Washkurak &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 55 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 29 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.5272727 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Danny Zhilkin &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 67 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 34 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.5074627 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Austen Swankler &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 334 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 169 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.5059880 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ryan McGregor &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 72 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 36 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.5000000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Hayden Fowler &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 310 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 149 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4806452 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chad Yetman &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 724 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 343 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4737569 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Connor Lockhart &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 207 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 92 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4444444 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Noah Sedore &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 68 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 30 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4411765 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Brendan Hoffmann &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 488 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 197 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4036885 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Elias Cohen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 149 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 57 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3825503 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+## Step 3: A Question
+
+
+```r
+faceoffs &lt;- scouting %&gt;% 
+  filter(event == "Faceoff Win") %&gt;% 
+  select(player, player_2) %&gt;% 
+  rename(winner = player,
+         loser = player_2) %&gt;% 
+  pivot_longer(winner:loser, 
+               names_to = "status", 
+               values_to = "player") %&gt;% 
+  mutate(win = ifelse(status == "winner", 1, 0)) %&gt;% 
+  group_by(player) %&gt;% 
+  summarize(faceoffs = n(),
+            faceoff_wins = sum(win)) %&gt;% 
+  mutate(faceoff_perc = faceoff_wins / faceoffs) %&gt;% 
+  filter(faceoffs &gt;= 50) %&gt;% 
+  arrange(desc(faceoff_perc))
+```
+
+---
+
+## Step 3: A Question
+
+
+```r
+*faceoffs &lt;- scouting %&gt;%
+  filter(event == "Faceoff Win") %&gt;% 
+  select(player, player_2) %&gt;% 
+  rename(winner = player,
+         loser = player_2) %&gt;% 
+  pivot_longer(winner:loser, 
+               names_to = "status", 
+               values_to = "player") %&gt;% 
+  mutate(win = ifelse(status == "winner", 1, 0)) %&gt;% 
+  group_by(player) %&gt;% 
+  summarize(faceoffs = n(),
+            faceoff_wins = sum(win)) %&gt;% 
+  mutate(faceoff_perc = faceoff_wins / faceoffs) %&gt;% 
+  filter(faceoffs &gt;= 50) %&gt;% 
+  arrange(desc(faceoff_perc))
+```
+
+---
+
+## Step 3: A Question
+
+
+```r
+faceoffs &lt;- scouting %&gt;% 
+* filter(event == "Faceoff Win") %&gt;%
+* select(player, player_2) %&gt;%
+  rename(winner = player,
+         loser = player_2) %&gt;% 
+  pivot_longer(winner:loser, 
+               names_to = "status", 
+               values_to = "player") %&gt;% 
+  mutate(win = ifelse(status == "winner", 1, 0)) %&gt;% 
+  group_by(player) %&gt;% 
+  summarize(faceoffs = n(),
+            faceoff_wins = sum(win)) %&gt;% 
+  mutate(faceoff_perc = faceoff_wins / faceoffs) %&gt;% 
+  filter(faceoffs &gt;= 50) %&gt;% 
+  arrange(desc(faceoff_perc))
+```
+
+---
+
+## Step 3: A Question
+
+
+```r
+faceoffs &lt;- scouting %&gt;% 
+  filter(event == "Faceoff Win") %&gt;% 
+  select(player, player_2) %&gt;% 
+* rename(winner = player,
+*        loser = player_2) %&gt;%
+  pivot_longer(winner:loser, 
+               names_to = "status", 
+               values_to = "player") %&gt;% 
+  mutate(win = ifelse(status == "winner", 1, 0)) %&gt;% 
+  group_by(player) %&gt;% 
+  summarize(faceoffs = n(),
+            faceoff_wins = sum(win)) %&gt;% 
+  mutate(faceoff_perc = faceoff_wins / faceoffs) %&gt;% 
+  filter(faceoffs &gt;= 50) %&gt;% 
+  arrange(desc(faceoff_perc))
+```
+
+---
+
+## Step 3: A Question
+
+
+```r
+faceoffs &lt;- scouting %&gt;% 
+  filter(event == "Faceoff Win") %&gt;% 
+  select(player, player_2) %&gt;% 
+  rename(winner = player,
+         loser = player_2) %&gt;% 
+* pivot_longer(winner:loser,
+*              names_to = "status",
+*              values_to = "player") %&gt;%
+  mutate(win = ifelse(status == "winner", 1, 0)) %&gt;% 
+  group_by(player) %&gt;% 
+  summarize(faceoffs = n(),
+            faceoff_wins = sum(win)) %&gt;% 
+  mutate(faceoff_perc = faceoff_wins / faceoffs) %&gt;% 
+  filter(faceoffs &gt;= 50) %&gt;% 
+  arrange(desc(faceoff_perc))
+```
+
+---
+
+## Step 3: A Question
+
+&lt;table class="table" style="font-size: 14px; width: auto !important; "&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; status &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; player &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; winner &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Blake Murray &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; loser &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Connor Lockhart &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; winner &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Macauley Carson &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; loser &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Austen Swankler &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; winner &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Quinton Byfield &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; loser &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Chad Yetman &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; winner &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Macauley Carson &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; loser &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Austen Swankler &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; winner &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Quinton Byfield &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; loser &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Chad Yetman &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+## Step 3: A Question
+
+
+```r
+faceoffs &lt;- scouting %&gt;% 
+  filter(event == "Faceoff Win") %&gt;% 
+  select(player, player_2) %&gt;%
+  rename(winner = player,
+         loser = player_2) %&gt;% 
+  pivot_longer(winner:loser, 
+               names_to = "status", 
+               values_to = "player") %&gt;% 
+* mutate(win = ifelse(status == "winner", 1, 0)) %&gt;%
+  group_by(player) %&gt;% 
+  summarize(faceoffs = n(),
+            faceoff_wins = sum(win)) %&gt;% 
+  mutate(faceoff_perc = faceoff_wins / faceoffs) %&gt;% 
+  filter(faceoffs &gt;= 50) %&gt;% 
+  arrange(desc(faceoff_perc))
+```
+
+---
+
+## Step 3: A Question
+
+
+```r
+faceoffs &lt;- scouting %&gt;% 
+  filter(event == "Faceoff Win") %&gt;% 
+  select(player, player_2) %&gt;% 
+  rename(winner = player,
+         loser = player_2) %&gt;% 
+  pivot_longer(winner:loser, 
+               names_to = "status", 
+               values_to = "player") %&gt;% 
+  mutate(win = ifelse(status == "winner", 1, 0)) %&gt;% 
+* group_by(player) %&gt;%
+* summarize(faceoffs = n(),
+*           faceoff_wins = sum(win)) %&gt;%
+  mutate(faceoff_perc = faceoff_wins / faceoffs) %&gt;% 
+  filter(faceoffs &gt;= 50) %&gt;% 
+  arrange(desc(faceoff_perc))
+```
+
+---
+
+## Step 3: A Question
+
+
+```r
+faceoffs &lt;- scouting %&gt;% 
+  filter(event == "Faceoff Win") %&gt;% 
+  select(player, player_2) %&gt;% 
+  rename(winner = player,
+         loser = player_2) %&gt;% 
+  pivot_longer(winner:loser, 
+               names_to = "status", 
+               values_to = "player") %&gt;% 
+  mutate(win = ifelse(status == "winner", 1, 0)) %&gt;% 
+  group_by(player) %&gt;% 
+  summarize(faceoffs = n(),
+            faceoff_wins = sum(win)) %&gt;% 
+* mutate(faceoff_perc = faceoff_wins / faceoffs) %&gt;%
+* filter(faceoffs &gt;= 50) %&gt;%
+  arrange(desc(faceoff_perc))
+```
+
+---
+
+## Step 3: A Question
+
+
+```r
+faceoffs &lt;- scouting %&gt;% 
+  filter(event == "Faceoff Win") %&gt;% 
+  select(player, player_2) %&gt;% 
+  rename(winner = player,
+         loser = player_2) %&gt;% 
+  pivot_longer(winner:loser, 
+               names_to = "status", 
+               values_to = "player") %&gt;% 
+  mutate(win = ifelse(status == "winner", 1, 0)) %&gt;% 
+  group_by(player) %&gt;% 
+  summarize(faceoffs = n(),
+            faceoff_wins = sum(win)) %&gt;% 
+  mutate(faceoff_perc = faceoff_wins / faceoffs) %&gt;% 
+  filter(faceoffs &gt;= 50) %&gt;% 
+* arrange(desc(faceoff_perc))
+```
+
+---
+
+## Step 3: A Question
+
+&lt;table class="table" style="font-size: 14px; width: auto !important; "&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; player &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; faceoffs &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; faceoff_wins &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; faceoff_perc &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ty Dellandrea &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 55 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 35 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.6363636 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Cole Schwindt &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 57 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 36 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.6315789 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Cam Hillis &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 104 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 64 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.6153846 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Lucas Theriault &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 52 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 29 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.5576923 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Keean Washkurak &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 55 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 29 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.5272727 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Danny Zhilkin &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 67 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 34 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.5074627 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Austen Swankler &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 334 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 169 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.5059880 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Ryan McGregor &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 72 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 36 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.5000000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Hayden Fowler &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 310 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 149 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4806452 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chad Yetman &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 724 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 343 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4737569 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Connor Lockhart &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 207 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 92 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4444444 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Noah Sedore &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 68 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 30 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4411765 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Brendan Hoffmann &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 488 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 197 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4036885 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Elias Cohen &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 149 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 57 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3825503 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+---
+
+## Step 4: A graph!
+
+&lt;img src="figs/hanic/unnamed-chunk-24-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Step 4: A graph!
+
+
+```r
+faceoffs_team %&gt;% 
+  ggplot(aes(x = reorder(player, faceoff_perc), 
+             y = faceoff_perc, fill = team)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  scale_fill_manual(values = c("#F2A900", "#FF6720", "#862633", 
+                               "#00205B", "#010101", "#C8C9C7")) +
+  labs(title = "Faceoff Percentages",
+       subtitle = "Among players with 50+ faceoffs, from Big Data 
+       Cup scouting data set") +
+  ylab("Faceoff Win Percentage") +
+  geom_text(aes(label = scales::percent(faceoff_perc, 
+                                        accuracy = 0.1)), 
+            family = "Seravek", hjust = -0.15) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1), 
+                     limits = c(0, 0.72)) +
+  hanic_theme() +
+  theme(legend.title = element_blank(),
+        legend.position = "bottom",
+        panel.grid.major.y = element_blank(),
+        axis.title.y = element_blank())
+```
+
+---
+
+## Step 4: A graph!
+
+
+```r
+faceoffs_team %&gt;% 
+* ggplot(aes(x = reorder(player, faceoff_perc),
+*            y = faceoff_perc, fill = team)) +
+* geom_bar(stat = "identity") +
+* coord_flip() +
+  scale_fill_manual(values = c("#F2A900", "#FF6720", "#862633", 
+                               "#00205B", "#010101", "#C8C9C7")) +
+  labs(title = "Faceoff Percentages",
+       subtitle = "Among players with 50+ faceoffs, from Big Data 
+       Cup scouting data set") +
+  ylab("Faceoff Win Percentage") +
+  geom_text(aes(label = scales::percent(faceoff_perc, 
+                                        accuracy = 0.1)), 
+            family = "Seravek", hjust = -0.15) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1), 
+                     limits = c(0, 0.72)) +
+  hanic_theme() +
+  theme(legend.title = element_blank(),
+        legend.position = "bottom",
+        panel.grid.major.y = element_blank(),
+        axis.title.y = element_blank())
+```
+
+---
+
+## Step 4: A graph!
+
+
+```r
+faceoffs_team %&gt;% 
+  ggplot(aes(x = reorder(player, faceoff_perc), 
+             y = faceoff_perc, fill = team)) + 
+  geom_bar(stat = "identity") + 
+  coord_flip() + 
+* scale_fill_manual(values = c("#F2A900", "#FF6720", "#862633",
+*                              "#00205B", "#010101", "#C8C9C7")) +
+* labs(title = "Faceoff Percentages",
+*      subtitle = "Among players with 50+ faceoffs, from Big Data
+*      Cup scouting data set") +
+* ylab("Faceoff Win Percentage") +
+* geom_text(aes(label = scales::percent(faceoff_perc,
+*                                       accuracy = 0.1)),
+*           family = "Seravek", hjust = -0.15) +
+* scale_y_continuous(labels = scales::percent_format(accuracy = 1),
+*                    limits = c(0, 0.72)) +
+* hanic_theme() +
+* theme(legend.title = element_blank(),
+*       legend.position = "bottom",
+*       panel.grid.major.y = element_blank(),
+*       axis.title.y = element_blank())
+```
+
+---
+
+## Learn More
+
+If you want to stick with the hockey theme:
+
+- [my workshop from CMSAC last year](https://meghan.rbind.io/talk/cmsac/)
+- [interactive tutorials in RStudio](https://github.com/meghall06/betweenthepipes)
+
+
+```r
+install.packages("devtools")
+devtools::install_github("meghall06/betweenthepipes")
+
+# look in the Tutorial pane in the upper-right of RStudio
+# or...run:
+
+betweenthepipes::intro()
+betweenthepipes::data_manip()
+```
+
+---
+
+## Learn More
+
+If you want to stick with the hockey theme:
+
+- [my workshop from CMSAC last year](https://meghan.rbind.io/talk/cmsac/)
+- [interactive tutorials in RStudio](https://github.com/meghall06/betweenthepipes)
+
+.center[&lt;img src="figs/hanic/screenshot.png" width="700px"/&gt;]
+
+---
+
+## Learn More
+
+If you want to stick with the hockey theme:
+
+- [my workshop from CMSAC last year](https://meghan.rbind.io/talk/cmsac/)
+- [interactive tutorials in RStudio](https://github.com/meghall06/betweenthepipes)
+
+
+```r
+install.packages("devtools")
+devtools::install_github("meghall06/betweenthepipes")
+
+# look in the Tutorial pane in the upper-right of RStudio
+# or...run:
+
+betweenthepipes::intro()
+betweenthepipes::data_manip()
+```
+
+Elsewhere:
+
+- [R for Data Science](https://r4ds.had.co.nz/) &amp;nbsp; ⭐
+- [R for Excel Users](https://rstudio-conf-2020.github.io/r-for-excel/)
+- [STAT 545](https://stat545.com/)
+
+---
+
+class: inverse, center, middle
+layout: false
+
+# Thanks!
+
+<i class="fab  fa-twitter "></i> [@MeghanMHall](https://www.twitter.com/MeghanMHall) &lt;br&gt; [meghan.rbind.io](https://meghan.rbind.io/) &lt;br&gt;
+Slides created via the R package [xaringan](https://github.com/yihui/xaringan).
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"slideNumberFormat": "%current%"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

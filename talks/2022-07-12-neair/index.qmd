@@ -1,0 +1,22 @@
+---
+title: "Streamlining with R"
+subtitle: "North East Association of Institutional Research (NEAIR)"
+author: "Meghan Hall"
+date: "2022-07-12"
+image: "featured.png"
+summary: A tidyverse introduction for R beginners.
+categories: ["R", "tidyverse"]
+slides: "https://meghan.rbind.io/slides/neair/neair#/title-slide"
+repo: "https://github.com/meghall06/neair"
+---
+[{{< fa tv >}} SLIDES](https://meghan.rbind.io/slides/neair/neair#/title-slide){class="btn btn-secondary" target="_blank"} [{{< fa brands github >}} REPO](https://github.com/meghall06/neair){class="btn btn-secondary" target="_blank"}
+
+This workshop is designed for the complete R beginner. It provides:
+
+* a brief overview of the benefits of using R for reproducible data analysis
+
+* the mechanics of downloading and using R
+
+* an introduction to data manipulation and data visualization
+
+To access the workshop materials (the two sample data sets and the code file), navigate to the [GitHub repo](https://github.com/meghall06/neair){style="color:#1F2041;text-decoration: underline"}, click the big green Code button, and select "Download ZIP." Once you have R and RStudio downloaded, open the `neair.Rproj` file and you'll be all set! The slides are linked above and a PDF version is available in the repo.

@@ -1,0 +1,66 @@
+/*-- scss:defaults --*/
+
+$body-bg: #e8563c;
+$body-color: #4e3629;
+$link-color: #febd4c;
+$presentation-heading-color: #4e3629;
+$code-color: #ffffff;
+$code-block-bg: #ded9ca;
+$code-block-border-color: #000000;
+
+/*-- scss:rules --*/
+
+.reveal .slide-number {
+  color: $link-color;
+}
+
+.reveal .footer {
+  font-size: 0.35em !important;
+  text-align: right !important;
+}
+
+.reveal .slides section .fragment.semi-fade-out {
+	opacity: 1;
+	visibility: inherit;
+
+	&.visible {
+		opacity: 0.25;
+		visibility: inherit;
+	}
+}
+
+.sectionhead {
+  font-size: 1em;
+  text-align: center;
+  color: $presentation-heading-color;
+  font-family: $presentation-heading-font;
+  background-color: $body-bg;
+  margin: 1px;
+  padding: 2px 2px 2px 2px;
+  width: 120px;
+  border-left: 10px solid;
+}
+
+.leftbanner {
+  background-color: #febd4c;
+  padding: 65% 2px 75% 2px;
+  text-align: center;
+  vertical-align: center;
+}
+
+.topbanner {
+  border-radius: 25px;
+  background-color: #febd4c;
+  padding: 5% 2px 5% 2px;
+  text-align: center;
+  vertical-align: center;
+}
+
+.box {
+  border-radius: 25px;
+  background-color: transparent;
+  padding: 2% 2px 2% 20px;
+  text-align: left;
+  vertical-align: center;
+  border: 5px solid;
+}

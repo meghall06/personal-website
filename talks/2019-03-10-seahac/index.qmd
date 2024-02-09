@@ -1,0 +1,12 @@
+---
+title: "Aggression and Success in Goalie Pulling"
+subtitle: "Seattle Hockey Analytics Conference"
+author: "Meghan Hall"
+date: "2019-03-10"
+summary: Exploring the trend of when goalies get pulled in the NHL.
+categories: ["hockey"]
+slides: "https://drive.google.com/file/d/1SO9u1tyR00vxb0Iag44XMwzP30I6ACLE/view?usp=sharing"
+---
+[{{< fa tv >}} SLIDES](https://drive.google.com/file/d/1SO9u1tyR00vxb0Iag44XMwzP30I6ACLE/view?usp=sharing){class="btn btn-secondary" target="_blank"} [{{< fa chart-column >}} DATA](https://public.tableau.com/views/GoaliePullTimes2018-19/GoaliePullTimes18-19?:language=en-US&:toolbar=n&:display_count=n&:origin=viz_share_link){class="btn btn-secondary" target="_blank"}
+
+Much research has been done on the optimal time for an NHL team to pull their goalie when trailing late in a game. The research indicates that teams should be far more aggressive than they actually are, in order to maximize standings points, and this presentation hopes to clarify when teams *do* pull their goalie and if teams have been getting more aggressive over the past several seasons. The average pull time, when down by one goal, has slowly crept up over that time frame, though it is still not as aggressive as the research recommends. Certain teams are consistently more aggressive than others, and “successful” situations (i.e., when a team is able to tie the game) tend to start with more aggressive pull times.

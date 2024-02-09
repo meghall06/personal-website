@@ -1,0 +1,12 @@
+---
+title: "Using R for Your Big Data Cup Project"
+subtitle: "Hockey Analytics Night in Canada"
+author: "Meghan Hall"
+date: "2021-02-18"
+summary: A short & gentle intro to R, plus some tips and tricks, geared around the Big Data Cup.
+categories: ["R", "tidyverse", "hockey"]
+slides: "https://meghan.rbind.io/slides/hall_hanic_2021#1"
+---
+[{{< fa tv >}} SLIDES](https://meghan.rbind.io/slides/hall_hanic_2021#1){class="btn btn-secondary" target="_blank"}
+
+This presentation was part of a special edition of Meghan Chayka and Alison Lukan’s HANIC (Hockey Analytics Night in Canada), all about the [Big Data Cup](https://www.stathletes.com/big-data-cup/){style="color:#1F2041;text-decoration: underline"}. This is a quick and gentle intro to R, focused on the Big Data Cup data, and provides some more resources for learning.

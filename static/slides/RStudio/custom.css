@@ -1,0 +1,41 @@
+div.my-footer {
+    background-color: #098641;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    height: 30px;
+    width: 100%;
+}
+
+div.my-footer span {
+    font-size: 10pt;
+    color: #ffffff;
+    position: absolute;
+    left: 15px;
+    bottom: 7px;
+}
+
+.remark-slide-number {
+  bottom: 3px;
+  opacity: 0.75;
+  color: #ffffff;
+  position: absolute;
+  right: 20px;
+  font-family: Source Serif Pro;
+}
+
+.huge { 
+  font-size: 50px;
+}
+
+.large { 
+  font-size: 32px;
+}
+
+.medium { 
+  font-size: 22px;
+}
+
+.tiny .remark-code { 
+  font-size: 75%;
+}

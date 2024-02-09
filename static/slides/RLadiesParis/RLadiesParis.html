@@ -1,0 +1,3038 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="RLadiesParis_files/libs/clipboard/clipboard.min.js"></script>
+<script src="RLadiesParis_files/libs/quarto-html/tabby.min.js"></script>
+<script src="RLadiesParis_files/libs/quarto-html/popper.min.js"></script>
+<script src="RLadiesParis_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="RLadiesParis_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="RLadiesParis_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet">
+<link href="RLadiesParis_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-0.9.653">
+
+  <meta name="author" content="Meghan Hall R-Ladies Paris September 8, 2022">
+  <title>Keeping it Tidy</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="RLadiesParis_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="RLadiesParis_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="RLadiesParis_files/libs/revealjs/dist/theme/quarto.css" id="theme">
+  <link href="RLadiesParis_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="RLadiesParis_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="RLadiesParis_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="RLadiesParis_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="RLadiesParis_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="RLadiesParis_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+
+  .callout {
+    margin-top: 1em;
+    margin-bottom: 1em;  
+    border-radius: .25rem;
+  }
+
+  .callout.callout-style-simple { 
+    padding: 0em 0.5em;
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+    display: flex;
+  }
+
+  .callout.callout-style-default {
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+  }
+
+  .callout .callout-body-container {
+    flex-grow: 1;
+  }
+
+  .callout.callout-style-simple .callout-body {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-style-default .callout-body {
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-captioned.callout-style-simple .callout-body {
+    margin-top: 0.2em;
+  }
+
+  .callout:not(.callout-captioned) .callout-body {
+      display: flex;
+  }
+
+  .callout:not(.no-icon).callout-captioned.callout-style-simple .callout-content {
+    padding-left: 1.6em;
+  }
+
+  .callout.callout-captioned .callout-header {
+    padding-top: 0.2em;
+    margin-bottom: -0.2em;
+  }
+
+  .callout.callout-captioned .callout-caption  p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+    
+  .callout.callout-captioned.callout-style-simple .callout-content  p {
+    margin-top: 0;
+  }
+
+  .callout.callout-captioned.callout-style-default .callout-content  p {
+    margin-top: 0.7em;
+  }
+
+  .callout.callout-style-simple div.callout-caption {
+    border-bottom: none;
+    font-size: .9rem;
+    font-weight: 600;
+    opacity: 75%;
+  }
+
+  .callout.callout-style-default  div.callout-caption {
+    border-bottom: none;
+    font-weight: 600;
+    opacity: 85%;
+    font-size: 0.9rem;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-default div.callout-content {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-simple .callout-icon::before {
+    height: 1rem;
+    width: 1rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 1rem 1rem;
+  }
+
+  .callout.callout-style-default .callout-icon::before {
+    height: 0.9rem;
+    width: 0.9rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 0.9rem 0.9rem;
+  }
+
+  .callout-caption {
+    display: flex
+  }
+    
+  .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  .callout.no-icon::before {
+    display: none !important;
+  }
+
+  .callout.callout-captioned .callout-body > .callout-content > :last-child {
+    margin-bottom: 0.5rem;
+  }
+
+  .callout.callout-captioned .callout-icon::before {
+    margin-top: .5rem;
+    padding-right: .5rem;
+  }
+
+  .callout:not(.callout-captioned) .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  /* Callout Types */
+
+  div.callout-note {
+    border-left-color: #4582ec !important;
+  }
+
+  div.callout-note .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEU0lEQVRYCcVXTWhcVRQ+586kSUMMxkyaElstCto2SIhitS5Ek8xUKV2poatCcVHtUlFQk8mbaaziwpWgglJwVaquitBOfhQXFlqlzSJpFSpIYyXNjBNiTCck7x2/8/LeNDOZxDuEkgOXe++553zfefee+/OYLOXFk3+1LLrRdiO81yNqZ6K9cG0P3MeFaMIQjXssE8Z1JzLO9ls20MBZX7oG8w9GxB0goaPrW5aNMp1yOZIa7Wv6o2ykpLtmAPs/vrG14Z+6d4jpbSKuhdcSyq9wGMPXjonwmESXrriLzFGOdDBLB8Y6MNYBu0dRokSygMA/mrun8MGFN3behm6VVAwg4WR3i6FvYK1T7MHo9BK7ydH+1uurECoouk5MPRyVSBrBHMYwVobG2aOXM07sWrn5qgB60rc6mcwIDJtQrnrEr44kmy+UO9r0u9O5/YbkS9juQckLed3DyW2XV/qWBBB3ptvI8EUY3I9p/67OW+g967TNr3Sotn3IuVlfMLVnsBwH4fsnebJvyGm5GeIUA3jljERmrv49SizPYuq+z7c2H/jlGC+Ghhupn/hcapqmcudB9jwJ/3jvnvu6vu5lVzF1fXyZuZZ7U8nRmVzytvT+H3kilYvH09mLWrQdwFSsFEsxFVs5fK7A0g8gMZjbif4ACpKbjv7gNGaD8bUrlk8x+KRflttr22JEMRUbTUwwDQScyzPgedQHZT0xnx7ujw2jfVfExwYHwOsDTjLdJ2ebmeQIlJ7neo41s/DrsL3kl+W2lWvAga0tR3zueGr6GL78M3ifH0rGXrBC2aAR8uYcIA5gwV8zIE8onoh8u0Fca/ciF7j1uOzEnqcIm59sEXoGc0+z6+H45V1CvAvHcD7THztu669cnp+L0okAeIc6zjbM/24LgGM1gZk7jnRu1aQWoU9sfUOuhrmtaPIO3YY1KLLWZaEO5TKUbMY5zx8W9UJ6elpLwKXbsaZ4EFl7B4bMtDv0iRipKoDQT2sNQI9b1utXFdYisi+wzZ/ri/1m7QfDgEuvgUUEIJPq3DhX/5DWNqIXDOweC2wvIR90Oq3lDpdMIgD2r0dXvGdsEW5H6x6HLRJYU7C69VefO1x8Gde1ZFSJLfWS1jbCnhtOPxmpfv2LXOA2Xk2tvnwKKPFuZ/oRmwBwqRQDcKNeVQkYcOjtWVBuM/JuYw5b6isojIkYxyYAFn5K7ZBF10fea52y8QltAg6jnMqNHFBmGkQ1j+U43HMi2xMar1Nv0zGsf1s8nUsmUtPOOrbFIR8bHFDMB5zL13Gmr/kGlCkUzedTzzmzsaJXhYawnA3UmARpiYj5ooJZiUoxFRtK3X6pgNPv+IZVPcnwbOl6f+aBaO1CNvPW9n9LmCp01nuSaTRF2YxHqZ8DYQT6WsXT+RD6eUztwYLZ8rM+rcPxamv1VQzFUkzFXvkiVrySGQgJNvXHJAxiU3/NwiC03rSf05VBaPtu/Z7/B8Yn/w7eguloAAAAAElFTkSuQmCC');
+  }
+
+  div.callout-note.callout-style-default .callout-caption {
+    background-color: #dae6fb
+  }
+
+  div.callout-important {
+    border-left-color: #d9534f !important;
+  }
+
+  div.callout-important .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEKklEQVRYCcVXTWhcVRS+575MJym48A+hSRFr00ySRQhURRfd2HYjk2SSTokuBCkU2o0LoSKKraKIBTcuFCoidGFD08nkBzdREbpQ1EDNIv8qSGMFUboImMSZd4/f9zJv8ibJMC8xJQfO3HPPPef7zrvvvnvviIkpC9nsw0UttFunbUhpFzFtarSd6WJkStVMw5xyVqYTvkwfzuf/5FgtkVoB0729j1rjXwThS7Vio+Mo6DNnvLfahoZ+i/o32lULuJ3NNiz7q6+pyAUkJaFF6JwaM2lUJlV0MlnQn5aTRbEu0SEqHUa0A4AdiGuB1kFXRfVyg5d87+Dg4DL6m2TLAub60ilj7A1Ec4odSAc8X95sHh7+ZRPCFo6Fnp7HfU/fBng/hi10CjCnWnJjsxvDNxWw0NfV6Rv5GgP3I3jGWXumdTD/3cbEOP2ZbOZp69yniG3FQ9z1jD7bnBu9Fc2tKGC2q+uAJOQHBDRiZX1x36o7fWBs7J9ownbtO+n0/qWkvW7UPIfc37WgT6ZGR++EOJyeQDSb9UB+DZ1G6DdLDzyS+b/kBCYGsYgJbSQHuThGKRcw5xdeQf8YdNHsc6ePXrlSYMBuSIAFTGAtQo+VuALo4BX83N190NWZWbynBjhOHsmNfFWLeL6v+ynsA58zDvvAC8j5PkbOcXCMg2PZFk3q8MjI7WAG/Dp9AwP7jdGBOOQkAvlFUB+irtm16I1Zw9YBcpGTGXYmk3kQIC/Cds55l+iMI3jqhjAuaoe+am2Jw5GT3Nbz3CkE12NavmzN5+erJW7046n/CH1RO/RVa8lBLozXk9uqykkGAyRXLWlLv5jyp4RFsG5vGVzpDLnIjTWgnRy2Rr+tDKvRc7Y8AyZq10jj8DqXdnIRNtFZb+t/ZRtXcDiVnzpqx8mPcDWxgARUqx0W1QB9MeUZiNrV4qP+Ehc+BpNgATsTX8ozYKL2NtFYAHc84fG7ndxUPr+AR/iQSns7uSUufAymwDOb2+NjK27lEFocm/EE2WpyIy/Hi66MWuMKJn8RvxIcj87IM5Vh9663ziW36kR0HNenXuxmfaD8JC7tfKbrhFr7LiZCrMjrzTeGx+PmkosrkNzW94ObzwocJ7A1HokLolY+AvkTiD/q1H0cN48c5EL8Crkttsa/AXQVDmutfyku0E7jShx49XqV3MFK8IryDhYVbj7Sj2P2eBxwcXoe8T8idsKKPRcnZw1b+slFTubwUwhktrfnAt7J++jwQtLZcm3sr9LQrjRzz6cfMv9aLvgmnAGvpoaGLxM4mAEaLV7iAzQ3oU0IvD5x9ix3yF2RAAuYAOO2f7PEFWCXZ4C9Pb2UsgDeVnFSpbFK7/IWu7TPTvBqzbGdCHOJQSxiEjt6IyZmxQyEJHv6xyQsYk//moVFsN2zP6fRImjfq7/n/wFDguUQFNEwugAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-important.callout-style-default .callout-caption {
+    background-color: #f7dddc
+  }
+
+  div.callout-warning {
+    border-left-color: #f0ad4e !important;
+  }
+
+  div.callout-warning .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAETklEQVRYCeVWW2gcVRg+58yaTUnizqbipZeX4uWhBEniBaoUX1Ioze52t7sRq6APio9V9MEaoWlVsFasRq0gltaAPuxms8lu0gcviE/FFOstVbSIxgcv6SU7EZqmdc7v9+9mJtNks51NTUH84ed889/PP+cmxP+d5FIbMJmNbpREu4WUkiTtCicKny0l1pIKmBzovF2S+hIJHX8iEu3hZJ5lNZGqyRrGSIQpq15AzF28jgpeY6yk6GVdrfFqdrD6Iw+QlB8g0YS2g7dyQmXM/IDhBhT0UCiRf59lfqmmDvzRt6kByV/m4JjtzuaujMUM2c5Z2d6JdKrRb3K2q6mA+oYVz8JnDdKPmmNthzkAk/lN63sYPgevrguc72aZX/L9C6x09GYyxBgCX4NlvyGUHOKELlm5rXeR1kchuChJt4SSwyddZRXgvwMGvYo4QSlk3/zkHD8UHxwVJA6zjZZqP8v8kK8OWLnIZtLyCAJagYC4rTGW/9Pqj92N/c+LUaAj27movwbi19tk/whRCIE7Q9vyI6yvRpftAKVTdUjOW40X3h5OXsKCdmFcx0xlLJoSuQngnrJe7Kcjm4OMq9FlC7CMmScQANuNvjfP3PjGXDBaUQmbp296S5L4DrpbrHN1T87ZVEZVCzg1FF0Ft+dKrlLukI+/c9ENo+TvlTDbYFvuKPtQ9+l052rXrgKoWkDAFnvh0wTOmYn8R5f4k/jN/fZiCM1tQx9jQQ4ANhqG4hiL0qIFTGViG9DKB7GYzgubnpofgYRwO+DFjh0Zin2m4b/97EDkXkc+f6xYAPX0KK2I/7fUQuwzuwo/L3AkcjugPNixC8cHf0FyPjWlItmLxWw4Ou9YsQCr5fijMGoD/zpdRy95HRysyXA74MWOnscpO4j2y3HAVisw85hX5+AFBRSHt4ShfLFkIMXTqyKFc46xdzQM6XbAi702a7sy04J0+feReMFKp5q9esYLCqAZYw/k14E/xcLLsFElaornTuJB0svMuJINy8xkIYuL+xPAlWRceH6+HX7THJ0djLUom46zREu7tTkxwmf/FdOZ/sh6Q8qvEAiHpm4PJ4a/doJe0gH1t+aHRgCzOvBvJedEK5OFE5jpm4AGP2a8Dxe3gGJ/pAutug9Gp6he92CsSsWBaEcxGx0FHytmIpuqGkOpldqNYQK8cSoXvd+xLxXADw0kf6UkJNFtdo5MOgaLjiQOQHcn+A6h5NuL2s0qsC2LOM75PcF3yr5STuBSAcGG+meA14K/CI21HcS4LBT6tv0QAh8Dr5l93AhZzG5ZJ4VxAqdZUEl9z7WJ4aN+svMvwHHL21UKTd1mqvChH7/Za5xzXBBKrUcB0TQ+Ulgkfbi/H/YT5EptrGzsEK7tR1B7ln9BBwckYfMiuSqklSznIuoIIOM42MQO+QnduCoFCI0bpkzjCjddHPN/F+2Yu+sd9bKNpVwHhbS3LluK/0zgfwD0xYI5dXuzlQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-warning.callout-style-default .callout-caption {
+    background-color: #fcefdc
+  }
+
+  div.callout-tip {
+    border-left-color: #02b875 !important;
+  }
+
+  div.callout-tip .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAADr0lEQVRYCe1XTWgTQRj9ZjZV8a9SPIkKgj8I1bMHsUWrqYLVg4Ue6v9BwZOxSYsIerFao7UiUryIqJcqgtpimhbBXoSCVxUFe9CTiogUrUp2Pt+3aUI2u5vdNh4dmMzOzHvvezuz8xNFM0mjnbXaNu1MvFWRXkXEyE6aYOYJpdW4IXuA4r0fo8qqSMDBU0v1HJUgVieAXxzCsdE/YJTdFcVIZQNMyhruOMJKXYFoLfIfIvVIMWdsrd+Rpd86ZmyzzjJmLStqRn0v8lzkb4rVIXvnpScOJuAn2ACC65FkPzEdEy4TPWRLJ2h7z4cArXzzaOdKlbOvKKX25Wl00jSnrwVxAg3o4dRxhO13RBSdNvH0xSARv3adTXbBdTf64IWO2vH0LT+cv4GR1DJt+DUItaQogeBX/chhbTBxEiZ6gftlDNXTrvT7co4ub5A6gp9HIcHvzTa46OS5fBeP87Qm0fQkr4FsYgVQ7Qg+ZayaDg9jhg1GkWj8RG6lkeSacrrHgDaxdoBiZPg+NXV/KifMuB6//JmYH4CntVEHy/keA6x4h4CU5oFy8GzrBS18cLJMXcljAKB6INjWsRcuZBWVaS3GDrqB7rdapVIeA+isQ57Eev9eCqzqOa81CY05VLd6SamW2wA2H3SiTbnbSxmzfp7WtKZkqy4mdyAlGx7ennghYf8voqp9cLSgKdqNfa6RdRsAAkPwRuJZNbpByn+RrJi1RXTwdi8RQF6ymDwGMAtZ6TVE+4uoKh+MYkcLsT0Hk8eAienbiGdjJHZTpmNjlbFJNKDVAp2fJlYju6IreQxQ08UJDNYdoLSl6AadO+fFuCQqVMB1NJwPm69T04Wv5WhfcWyfXQB+wXRs1pt+nCknRa0LVzSA/2B+a9+zQJadb7IyyV24YAxKp2Jqs3emZTuNnKxsah+uabKbMk7CbTgJx/zIgQYErIeTKRQ9yD9wxVof5YolPHqaWo7TD6tJlh7jQnK5z2n3+fGdggIOx2kaa2YI9QWarc5Ce1ipNWMKeSG4DysFF52KBmTNMmn5HqCFkwy34rDg05gDwgH3bBi+sgFhN/e8QvRn8kbamCOhgrZ9GJhFDgfcMHzFb6BAtjKpFhzTjwv1KCVuxHvCbsSiEz4CANnj84cwHdFXAbAOJ4LTSAawGWFn5tDhLMYz6nWeU2wJfIhmIJBefcd/A5FWQWGgrWzyORZ3Q6HuV+Jf0Bj+BTX69fm1zWgK7By1YTXchFDORywnfQ7GpzOo6S+qECrsx2ifVQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-tip.callout-style-default .callout-caption {
+    background-color: #ccf1e3
+  }
+
+  div.callout-caution {
+    border-left-color: #fd7e14 !important;
+  }
+
+  div.callout-caution .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAACV0lEQVRYCdVWzWoUQRCuqp2ICBLJXgITZL1EfQDBW/bkzUMUD7klD+ATSHBEfAIfQO+iXsWDxJsHL96EHAwhgzlkg8nBg25XWb0zIb0zs9muYYWkoKeru+vn664fBqElyZNuyh167NXJ8Ut8McjbmEraKHkd7uAnAFku+VWdb3reSmRV8PKSLfZ0Gjn3a6Xlcq9YGb6tADjn+lUfTXtVmaZ1KwBIvFI11rRXlWlatwIAAv2asaa9mlB9wwygiDX26qaw1yYPzFXg2N1GgG0FMF8Oj+VIx7E/03lHx8UhvYyNZLN7BwSPgekXXLribw7w5/c8EF+DBK5idvDVYtEEwMeYefjjLAdEyQ3M9nfOkgnPTEkYU+sxMq0BxNR6jExrAI31H1rzvLEfRIdgcv1XEdj6QTQAS2wtstEALLG1yEZ3QhH6oDX7ExBSFEkFINXH98NTrme5IOaaA7kIfiu2L8A3qhH9zRbukdCqdsA98TdElyeMe5BI8Rs2xHRIsoTSSVFfCFCWGPn9XHb4cdobRIWABNf0add9jakDjQJpJ1bTXOJXnnRXHRf+dNL1ZV1MBRCXhMbaHqGI1JkKIL7+i8uffuP6wVQAzO7+qVEbF6NbS0LJureYcWXUUhH66nLR5rYmva+2tjRFtojkM2aD76HEGAD3tPtKM309FJg5j/K682ywcWJ3PASCcycH/22u+Bh7Aa0ehM2Fu4z0SAE81HF9RkB21c5bEn4Dzw+/qNOyXr3DCTQDMBOdhi4nAgiFDGCinIa2owCEChUwD8qzd03PG+qdW/4fDzjUMcE1ZpIAAAAASUVORK5CYII=');
+  }
+
+  div.callout-caution.callout-style-default .callout-caption {
+    background-color: #ffe5d0
+  }
+
+  </style>
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  
+  <script src="RLadiesParis_files/libs/kePrint-0.0.1/kePrint.js"></script>
+  <link href="RLadiesParis_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="center">
+  <h1 class="title">Keeping it Tidy</h1>
+  <p class="subtitle"><span style="font-size: 0.75em"><em>Using the Tidyverse to Organize, Transform, and Visualize Data</em>
+</span></p>
+  <p class="author">Meghan Hall<br>R-Ladies Paris<br>September 8, 2022</p>
+</section>
+
+<section id="workshop-details" class="slide level2">
+<h2>Workshop details</h2>
+<div class="cell">
+
+</div>
+<p><br> <br></p>
+<div>
+<ul>
+<li class="fragment">Intro <span class="emoji" data-emoji="wave">👋</span></li>
+<li class="fragment">Coding along <span class="emoji" data-emoji="computer">💻</span></li>
+<li class="fragment">Workshop materials <span class="emoji" data-emoji="arrow_down">⬇️</span></li>
+<li class="fragment">Questions <span class="emoji" data-emoji="question">❓</span></li>
+</ul>
+</div>
+</section>
+<section id="why-r" class="slide level2">
+<h2>Why R?</h2>
+<p><br> <br></p>
+<div style="text-align: center">
+<p>R is an open-source (<span style="color:#6A395B"><strong>free</strong></span>!) scripting language for working with data</p>
+<p><br></p>
+<p>Wonderfully efficient and <span class="emoji" data-emoji="sparkles">✨</span>reproducible<span class="emoji" data-emoji="sparkles">✨</span></p>
+</div>
+</section>
+<section id="getting-r" class="slide level2">
+<h2>Getting R</h2>
+<p><br> <br></p>
+<p>You need the R <a href="https://cloud.r-project.org/"><strong>language</strong></a> <br> <br></p>
+<p>And also an IDE (I recommend <a href="https://www.rstudio.com/products/rstudio/download/#download"><strong>RStudio</strong></a>)</p>
+<p><br> <br></p>
+<p>Both are free, helpful installation guide <a href="https://stat545.com/install.html"><strong>here</strong></a></p>
+</section>
+<section id="using-r" class="slide level2">
+<h2>Using R</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="fragment">
+<p><br> <br> You use R via <em>packages</em></p>
+</div>
+<div class="fragment">
+<p><br> …which contain <em>functions</em></p>
+</div>
+<div class="fragment">
+<p><br> …which are just <em>verbs</em></p>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="fragment">
+<p><br> <br> <code>mutate()</code>, <code>filter()</code>, <code>summarize()</code></p>
+</div>
+<div class="fragment">
+<p><br> <code>function(argument)</code></p>
+</div>
+</div>
+</div>
+</section>
+<section id="why-the-tidyverse" class="slide level2">
+<h2>Why the tidyverse?</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><img data-src="tidyverse.png" class="absolute" alt="The tidyverse" style="width: 499px; height: 574px; "></p>
+</div><div class="column" style="width:50%;">
+<p><br> <br> An opinionated set of packages that work together and are designed for common data science tasks</p>
+</div>
+</div>
+</section>
+<section id="why-the-tidyverse-1" class="slide level2">
+<h2>Why the tidyverse?</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><img data-src="tidyverse.png" class="absolute" alt="The tidyverse" style="width: 499px; height: 574px; "></p>
+</div><div class="column" style="width:50%;">
+<p><br> <br> An <span style="color:#6A395B"><strong>opinionated</strong></span> set of packages that work together and are designed for common data science tasks <br> <br> <span style="color:#6A395B"><strong>tidy data!</strong></span></p>
+</div>
+</div>
+</section>
+<section id="why-the-tidyverse-2" class="slide level2">
+<h2>Why the tidyverse?</h2>
+<p><br></p>
+<div style="text-align: center">
+<p><code>library(tidyverse)</code> <img data-src="packages1.png" alt="The packages loaded with the tidyverse: ggplot2, tibble, tidyr, readr, purrr, dplyr, stringr, forcats"></p>
+</div>
+</section>
+<section id="why-the-tidyverse-3" class="slide level2">
+<h2>Why the tidyverse?</h2>
+<p><br></p>
+<div style="text-align: center">
+<p><code>library(tidyverse)</code> <img data-src="packages2.png" alt="The packages loaded with the tidyverse: ggplot2, tibble, tidyr, readr, purrr, dplyr, stringr, forcats"></p>
+</div>
+<div class="fragment">
+<div style="text-align: center">
+<p><code>tidyverse_packages()</code> <img data-src="packages3.png" alt="List of other optional tidyverse packages, including broom, rvest"></p>
+</div>
+</div>
+</section>
+<section id="common-dplyr-verbs" class="slide level2">
+<h2>Common <code>dplyr</code> verbs</h2>
+<p><br></p>
+<p><code>filter()</code> keeps or discards rows (aka observations)</p>
+<p><code>select()</code> keeps or discards columns (aka variables)</p>
+<p><code>arrange()</code> sorts data set by certain variable(s)</p>
+<p><code>count()</code> tallies data set by certain variable(s)</p>
+<p><code>mutate()</code> creates new variables</p>
+<p><code>summarize()</code> aggregates data</p>
+<div class="fragment">
+<div class="absolute" style="top: 53%; left: -5%; ">
+<div style="font-size: 3em; color:#6A395B">
+<p>[</p>
+</div>
+</div>
+<p>these two can be modified by <code>group_by()</code></p>
+</div>
+</section>
+<section id="common-operators" class="slide level2">
+<h2>Common operators</h2>
+<p><br></p>
+<p><code>&lt;-</code> is the assignment operator (think “save as”)</p>
+<p>shortcut: <code>option -</code></p>
+<div class="fragment">
+<p><br></p>
+<p><code>|&gt;</code> is the pipe to chain operations together (think recipe instructions)</p>
+<p>shortcut: <code>cmd shift m</code></p>
+</div>
+<div class="fragment">
+<p><br></p>
+<p>what about <code>%&gt;%</code>? tidyverse-specific pipe, fine to use!</p>
+</div>
+</section>
+<section id="todays-data" class="slide level2">
+<h2>Today’s data</h2>
+<p><br></p>
+<p>courtesy of <a href="https://github.com/rfordatascience/tidytuesday"><strong>#TidyTuesday</strong></a></p>
+<p><br></p>
+<p>data is from the <a href="https://github.com/rfordatascience/tidytuesday/blob/master/data/2022/2022-02-01/readme.md"><strong>American Kennel Club</strong></a></p>
+<p><br></p>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2"></a>breed_rank <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://raw.githubusercontent.com/meghall06/rladiesparis/master/breed_rank.csv"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3"></a>breed_traits <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://raw.githubusercontent.com/meghall06/rladiesparis/master/breed_traits.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="todays-data-1" class="slide level2">
+<h2>Today’s data</h2>
+<div style="text-align: center">
+<p><code>breed_rank</code></p>
+</div>
+<div style="font-size: 0.75em">
+<div class="cell">
+<div class="cell-output-display">
+<table style="width:100%;">
+<colgroup>
+<col style="width: 21%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 9%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Breed</th>
+<th style="text-align: right;">2013 Rank</th>
+<th style="text-align: right;">2014 Rank</th>
+<th style="text-align: right;">2015 Rank</th>
+<th style="text-align: right;">2016 Rank</th>
+<th style="text-align: right;">2017 Rank</th>
+<th style="text-align: right;">2018 Rank</th>
+<th style="text-align: right;">2019 Rank</th>
+<th style="text-align: right;">2020 Rank</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Retrievers (Labrador)</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">French Bulldogs</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">German Shepherd Dogs</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Retrievers (Golden)</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">4</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="todays-data-2" class="slide level2">
+<h2>Today’s data</h2>
+<div style="text-align: center">
+<p><code>breed_traits</code></p>
+</div>
+<div style="font-size: 0.75em">
+<div class="cell">
+<div class="cell-output-display">
+<table>
+<colgroup>
+<col style="width: 20%">
+<col style="width: 23%">
+<col style="width: 23%">
+<col style="width: 19%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Breed</th>
+<th style="text-align: right;">Affectionate With Family</th>
+<th style="text-align: right;">Good With Young Children</th>
+<th style="text-align: right;">Good With Other Dogs</th>
+<th style="text-align: right;">Shedding Level</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Retrievers (Labrador)</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">French Bulldogs</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">German Shepherd Dogs</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Retrievers (Golden)</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">4</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="todays-data-3" class="slide level2">
+<h2>Today’s data</h2>
+<p>per the <a href="https://style.tidyverse.org/syntax.html"><strong>tidyverse style guide</strong></a> variable names should use snake case</p>
+<p>otherwise variables need to be referred to within <code>`back ticks`</code></p>
+<p><br></p>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2" data-code-line-numbers="1-4|3|4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">library</span>(janitor)</span>
+<span id="cb2-2"><a href="#cb2-2"></a></span>
+<span id="cb2-3"><a href="#cb2-3"></a>breed_traits <span class="ot">&lt;-</span> breed_traits <span class="sc">|&gt;</span> </span>
+<span id="cb2-4"><a href="#cb2-4"></a>  janitor<span class="sc">::</span><span class="fu">clean_names</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.75em">
+<div class="cell">
+<div class="cell-output-display">
+<table>
+<colgroup>
+<col style="width: 30%">
+<col style="width: 34%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">breed</th>
+<th style="text-align: right;">affectionate_with_family</th>
+<th style="text-align: right;">good_with_young_children</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Retrievers (Labrador)</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">French Bulldogs</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">5</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="todays-data-4" class="slide level2">
+<h2>Today’s data</h2>
+<div style="font-size: 0.75em">
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">affectionate_with_family</td>
+<td style="text-align: left;">openness_to_strangers</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">good_with_young_children</td>
+<td style="text-align: left;">playfulness_level</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">good_with_other_dogs</td>
+<td style="text-align: left;">watchdog_protective_nature</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">shedding_level</td>
+<td style="text-align: left;">adaptability_level</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">coat_grooming_frequency</td>
+<td style="text-align: left;">trainability_level</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">drooling_level</td>
+<td style="text-align: left;">energy_level</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">coat_type</td>
+<td style="text-align: left;">barking_level</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">coat_length</td>
+<td style="text-align: left;">mental_stimulation_needs</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="todays-data-5" class="slide level2">
+<h2>Today’s data</h2>
+<div style="font-size: 0.75em">
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">affectionate_with_family</td>
+<td style="text-align: left;">openness_to_strangers</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">good_with_young_children</td>
+<td style="text-align: left;">playfulness_level</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">good_with_other_dogs</td>
+<td style="text-align: left;">watchdog_protective_nature</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>shedding_level</strong></td>
+<td style="text-align: left;">adaptability_level</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>coat_grooming_frequency</strong></td>
+<td style="text-align: left;">trainability_level</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>drooling_level</strong></td>
+<td style="text-align: left;">energy_level</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">coat_type</td>
+<td style="text-align: left;">barking_level</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">coat_length</td>
+<td style="text-align: left;">mental_stimulation_needs</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><br></p>
+<div style="text-align: center">
+<p>let’s investigate some tidy (and <em>un</em>tidy) dogs!</p>
+</div>
+</section>
+<section id="data-verification" class="slide level2">
+<h2>Data verification</h2>
+<p>use <code>View(breed_traits)</code> to look <span class="emoji" data-emoji="eyes">👀</span> at your data</p>
+<div class="fragment">
+<p>also useful: <code>count()</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>breed_traits <span class="sc">|&gt;</span> </span>
+<span id="cb3-2"><a href="#cb3-2"></a>  <span class="fu">count</span>(shedding_level)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.75em">
+<div class="cell">
+<div class="cell-output-display">
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;">shedding_level</th>
+<th style="text-align: right;">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">27</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">41</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">109</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">16</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="data-verification-1" class="slide level2">
+<h2>Data verification</h2>
+<p>use <code>View(breed_traits)</code> to look <span class="emoji" data-emoji="eyes">👀</span> at your data</p>
+<p>also useful: <code>count()</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>breed_traits <span class="sc">|&gt;</span> </span>
+<span id="cb4-2"><a href="#cb4-2"></a>  <span class="fu">count</span>(shedding_level)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div style="font-size: 0.75em">
+<div class="cell">
+<div class="cell-output-display">
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:right;"> shedding_level </th>
+   <th style="text-align:right;"> n </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:right;font-weight: bold;color: #6A395B !important;background-color: #F8F2F3 !important;"> 0 </td>
+   <td style="text-align:right;font-weight: bold;color: #6A395B !important;background-color: #F8F2F3 !important;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 27 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:right;"> 41 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 3 </td>
+   <td style="text-align:right;"> 109 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:right;"> 16 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 5 </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="data-verification-2" class="slide level2">
+<h2>Data verification</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5" data-code-line-numbers="1-4|2|3-4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>breed_traits <span class="sc">|&gt;</span> </span>
+<span id="cb5-2"><a href="#cb5-2"></a>  <span class="fu">filter</span>(shedding_level <span class="sc">==</span> <span class="dv">0</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb5-3"><a href="#cb5-3"></a>  <span class="fu">select</span>(breed, shedding_level, coat_grooming_frequency, </span>
+<span id="cb5-4"><a href="#cb5-4"></a>         drooling_level)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.65em">
+<div class="cell">
+<div class="cell-output-display">
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> breed </th>
+   <th style="text-align:right;"> shedding_level </th>
+   <th style="text-align:right;"> coat_grooming_frequency </th>
+   <th style="text-align:right;"> drooling_level </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Plott Hounds </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p><img data-src="https://www.akc.org/wp-content/uploads/2017/11/Plott-On-White-02.jpg" class="absolute" alt="A cute Plott Hound lounging on the grass" style="top: 65%; left: 5%; width: 30%; height: 30%; "></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6" data-code-line-numbers="1-2|2|1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>breed_traits <span class="ot">&lt;-</span> breed_traits <span class="sc">|&gt;</span> </span>
+<span id="cb6-2"><a href="#cb6-2"></a>  <span class="fu">filter</span>(shedding_level <span class="sc">!=</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>breed_traits <span class="sc">|&gt;</span> </span>
+<span id="cb7-2"><a href="#cb7-2"></a>  <span class="fu">count</span>(shedding_level)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div style="font-size: 0.65em">
+<div class="cell">
+<div class="cell-output-display">
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:right;"> shedding_level </th>
+   <th style="text-align:right;"> n </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 27 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:right;"> 41 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 3 </td>
+   <td style="text-align:right;"> 109 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:right;"> 16 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 5 </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="a-new-variable-with-mutate" class="slide level2">
+<h2>A new variable with <code>mutate()</code></h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8" data-code-line-numbers="1-4|1|2-3|4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>untidy_scores <span class="ot">&lt;-</span> breed_traits <span class="sc">|&gt;</span> </span>
+<span id="cb8-2"><a href="#cb8-2"></a>  <span class="fu">mutate</span>(<span class="at">untidy_score =</span> shedding_level <span class="sc">+</span> </span>
+<span id="cb8-3"><a href="#cb8-3"></a>           coat_grooming_frequency <span class="sc">+</span> drooling_level) <span class="sc">|&gt;</span> </span>
+<span id="cb8-4"><a href="#cb8-4"></a>  <span class="fu">select</span>(breed, untidy_score)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><br></p>
+<div class="fragment">
+<div style="font-size: 0.75em">
+<div class="cell">
+<div class="cell-output-display">
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> breed </th>
+   <th style="text-align:right;"> untidy_score </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Retrievers (Labrador) </td>
+   <td style="text-align:right;"> 8 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> French Bulldogs </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> German Shepherd Dogs </td>
+   <td style="text-align:right;"> 8 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Retrievers (Golden) </td>
+   <td style="text-align:right;"> 8 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Bulldogs </td>
+   <td style="text-align:right;"> 9 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="sorting-with-arrange" class="slide level2">
+<h2>Sorting with <code>arrange()</code></h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9" data-code-line-numbers="1-2|2|1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>untidy_scores <span class="sc">|&gt;</span> </span>
+<span id="cb9-2"><a href="#cb9-2"></a>  <span class="fu">arrange</span>(untidy_score)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><br></p>
+<div class="fragment">
+<div style="font-size: 0.75em">
+<div class="cell">
+<div class="cell-output-display">
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> breed </th>
+   <th style="text-align:right;"> untidy_score </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> American Hairless Terriers </td>
+   <td style="text-align:right;"> 3 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Xoloitzcuintli </td>
+   <td style="text-align:right;"> 3 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Cirnechi dell Etna </td>
+   <td style="text-align:right;"> 3 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Chihuahuas </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Whippets </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Chinese Crested </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="sorting-with-arrange-1" class="slide level2">
+<h2>Sorting with <code>arrange()</code></h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10" data-code-line-numbers="2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>untidy_scores <span class="sc">|&gt;</span> </span>
+<span id="cb10-2"><a href="#cb10-2"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(untidy_score))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><br></p>
+<div class="fragment">
+<div style="font-size: 0.75em">
+<div class="cell">
+<div class="cell-output-display">
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> breed </th>
+   <th style="text-align:right;"> untidy_score </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Bernese Mountain Dogs </td>
+   <td style="text-align:right;"> 11 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Leonbergers </td>
+   <td style="text-align:right;"> 11 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Newfoundlands </td>
+   <td style="text-align:right;"> 10 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Bloodhounds </td>
+   <td style="text-align:right;"> 10 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> St. Bernards </td>
+   <td style="text-align:right;"> 10 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Old English Sheepdogs </td>
+   <td style="text-align:right;"> 10 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="bar-chart" class="slide level2">
+<h2>Bar chart</h2>
+<p><br></p>
+<p>can we plot the scores of the untidiest dogs?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11" data-code-line-numbers="1-2|1|2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>untidy_dogs <span class="ot">&lt;-</span> untidy_scores <span class="sc">|&gt;</span> </span>
+<span id="cb11-2"><a href="#cb11-2"></a>  <span class="fu">slice_max</span>(untidy_score, <span class="at">n =</span> <span class="dv">6</span>, <span class="at">with_ties =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.75em">
+<div class="cell">
+<div class="cell-output-display">
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> breed </th>
+   <th style="text-align:right;"> untidy_score </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Bernese Mountain Dogs </td>
+   <td style="text-align:right;"> 11 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Leonbergers </td>
+   <td style="text-align:right;"> 11 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Newfoundlands </td>
+   <td style="text-align:right;"> 10 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Bloodhounds </td>
+   <td style="text-align:right;"> 10 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> St. Bernards </td>
+   <td style="text-align:right;"> 10 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Old English Sheepdogs </td>
+   <td style="text-align:right;"> 10 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="bar-chart-1" class="slide level2">
+<h2>Bar chart</h2>
+<div class="panel-tabset">
+<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Basic</a></li><li><a href="#tabset-1-2">Custom</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1">
+<div class="cell" data-layout-align="center" data-output-location="fragment">
+<div class="sourceCode cell-code" id="cb12" data-code-line-numbers="1-3|2|3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>untidy_dogs <span class="sc">|&gt;</span> </span>
+<span id="cb12-2"><a href="#cb12-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> untidy_score, <span class="at">y =</span> breed)) <span class="sc">+</span></span>
+<span id="cb12-3"><a href="#cb12-3"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="RLadiesParis_files/figure-revealjs/bar-basic-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-2">
+<div class="cell" data-layout-align="center">
+<details>
+<summary>expand for full code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>untidy_dogs <span class="sc">|&gt;</span> </span>
+<span id="cb13-2"><a href="#cb13-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> untidy_score, <span class="at">y =</span> <span class="fu">reorder</span>(breed, untidy_score), </span>
+<span id="cb13-3"><a href="#cb13-3"></a>             <span class="at">label =</span> untidy_score)) <span class="sc">+</span></span>
+<span id="cb13-4"><a href="#cb13-4"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">fill =</span> <span class="st">"#6A395B"</span>) <span class="sc">+</span></span>
+<span id="cb13-5"><a href="#cb13-5"></a>  <span class="fu">geom_label</span>(<span class="at">family =</span> <span class="st">"prompt"</span>) <span class="sc">+</span></span>
+<span id="cb13-6"><a href="#cb13-6"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.1</span>))) <span class="sc">+</span></span>
+<span id="cb13-7"><a href="#cb13-7"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"The untidiest dogs"</span>,</span>
+<span id="cb13-8"><a href="#cb13-8"></a>       <span class="at">subtitle =</span> <span class="st">"Based on drooling, shedding, and grooming frequency"</span>,</span>
+<span id="cb13-9"><a href="#cb13-9"></a>       <span class="at">x =</span> <span class="st">"Untidiness score"</span>, <span class="at">y =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb13-10"><a href="#cb13-10"></a>  <span class="fu">theme_tidy_dog</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="RLadiesParis_files/figure-revealjs/bar-custom-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="tidy-data" class="slide level2">
+<h2>Tidy data</h2>
+<p><br></p>
+<p>Bernese Mountain Dogs are the untidiest of all—how does their popularity rank change over time?</p>
+<div class="fragment">
+<div style="font-size: 0.75em">
+<div class="cell">
+<div class="cell-output-display">
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Breed </th>
+   <th style="text-align:right;"> 2013 Rank </th>
+   <th style="text-align:right;"> 2014 Rank </th>
+   <th style="text-align:right;"> 2015 Rank </th>
+   <th style="text-align:right;"> 2016 Rank </th>
+   <th style="text-align:right;"> 2017 Rank </th>
+   <th style="text-align:right;"> 2018 Rank </th>
+   <th style="text-align:right;"> 2019 Rank </th>
+   <th style="text-align:right;"> 2020 Rank </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Bernese Mountain Dogs </td>
+   <td style="text-align:right;"> 32 </td>
+   <td style="text-align:right;"> 32 </td>
+   <td style="text-align:right;"> 29 </td>
+   <td style="text-align:right;"> 27 </td>
+   <td style="text-align:right;"> 25 </td>
+   <td style="text-align:right;"> 22 </td>
+   <td style="text-align:right;"> 23 </td>
+   <td style="text-align:right;"> 22 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p><br></p>
+<p><code>ggplot(aes(x = ??, y = ??))</code></p>
+</div>
+</section>
+<section id="tidy-data-1" class="slide level2">
+<h2>Tidy data</h2>
+<blockquote>
+<p>There are three interrelated rules which make a dataset tidy:<br> 1. Each variable must have its own column.<br> 2. Each observation must have its own row.<br> 3. Each value must have its own cell.<br> - <a href="https://r4ds.had.co.nz/tidy-data.html"><strong>R for Data Science</strong></a></p>
+</blockquote>
+<div class="fragment">
+<div style="font-size: 0.75em">
+<div class="cell">
+<div class="cell-output-display">
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Breed </th>
+   <th style="text-align:right;"> 2013 Rank </th>
+   <th style="text-align:right;"> 2014 Rank </th>
+   <th style="text-align:right;"> 2015 Rank </th>
+   <th style="text-align:right;"> 2016 Rank </th>
+   <th style="text-align:right;"> 2017 Rank </th>
+   <th style="text-align:right;"> 2018 Rank </th>
+   <th style="text-align:right;"> 2019 Rank </th>
+   <th style="text-align:right;"> 2020 Rank </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Bernese Mountain Dogs </td>
+   <td style="text-align:right;"> 32 </td>
+   <td style="text-align:right;"> 32 </td>
+   <td style="text-align:right;"> 29 </td>
+   <td style="text-align:right;"> 27 </td>
+   <td style="text-align:right;"> 25 </td>
+   <td style="text-align:right;"> 22 </td>
+   <td style="text-align:right;"> 23 </td>
+   <td style="text-align:right;"> 22 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="tidy-data-2" class="slide level2">
+<h2>Tidy data</h2>
+<blockquote>
+<p>There are three interrelated rules which make a dataset tidy:<br> 1. Each variable must have its own column.<br> 2. Each observation must have its own row.<br> 3. Each value must have its own cell.<br> - <a href="https://r4ds.had.co.nz/tidy-data.html"><strong>R for Data Science</strong></a></p>
+</blockquote>
+<div style="font-size: 0.75em">
+<div class="cell">
+<div class="cell-output-display">
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Breed </th>
+   <th style="text-align:right;"> 2013 Rank </th>
+   <th style="text-align:right;"> 2014 Rank </th>
+   <th style="text-align:right;"> 2015 Rank </th>
+   <th style="text-align:right;"> 2016 Rank </th>
+   <th style="text-align:right;"> 2017 Rank </th>
+   <th style="text-align:right;"> 2018 Rank </th>
+   <th style="text-align:right;"> 2019 Rank </th>
+   <th style="text-align:right;"> 2020 Rank </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Bernese Mountain Dogs </td>
+   <td style="text-align:right;font-weight: bold;color: #6A395B !important;background-color: #F8F2F3 !important;"> 32 </td>
+   <td style="text-align:right;"> 32 </td>
+   <td style="text-align:right;"> 29 </td>
+   <td style="text-align:right;"> 27 </td>
+   <td style="text-align:right;"> 25 </td>
+   <td style="text-align:right;"> 22 </td>
+   <td style="text-align:right;"> 23 </td>
+   <td style="text-align:right;"> 22 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p><br></p>
+<p>how does this violate the tidy data rules?</p>
+</section>
+<section id="pivot_longer-for-tidy-data" class="slide level2">
+<h2><code>pivot_longer()</code> for tidy data</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14" data-code-line-numbers="1-4|1|2|3-4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>ranks_pivoted <span class="ot">&lt;-</span> breed_rank <span class="sc">|&gt;</span> </span>
+<span id="cb14-2"><a href="#cb14-2"></a>  <span class="fu">pivot_longer</span>(<span class="st">`</span><span class="at">2013 Rank</span><span class="st">`</span><span class="sc">:</span><span class="st">`</span><span class="at">2020 Rank</span><span class="st">`</span>,</span>
+<span id="cb14-3"><a href="#cb14-3"></a>               <span class="at">names_to =</span> <span class="st">"year"</span>,</span>
+<span id="cb14-4"><a href="#cb14-4"></a>               <span class="at">values_to =</span> <span class="st">"rank"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.75em">
+<div class="cell">
+<div class="cell-output-display">
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Breed </th>
+   <th style="text-align:left;"> year </th>
+   <th style="text-align:right;"> rank </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Bernese Mountain Dogs </td>
+   <td style="text-align:left;"> 2013 Rank </td>
+   <td style="text-align:right;"> 32 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Bernese Mountain Dogs </td>
+   <td style="text-align:left;"> 2014 Rank </td>
+   <td style="text-align:right;"> 32 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Bernese Mountain Dogs </td>
+   <td style="text-align:left;"> 2015 Rank </td>
+   <td style="text-align:right;"> 29 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Bernese Mountain Dogs </td>
+   <td style="text-align:left;"> 2016 Rank </td>
+   <td style="text-align:right;"> 27 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Bernese Mountain Dogs </td>
+   <td style="text-align:left;"> 2017 Rank </td>
+   <td style="text-align:right;"> 25 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Bernese Mountain Dogs </td>
+   <td style="text-align:left;"> 2018 Rank </td>
+   <td style="text-align:right;"> 22 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Bernese Mountain Dogs </td>
+   <td style="text-align:left;"> 2019 Rank </td>
+   <td style="text-align:right;"> 23 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Bernese Mountain Dogs </td>
+   <td style="text-align:left;"> 2020 Rank </td>
+   <td style="text-align:right;"> 22 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="pivot_longer-for-tidy-data-1" class="slide level2">
+<h2><code>pivot_longer()</code> for tidy data</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15" data-code-line-numbers="1-3|1|2|3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>ranks_pivoted <span class="ot">&lt;-</span> ranks_pivoted <span class="sc">|&gt;</span> </span>
+<span id="cb15-2"><a href="#cb15-2"></a>  <span class="fu">rename</span>(<span class="at">breed =</span> Breed) <span class="sc">|&gt;</span> </span>
+<span id="cb15-3"><a href="#cb15-3"></a>  <span class="fu">mutate</span>(<span class="at">year =</span> <span class="fu">parse_number</span>(year))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.75em">
+<div class="cell">
+<div class="cell-output-display">
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> breed </th>
+   <th style="text-align:right;"> year </th>
+   <th style="text-align:right;"> rank </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Bernese Mountain Dogs </td>
+   <td style="text-align:right;"> 2013 </td>
+   <td style="text-align:right;"> 32 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Bernese Mountain Dogs </td>
+   <td style="text-align:right;"> 2014 </td>
+   <td style="text-align:right;"> 32 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Bernese Mountain Dogs </td>
+   <td style="text-align:right;"> 2015 </td>
+   <td style="text-align:right;"> 29 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Bernese Mountain Dogs </td>
+   <td style="text-align:right;"> 2016 </td>
+   <td style="text-align:right;"> 27 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Bernese Mountain Dogs </td>
+   <td style="text-align:right;"> 2017 </td>
+   <td style="text-align:right;"> 25 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Bernese Mountain Dogs </td>
+   <td style="text-align:right;"> 2018 </td>
+   <td style="text-align:right;"> 22 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Bernese Mountain Dogs </td>
+   <td style="text-align:right;"> 2019 </td>
+   <td style="text-align:right;"> 23 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Bernese Mountain Dogs </td>
+   <td style="text-align:right;"> 2020 </td>
+   <td style="text-align:right;"> 22 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="pivot_longer-for-tidy-data-2" class="slide level2">
+<h2><code>pivot_longer()</code> for tidy data</h2>
+<p><br></p>
+<p>Bernese Mountain Dogs are the untidiest of all—how does their popularity rank change over time?</p>
+<div style="font-size: 0.75em">
+<div class="cell">
+<div class="cell-output-display">
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> breed </th>
+   <th style="text-align:right;"> year </th>
+   <th style="text-align:right;"> rank </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Bernese Mountain Dogs </td>
+   <td style="text-align:right;"> 2013 </td>
+   <td style="text-align:right;"> 32 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Bernese Mountain Dogs </td>
+   <td style="text-align:right;"> 2014 </td>
+   <td style="text-align:right;"> 32 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Bernese Mountain Dogs </td>
+   <td style="text-align:right;"> 2015 </td>
+   <td style="text-align:right;"> 29 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Bernese Mountain Dogs </td>
+   <td style="text-align:right;"> 2016 </td>
+   <td style="text-align:right;"> 27 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Bernese Mountain Dogs </td>
+   <td style="text-align:right;"> 2017 </td>
+   <td style="text-align:right;"> 25 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p><code>ggplot(aes(x = year, y = rank))</code></p>
+</section>
+<section id="dot-plot" class="slide level2">
+<h2>Dot plot</h2>
+<div class="panel-tabset">
+<ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">Basic</a></li><li><a href="#tabset-2-2">Custom</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1">
+<div class="cell" data-layout-align="center" data-output-location="fragment">
+<div class="sourceCode cell-code" id="cb16" data-code-line-numbers="1-5|2|3|4-5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>ranks_pivoted <span class="sc">|&gt;</span> </span>
+<span id="cb16-2"><a href="#cb16-2"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(breed, <span class="st">"Bernese"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb16-3"><a href="#cb16-3"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> rank, <span class="at">label =</span> rank)) <span class="sc">+</span></span>
+<span id="cb16-4"><a href="#cb16-4"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb16-5"><a href="#cb16-5"></a>  <span class="fu">geom_text</span>(<span class="at">vjust =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="RLadiesParis_files/figure-revealjs/dot-basic-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-2-2">
+<div class="cell" data-layout-align="center">
+<details>
+<summary>expand for full code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>ranks_pivoted <span class="sc">|&gt;</span> </span>
+<span id="cb17-2"><a href="#cb17-2"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(breed, <span class="st">"Bernese"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb17-3"><a href="#cb17-3"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> rank, <span class="at">label =</span> rank)) <span class="sc">+</span></span>
+<span id="cb17-4"><a href="#cb17-4"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb17-5"><a href="#cb17-5"></a>  <span class="fu">geom_text</span>(<span class="at">vjust =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb17-6"><a href="#cb17-6"></a>  <span class="fu">scale_y_reverse</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb17-7"><a href="#cb17-7"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">2013</span>, <span class="dv">2020</span>, <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb17-8"><a href="#cb17-8"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Popularity Rank"</span>,</span>
+<span id="cb17-9"><a href="#cb17-9"></a>       <span class="at">title =</span> <span class="st">"Popularity of Bernese Mountain Dogs"</span>) <span class="sc">+</span></span>
+<span id="cb17-10"><a href="#cb17-10"></a>  <span class="fu">theme_tidy_dog</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="RLadiesParis_files/figure-revealjs/dot-custom-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="line-graph" class="slide level2">
+<h2>Line graph</h2>
+<p>can we plot the popularity ranking of the untidiest dogs?</p>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:50%;">
+<div style="text-align: center">
+<p><code>untidy_dogs</code></p>
+</div>
+<div style="font-size: 0.65em">
+<div class="cell">
+<div class="cell-output-display">
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> breed </th>
+   <th style="text-align:right;"> untidy_score </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Bernese Mountain Dogs </td>
+   <td style="text-align:right;"> 11 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Leonbergers </td>
+   <td style="text-align:right;"> 11 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Newfoundlands </td>
+   <td style="text-align:right;"> 10 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Bloodhounds </td>
+   <td style="text-align:right;"> 10 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> St. Bernards </td>
+   <td style="text-align:right;"> 10 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Old English Sheepdogs </td>
+   <td style="text-align:right;"> 10 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div style="text-align: center">
+<p><code>ranks_pivoted</code></p>
+</div>
+<div style="font-size: 0.65em">
+<div class="cell">
+<div class="cell-output-display">
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> breed </th>
+   <th style="text-align:right;"> year </th>
+   <th style="text-align:right;"> rank </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Retrievers (Labrador) </td>
+   <td style="text-align:right;"> 2013 </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Retrievers (Labrador) </td>
+   <td style="text-align:right;"> 2014 </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Retrievers (Labrador) </td>
+   <td style="text-align:right;"> 2015 </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Retrievers (Labrador) </td>
+   <td style="text-align:right;"> 2016 </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Retrievers (Labrador) </td>
+   <td style="text-align:right;"> 2017 </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Retrievers (Labrador) </td>
+   <td style="text-align:right;"> 2018 </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18" data-code-line-numbers="1-2|1|2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>untidy_popularity <span class="ot">&lt;-</span> ranks_pivoted <span class="sc">|&gt;</span> </span>
+<span id="cb18-2"><a href="#cb18-2"></a>  <span class="fu">filter</span>(breed <span class="sc">%in%</span> untidy_dogs<span class="sc">$</span>breed)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="line-graph-1" class="slide level2">
+<h2>Line graph</h2>
+<p><br></p>
+<p>check that this filtered the way we wanted it to!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>untidy_popularity <span class="sc">|&gt;</span> </span>
+<span id="cb19-2"><a href="#cb19-2"></a>  <span class="fu">count</span>(breed)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.75em">
+<div class="cell">
+<div class="cell-output-display">
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> breed </th>
+   <th style="text-align:right;"> n </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Bernese Mountain Dogs </td>
+   <td style="text-align:right;"> 8 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Bloodhounds </td>
+   <td style="text-align:right;"> 8 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Leonbergers </td>
+   <td style="text-align:right;"> 8 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Newfoundlands </td>
+   <td style="text-align:right;"> 8 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Old English Sheepdogs </td>
+   <td style="text-align:right;"> 8 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> St. Bernards </td>
+   <td style="text-align:right;"> 8 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="line-graph-2" class="slide level2">
+<h2>Line graph</h2>
+<div class="panel-tabset">
+<ul id="tabset-3" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-3-1">Basic</a></li><li><a href="#tabset-3-2">Custom</a></li></ul>
+<div class="tab-content">
+<div id="tabset-3-1">
+<div class="cell" data-layout-align="center" data-output-location="fragment">
+<div class="sourceCode cell-code" id="cb20" data-code-line-numbers="1-4|2|3-4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>untidy_popularity <span class="sc">|&gt;</span> </span>
+<span id="cb20-2"><a href="#cb20-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> rank, <span class="at">group =</span> breed, <span class="at">color =</span> breed)) <span class="sc">+</span></span>
+<span id="cb20-3"><a href="#cb20-3"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb20-4"><a href="#cb20-4"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="RLadiesParis_files/figure-revealjs/line-basic-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-3-2">
+<div class="cell" data-layout-align="center">
+<details>
+<summary>expand for full code</summary>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>untidy_popularity <span class="sc">|&gt;</span> </span>
+<span id="cb21-2"><a href="#cb21-2"></a>  <span class="fu">mutate</span>(<span class="at">label =</span> <span class="fu">ifelse</span>(year <span class="sc">==</span> <span class="dv">2020</span>, breed, <span class="cn">NA</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb21-3"><a href="#cb21-3"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> rank, <span class="at">group =</span> breed, <span class="at">color =</span> breed,</span>
+<span id="cb21-4"><a href="#cb21-4"></a>             <span class="at">label =</span> label)) <span class="sc">+</span></span>
+<span id="cb21-5"><a href="#cb21-5"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb21-6"><a href="#cb21-6"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb21-7"><a href="#cb21-7"></a>  <span class="fu">geom_text</span>(<span class="at">hjust =</span> <span class="sc">-</span><span class="fl">0.1</span>, <span class="at">family =</span> <span class="st">"prompt"</span>) <span class="sc">+</span></span>
+<span id="cb21-8"><a href="#cb21-8"></a>  <span class="fu">scale_color_viridis_d</span>(<span class="at">option =</span> <span class="st">"A"</span>) <span class="sc">+</span></span>
+<span id="cb21-9"><a href="#cb21-9"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.5</span>)),</span>
+<span id="cb21-10"><a href="#cb21-10"></a>                     <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">2013</span>, <span class="dv">2020</span>, <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb21-11"><a href="#cb21-11"></a>  <span class="fu">scale_y_reverse</span>() <span class="sc">+</span></span>
+<span id="cb21-12"><a href="#cb21-12"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Popularity over time of the untidiest dogs"</span>,</span>
+<span id="cb21-13"><a href="#cb21-13"></a>       <span class="at">subtitle =</span> <span class="st">"Based on drooling, shedding, and grooming frequency"</span>,</span>
+<span id="cb21-14"><a href="#cb21-14"></a>       <span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb21-15"><a href="#cb21-15"></a>       <span class="at">y =</span> <span class="st">"Popularity Rank"</span>) <span class="sc">+</span></span>
+<span id="cb21-16"><a href="#cb21-16"></a>  <span class="fu">theme_tidy_dog</span>() <span class="sc">+</span></span>
+<span id="cb21-17"><a href="#cb21-17"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="RLadiesParis_files/figure-revealjs/line-custom-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="relational-data-left_join" class="slide level2">
+<h2>Relational data: <code>left_join()</code></h2>
+<p>can we plot the <em>average</em> popularity ranking against the <code>tidy_scores</code> for <em>all</em> dogs?</p>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22" data-code-line-numbers="1-3|1|2-3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>avg_ranks <span class="ot">&lt;-</span> ranks_pivoted <span class="sc">|&gt;</span> </span>
+<span id="cb22-2"><a href="#cb22-2"></a>  <span class="fu">group_by</span>(breed) <span class="sc">|&gt;</span> </span>
+<span id="cb22-3"><a href="#cb22-3"></a>  <span class="fu">summarize</span>(<span class="at">avg_rank =</span> <span class="fu">mean</span>(rank))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.55em">
+<div class="cell">
+<div class="cell-output-display">
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> breed </th>
+   <th style="text-align:right;"> avg_rank </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Affenpinschers </td>
+   <td style="text-align:right;"> 147.750 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Afghan Hounds </td>
+   <td style="text-align:right;"> 105.875 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Airedale Terriers </td>
+   <td style="text-align:right;"> 57.375 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Akitas </td>
+   <td style="text-align:right;"> 46.500 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Alaskan Malamutes </td>
+   <td style="text-align:right;"> 58.875 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> American English Coonhounds </td>
+   <td style="text-align:right;"> 169.125 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> American Eskimo Dogs </td>
+   <td style="text-align:right;"> 118.875 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> American Foxhounds </td>
+   <td style="text-align:right;"> 185.250 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;font-weight: bold;color: #6A395B !important;background-color: #F8F2F3 !important;"> American Hairless Terriers </td>
+   <td style="text-align:right;font-weight: bold;color: #6A395B !important;background-color: #F8F2F3 !important;"> NA </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="relational-data-left_join-1" class="slide level2">
+<h2>Relational data: <code>left_join()</code></h2>
+<p>can we plot the <em>average</em> popularity ranking against the <code>tidy_scores</code> for <em>all</em> dogs?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23" data-code-line-numbers="3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>avg_ranks <span class="ot">&lt;-</span> ranks_pivoted <span class="sc">|&gt;</span> </span>
+<span id="cb23-2"><a href="#cb23-2"></a>  <span class="fu">group_by</span>(breed) <span class="sc">|&gt;</span> </span>
+<span id="cb23-3"><a href="#cb23-3"></a>  <span class="fu">summarize</span>(<span class="at">avg_rank =</span> <span class="fu">mean</span>(rank, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div style="font-size: 0.55em">
+<div class="cell">
+<div class="cell-output-display">
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> breed </th>
+   <th style="text-align:right;"> avg_rank </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Affenpinschers </td>
+   <td style="text-align:right;"> 147.750 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Afghan Hounds </td>
+   <td style="text-align:right;"> 105.875 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Airedale Terriers </td>
+   <td style="text-align:right;"> 57.375 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Akitas </td>
+   <td style="text-align:right;"> 46.500 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Alaskan Malamutes </td>
+   <td style="text-align:right;"> 58.875 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> American English Coonhounds </td>
+   <td style="text-align:right;"> 169.125 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> American Eskimo Dogs </td>
+   <td style="text-align:right;"> 118.875 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> American Foxhounds </td>
+   <td style="text-align:right;"> 185.250 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;font-weight: bold;color: #6A395B !important;background-color: #F8F2F3 !important;"> American Hairless Terriers </td>
+   <td style="text-align:right;font-weight: bold;color: #6A395B !important;background-color: #F8F2F3 !important;"> 129.000 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="relational-data-left_join-2" class="slide level2">
+<h2>Relational data: <code>left_join()</code></h2>
+<p>can we plot the <em>average</em> popularity ranking against the <code>tidy_scores</code> for <em>all</em> dogs?</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div style="text-align: center">
+<p><code>avg_ranks</code></p>
+</div>
+<div style="font-size: 0.65em">
+<div class="cell">
+<div class="cell-output-display">
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> breed </th>
+   <th style="text-align:right;"> avg_rank </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Affenpinschers </td>
+   <td style="text-align:right;"> 147.750 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Afghan Hounds </td>
+   <td style="text-align:right;"> 105.875 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Airedale Terriers </td>
+   <td style="text-align:right;"> 57.375 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Akitas </td>
+   <td style="text-align:right;"> 46.500 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Alaskan Malamutes </td>
+   <td style="text-align:right;"> 58.875 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div style="text-align: center">
+<p><code>untidy_scores</code></p>
+</div>
+<div style="font-size: 0.65em">
+<div class="cell">
+<div class="cell-output-display">
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> breed </th>
+   <th style="text-align:right;"> untidy_score </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Retrievers (Labrador) </td>
+   <td style="text-align:right;"> 8 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> French Bulldogs </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> German Shepherd Dogs </td>
+   <td style="text-align:right;"> 8 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Retrievers (Golden) </td>
+   <td style="text-align:right;"> 8 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Bulldogs </td>
+   <td style="text-align:right;"> 9 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="relational-data-left_join-3" class="slide level2">
+<h2>Relational data: <code>left_join()</code></h2>
+<p>other join types are available, but <code>left_join()</code> is the most common (more info in <a href="https://r4ds.had.co.nz/relational-data.html"><strong>R4DS</strong></a>)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24" data-code-line-numbers="1-2|1|2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>tidy_and_rank <span class="ot">&lt;-</span> avg_ranks <span class="sc">|&gt;</span> </span>
+<span id="cb24-2"><a href="#cb24-2"></a>  <span class="fu">left_join</span>(untidy_scores, <span class="at">by =</span> <span class="st">"breed"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<p>can specify <strong>keys</strong> with <code>by = "var"</code></p>
+<ul>
+<li><p>multiple: <code>by = c("var1","var2")</code></p></li>
+<li><p>different names: <code>by = c("var_left" = "var_right")</code></p></li>
+</ul>
+</div>
+<div class="fragment">
+<div style="font-size: 0.55em">
+<div class="cell">
+<div class="cell-output-display">
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> breed </th>
+   <th style="text-align:right;"> avg_rank </th>
+   <th style="text-align:right;"> untidy_score </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Affenpinschers </td>
+   <td style="text-align:right;"> 147.750 </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Afghan Hounds </td>
+   <td style="text-align:right;"> 105.875 </td>
+   <td style="text-align:right;"> 6 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="relational-data-left_join-4" class="slide level2">
+<h2>Relational data: <code>left_join()</code></h2>
+<p>check that this worked the way we wanted it to!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>tidy_and_rank <span class="sc">|&gt;</span> </span>
+<span id="cb25-2"><a href="#cb25-2"></a>  <span class="fu">count</span>(untidy_score)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.55em">
+<div class="cell">
+<div class="cell-output-display">
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:right;"> untidy_score </th>
+   <th style="text-align:right;"> n </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:right;"> 3 </td>
+   <td style="text-align:right;"> 3 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:right;"> 13 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 5 </td>
+   <td style="text-align:right;"> 25 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 6 </td>
+   <td style="text-align:right;"> 43 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 7 </td>
+   <td style="text-align:right;"> 59 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 8 </td>
+   <td style="text-align:right;"> 30 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 9 </td>
+   <td style="text-align:right;"> 11 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 8 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 11 </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;font-weight: bold;color: #6A395B !important;background-color: #F8F2F3 !important;"> NA </td>
+   <td style="text-align:right;font-weight: bold;color: #6A395B !important;background-color: #F8F2F3 !important;"> 1 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="relational-data-left_join-5" class="slide level2">
+<h2>Relational data: <code>left_join()</code></h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>tidy_and_rank <span class="sc">|&gt;</span> </span>
+<span id="cb26-2"><a href="#cb26-2"></a>  <span class="fu">filter</span>(<span class="fu">is.na</span>(untidy_score))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.55em">
+<div class="cell">
+<div class="cell-output-display">
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> breed </th>
+   <th style="text-align:right;"> avg_rank </th>
+   <th style="text-align:right;"> untidy_score </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Plott Hounds </td>
+   <td style="text-align:right;"> 167 </td>
+   <td style="text-align:right;"> NA </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a>tidy_and_rank <span class="ot">&lt;-</span> tidy_and_rank <span class="sc">|&gt;</span> </span>
+<span id="cb27-2"><a href="#cb27-2"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(untidy_score))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.55em">
+<div class="cell">
+<div class="cell-output-display">
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:right;"> untidy_score </th>
+   <th style="text-align:right;"> n </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:right;"> 3 </td>
+   <td style="text-align:right;"> 3 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:right;"> 13 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 5 </td>
+   <td style="text-align:right;"> 25 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 6 </td>
+   <td style="text-align:right;"> 43 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 7 </td>
+   <td style="text-align:right;"> 59 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 8 </td>
+   <td style="text-align:right;"> 30 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 9 </td>
+   <td style="text-align:right;"> 11 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 8 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 11 </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="jitter-plot" class="slide level2">
+<h2>Jitter plot</h2>
+<div class="panel-tabset">
+<ul id="tabset-4" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-4-1">Basic</a></li><li><a href="#tabset-4-2">Custom</a></li></ul>
+<div class="tab-content">
+<div id="tabset-4-1">
+<div class="cell" data-layout-align="center" data-output-location="fragment">
+<div class="sourceCode cell-code" id="cb28" data-code-line-numbers="1-3|2|3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a>tidy_and_rank <span class="sc">|&gt;</span> </span>
+<span id="cb28-2"><a href="#cb28-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> untidy_score, <span class="at">y =</span> avg_rank)) <span class="sc">+</span></span>
+<span id="cb28-3"><a href="#cb28-3"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="RLadiesParis_files/figure-revealjs/jitter-basic-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-4-2">
+<div class="cell" data-layout-align="center">
+<details>
+<summary>expand for full code</summary>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a>tidy_and_rank <span class="sc">|&gt;</span>  </span>
+<span id="cb29-2"><a href="#cb29-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> untidy_score, <span class="at">y =</span> avg_rank)) <span class="sc">+</span></span>
+<span id="cb29-3"><a href="#cb29-3"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">3</span>, <span class="dv">11</span>, <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb29-4"><a href="#cb29-4"></a>  <span class="fu">geom_jitter</span>(<span class="at">size =</span> <span class="dv">3</span>, <span class="at">width =</span> <span class="fl">0.1</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">color =</span> <span class="st">"#6A395B"</span>) <span class="sc">+</span></span>
+<span id="cb29-5"><a href="#cb29-5"></a>  <span class="fu">scale_y_reverse</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">200</span>, <span class="dv">150</span>, <span class="dv">100</span>, <span class="dv">50</span>, <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb29-6"><a href="#cb29-6"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Dog breed popularity compared to their untidiness score"</span>,</span>
+<span id="cb29-7"><a href="#cb29-7"></a>       <span class="at">subtitle =</span> <span class="st">"Ranking based on 2013-2020 data; tidy score based on drooling, shedding, grooming frequency"</span>,</span>
+<span id="cb29-8"><a href="#cb29-8"></a>       <span class="at">x =</span> <span class="st">"Untidiness Score"</span>,</span>
+<span id="cb29-9"><a href="#cb29-9"></a>       <span class="at">y =</span> <span class="st">"Average Popularity Rank"</span>) <span class="sc">+</span></span>
+<span id="cb29-10"><a href="#cb29-10"></a>  <span class="fu">theme_tidy_dog</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="RLadiesParis_files/figure-revealjs/jitter-custom-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="pivot_wider" class="slide level2">
+<h2><code>pivot_wider()</code></h2>
+<p>which breeds have had the biggest jump in popularity?</p>
+<div class="fragment">
+<div style="text-align: center">
+<p><code>ranks_pivoted</code></p>
+</div>
+<div style="font-size: 0.65em">
+<div class="cell">
+<div class="cell-output-display">
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> breed </th>
+   <th style="text-align:right;"> year </th>
+   <th style="text-align:right;"> rank </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Retrievers (Labrador) </td>
+   <td style="text-align:right;"> 2013 </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Retrievers (Labrador) </td>
+   <td style="text-align:right;"> 2014 </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Retrievers (Labrador) </td>
+   <td style="text-align:right;"> 2015 </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Retrievers (Labrador) </td>
+   <td style="text-align:right;"> 2016 </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Retrievers (Labrador) </td>
+   <td style="text-align:right;"> 2017 </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Retrievers (Labrador) </td>
+   <td style="text-align:right;"> 2018 </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Retrievers (Labrador) </td>
+   <td style="text-align:right;"> 2019 </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Retrievers (Labrador) </td>
+   <td style="text-align:right;"> 2020 </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> French Bulldogs </td>
+   <td style="text-align:right;"> 2013 </td>
+   <td style="text-align:right;"> 11 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="pivot_wider-1" class="slide level2">
+<h2><code>pivot_wider()</code></h2>
+<p>which breeds have had the biggest jump in popularity?</p>
+<div style="text-align: center">
+<p><code>ranks_pivoted</code></p>
+</div>
+<div style="font-size: 0.65em">
+<div class="cell">
+<div class="cell-output-display">
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> breed </th>
+   <th style="text-align:right;"> year </th>
+   <th style="text-align:right;"> rank </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;font-weight: bold;color: #6A395B !important;background-color: #F8F2F3 !important;"> Retrievers (Labrador) </td>
+   <td style="text-align:right;font-weight: bold;color: #6A395B !important;background-color: #F8F2F3 !important;"> 2013 </td>
+   <td style="text-align:right;font-weight: bold;color: #6A395B !important;background-color: #F8F2F3 !important;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Retrievers (Labrador) </td>
+   <td style="text-align:right;"> 2014 </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Retrievers (Labrador) </td>
+   <td style="text-align:right;"> 2015 </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Retrievers (Labrador) </td>
+   <td style="text-align:right;"> 2016 </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Retrievers (Labrador) </td>
+   <td style="text-align:right;"> 2017 </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Retrievers (Labrador) </td>
+   <td style="text-align:right;"> 2018 </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Retrievers (Labrador) </td>
+   <td style="text-align:right;"> 2019 </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;font-weight: bold;color: #6A395B !important;background-color: #F8F2F3 !important;"> Retrievers (Labrador) </td>
+   <td style="text-align:right;font-weight: bold;color: #6A395B !important;background-color: #F8F2F3 !important;"> 2020 </td>
+   <td style="text-align:right;font-weight: bold;color: #6A395B !important;background-color: #F8F2F3 !important;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;font-weight: bold;color: #6A395B !important;background-color: #F8F2F3 !important;"> French Bulldogs </td>
+   <td style="text-align:right;font-weight: bold;color: #6A395B !important;background-color: #F8F2F3 !important;"> 2013 </td>
+   <td style="text-align:right;font-weight: bold;color: #6A395B !important;background-color: #F8F2F3 !important;"> 11 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="pivot_wider-2" class="slide level2">
+<h2><code>pivot_wider()</code></h2>
+<p><br></p>
+<p>will all deliver the same results:</p>
+<ol type="1">
+<li><p><code>filter(year %in% c(2013, 2020))</code></p></li>
+<li><p><code>filter(year == 2013 | year == 2020)</code></p></li>
+<li><p><code>filter(year == min(year) | year == max(year))</code></p></li>
+</ol>
+<div class="fragment">
+<p>most robust option <span class="emoji" data-emoji="point_up">☝️</span></p>
+</div>
+</section>
+<section id="pivot_wider-3" class="slide level2">
+<h2><code>pivot_wider()</code></h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30" data-code-line-numbers="1-7|1|2|3-4|5|6|7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a>rank_change <span class="ot">&lt;-</span> ranks_pivoted <span class="sc">|&gt;</span>  </span>
+<span id="cb30-2"><a href="#cb30-2"></a>  <span class="fu">filter</span>(year <span class="sc">==</span> <span class="fu">min</span>(year) <span class="sc">|</span> year <span class="sc">==</span> <span class="fu">max</span>(year)) <span class="sc">|&gt;</span> </span>
+<span id="cb30-3"><a href="#cb30-3"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="st">"year"</span>,</span>
+<span id="cb30-4"><a href="#cb30-4"></a>              <span class="at">values_from =</span> <span class="st">"rank"</span>) <span class="sc">|&gt;</span>  </span>
+<span id="cb30-5"><a href="#cb30-5"></a>  <span class="fu">mutate</span>(<span class="at">change =</span> <span class="st">`</span><span class="at">2013</span><span class="st">`</span> <span class="sc">-</span> <span class="st">`</span><span class="at">2020</span><span class="st">`</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb30-6"><a href="#cb30-6"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">2020</span><span class="st">`</span> <span class="sc">&lt;=</span> <span class="dv">50</span>) <span class="sc">|&gt;</span>  </span>
+<span id="cb30-7"><a href="#cb30-7"></a>  <span class="fu">slice_max</span>(change, <span class="at">n =</span> <span class="dv">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<div style="font-size: 0.65em">
+<div class="cell">
+<div class="cell-output-display">
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> breed </th>
+   <th style="text-align:right;"> 2013 </th>
+   <th style="text-align:right;"> 2020 </th>
+   <th style="text-align:right;"> change </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Cane Corso </td>
+   <td style="text-align:right;"> 50 </td>
+   <td style="text-align:right;"> 25 </td>
+   <td style="text-align:right;"> 25 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Belgian Malinois </td>
+   <td style="text-align:right;"> 60 </td>
+   <td style="text-align:right;"> 37 </td>
+   <td style="text-align:right;"> 23 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Spaniels (English Cocker) </td>
+   <td style="text-align:right;"> 62 </td>
+   <td style="text-align:right;"> 47 </td>
+   <td style="text-align:right;"> 15 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Pembroke Welsh Corgis </td>
+   <td style="text-align:right;"> 24 </td>
+   <td style="text-align:right;"> 11 </td>
+   <td style="text-align:right;"> 13 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Border Collies </td>
+   <td style="text-align:right;"> 44 </td>
+   <td style="text-align:right;"> 32 </td>
+   <td style="text-align:right;"> 12 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Bernese Mountain Dogs </td>
+   <td style="text-align:right;"> 32 </td>
+   <td style="text-align:right;"> 22 </td>
+   <td style="text-align:right;"> 10 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="dumbbell-plot" class="slide level2">
+<h2>Dumbbell plot</h2>
+<p><br></p>
+<p>useful plot type for showing change between two points</p>
+<div class="fragment">
+<p><br></p>
+<p>to be honest: it’s easier to make these with <code>ggalt::geom_dumbbell()</code></p>
+<p><br></p>
+<p>but we can use <code>ggplot2</code> to learn a) how to combine multiple geoms and b) how inherited <code>aes</code> works</p>
+</div>
+</section>
+<section id="dumbbell-plot-1" class="slide level2">
+<h2>Dumbbell plot</h2>
+<div class="panel-tabset">
+<ul id="tabset-5" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-5-1">Basic</a></li><li><a href="#tabset-5-2">Custom</a></li></ul>
+<div class="tab-content">
+<div id="tabset-5-1">
+<div class="cell" data-layout-align="center" data-output-location="fragment">
+<div class="sourceCode cell-code" id="cb31" data-code-line-numbers="1-7|2|3|4-5|6-7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a>rank_change <span class="sc">|&gt;</span>  </span>
+<span id="cb31-2"><a href="#cb31-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y =</span> breed)) <span class="sc">+</span></span>
+<span id="cb31-3"><a href="#cb31-3"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">yend =</span> breed, <span class="at">x =</span> <span class="st">`</span><span class="at">2013</span><span class="st">`</span>, <span class="at">xend =</span> <span class="st">`</span><span class="at">2020</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb31-4"><a href="#cb31-4"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">2013</span><span class="st">`</span>), <span class="at">color =</span> <span class="st">"#c991b8"</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb31-5"><a href="#cb31-5"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">2020</span><span class="st">`</span>), <span class="at">color =</span> <span class="st">"#6A395B"</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb31-6"><a href="#cb31-6"></a>  <span class="fu">geom_label</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">2020</span><span class="st">`</span>, <span class="at">label =</span> <span class="st">`</span><span class="at">2020</span><span class="st">`</span>), <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb31-7"><a href="#cb31-7"></a>  <span class="fu">geom_label</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">2013</span><span class="st">`</span>, <span class="at">label =</span> <span class="st">`</span><span class="at">2013</span><span class="st">`</span>), <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="RLadiesParis_files/figure-revealjs/dumbbell-basic-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-5-2">
+<div class="cell" data-layout-align="center">
+<details>
+<summary>expand for full code</summary>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a>rank_change <span class="sc">|&gt;</span>  </span>
+<span id="cb32-2"><a href="#cb32-2"></a>  <span class="fu">mutate</span>(<span class="at">middle =</span> <span class="st">`</span><span class="at">2020</span><span class="st">`</span> <span class="sc">+</span> (change <span class="sc">/</span> <span class="dv">2</span>)) <span class="sc">|&gt;</span>  </span>
+<span id="cb32-3"><a href="#cb32-3"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">reorder</span>(breed, <span class="sc">-</span><span class="st">`</span><span class="at">2020</span><span class="st">`</span>))) <span class="sc">+</span></span>
+<span id="cb32-4"><a href="#cb32-4"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">yend =</span> <span class="fu">reorder</span>(breed, <span class="sc">-</span><span class="st">`</span><span class="at">2020</span><span class="st">`</span>), <span class="at">x =</span> <span class="st">`</span><span class="at">2013</span><span class="st">`</span>, <span class="at">xend =</span> <span class="st">`</span><span class="at">2020</span><span class="st">`</span>), </span>
+<span id="cb32-5"><a href="#cb32-5"></a>               <span class="at">color =</span> <span class="st">"grey20"</span>) <span class="sc">+</span></span>
+<span id="cb32-6"><a href="#cb32-6"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">2013</span><span class="st">`</span>), <span class="at">color =</span> <span class="st">"#c991b8"</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb32-7"><a href="#cb32-7"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">2020</span><span class="st">`</span>), <span class="at">color =</span> <span class="st">"#6A395B"</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb32-8"><a href="#cb32-8"></a>  <span class="fu">geom_label</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">2020</span><span class="st">`</span>, <span class="at">label =</span> <span class="st">`</span><span class="at">2020</span><span class="st">`</span>), <span class="at">family =</span> <span class="st">"prompt"</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb32-9"><a href="#cb32-9"></a>  <span class="fu">geom_label</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">2013</span><span class="st">`</span>, <span class="at">label =</span> <span class="st">`</span><span class="at">2013</span><span class="st">`</span>), <span class="at">family =</span> <span class="st">"prompt"</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb32-10"><a href="#cb32-10"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">x =</span> middle, <span class="at">label =</span> <span class="fu">str_c</span>(<span class="st">"+"</span>, change)), <span class="at">family =</span> <span class="st">"prompt"</span>, </span>
+<span id="cb32-11"><a href="#cb32-11"></a>            <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.75</span>, <span class="at">size =</span> <span class="fl">3.5</span>) <span class="sc">+</span></span>
+<span id="cb32-12"><a href="#cb32-12"></a>  <span class="fu">scale_x_reverse</span>() <span class="sc">+</span></span>
+<span id="cb32-13"><a href="#cb32-13"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Popularity Ranking"</span>,</span>
+<span id="cb32-14"><a href="#cb32-14"></a>       <span class="at">y =</span> <span class="cn">NULL</span>,</span>
+<span id="cb32-15"><a href="#cb32-15"></a>       <span class="at">title =</span> <span class="st">"Dog breeds with the biggest jump in popularity from 2013"</span>,</span>
+<span id="cb32-16"><a href="#cb32-16"></a>       <span class="at">subtitle =</span> <span class="st">"Among the top 50 in 2020"</span>) <span class="sc">+</span></span>
+<span id="cb32-17"><a href="#cb32-17"></a>  <span class="fu">theme_tidy_dog</span>() <span class="sc">+</span></span>
+<span id="cb32-18"><a href="#cb32-18"></a>  <span class="fu">theme</span>(<span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="RLadiesParis_files/figure-revealjs/dumbbell-custom-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="go-forth-and-code" class="slide level2">
+<h2>Go forth and code!</h2>
+<p><img data-src="corgi.gif" class="absolute" alt="Two corgis trotting on a treadmill." style="top: 30%; left: 25%; "></p>
+</section>
+<section id="ggplot-theme" class="slide level2">
+<h2><code>ggplot</code> theme</h2>
+<p><br></p>
+<div style="font-size: 0.75em">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="fu">library</span>(showtext)</span>
+<span id="cb33-2"><a href="#cb33-2"></a></span>
+<span id="cb33-3"><a href="#cb33-3"></a><span class="co"># Add Google fonts</span></span>
+<span id="cb33-4"><a href="#cb33-4"></a><span class="fu">font_add_google</span>(<span class="st">"Prompt"</span>, <span class="st">"prompt"</span>)</span>
+<span id="cb33-5"><a href="#cb33-5"></a></span>
+<span id="cb33-6"><a href="#cb33-6"></a><span class="fu">showtext_auto</span>()</span>
+<span id="cb33-7"><a href="#cb33-7"></a></span>
+<span id="cb33-8"><a href="#cb33-8"></a>theme_tidy_dog <span class="ot">&lt;-</span> <span class="cf">function</span> () { </span>
+<span id="cb33-9"><a href="#cb33-9"></a>  <span class="fu">theme_linedraw</span>(<span class="at">base_size=</span><span class="dv">13</span>, <span class="at">base_family=</span><span class="st">"prompt"</span>) <span class="sc">%+replace%</span> </span>
+<span id="cb33-10"><a href="#cb33-10"></a>    <span class="fu">theme</span>(</span>
+<span id="cb33-11"><a href="#cb33-11"></a>      <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="dv">0</span>),</span>
+<span id="cb33-12"><a href="#cb33-12"></a>      <span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill=</span><span class="st">'#F9E0D9'</span>, <span class="at">color =</span> <span class="cn">NA</span>),</span>
+<span id="cb33-13"><a href="#cb33-13"></a>      <span class="at">plot.background =</span> <span class="fu">element_rect</span>(<span class="at">fill=</span><span class="st">'#F9E0D9'</span>, <span class="at">color=</span><span class="cn">NA</span>),</span>
+<span id="cb33-14"><a href="#cb33-14"></a>      <span class="at">legend.background =</span> <span class="fu">element_rect</span>(<span class="at">fill=</span><span class="st">"transparent"</span>, <span class="at">color=</span><span class="cn">NA</span>),</span>
+<span id="cb33-15"><a href="#cb33-15"></a>      <span class="at">legend.key =</span> <span class="fu">element_rect</span>(<span class="at">fill=</span><span class="st">"transparent"</span>, <span class="at">color=</span><span class="cn">NA</span>),</span>
+<span id="cb33-16"><a href="#cb33-16"></a>      <span class="at">axis.ticks =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb33-17"><a href="#cb33-17"></a>      <span class="at">panel.grid.major =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"grey90"</span>, <span class="at">size =</span> <span class="fl">0.3</span>), </span>
+<span id="cb33-18"><a href="#cb33-18"></a>      <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb33-19"><a href="#cb33-19"></a>      <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">15</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">"bold"</span>, </span>
+<span id="cb33-20"><a href="#cb33-20"></a>                                <span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">b =</span> <span class="fl">0.2</span>, <span class="at">unit =</span> <span class="st">"cm"</span>)),</span>
+<span id="cb33-21"><a href="#cb33-21"></a>      <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>, </span>
+<span id="cb33-22"><a href="#cb33-22"></a>                                   <span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">b =</span> <span class="fl">0.2</span>, <span class="at">unit =</span> <span class="st">"cm"</span>)),</span>
+<span id="cb33-23"><a href="#cb33-23"></a>    )</span>
+<span id="cb33-24"><a href="#cb33-24"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="resources" class="slide level2">
+<h2>Resources</h2>
+<p><a href="https://r4ds.had.co.nz/"><strong>R for Data Science</strong></a>: the ultimate guide</p>
+<p><br></p>
+<p><a href="https://rstudio-conf-2020.github.io/r-for-excel/"><strong>R for Excel users</strong></a>: a very useful workshop</p>
+<p><br></p>
+<p><a href="https://stat545.com/"><strong>STAT 545</strong></a>: online book on reproducible data analysis</p>
+<p><br></p>
+<p>the <a href="https://education.rstudio.com/"><strong>RStudio Education</strong></a> site</p>
+<p><br></p>
+<p>the <a href="https://www.tidyverse.org/learn/"><strong>Learn <code>tidyverse</code></strong></a> site</p>
+</section>
+<section class="slide level2">
+
+<p><br> <br></p>
+<div style="text-align: center; font-size: 1.5em; color:#6A395B">
+<div class="absolute" style="top: 5%; left: 33%; ">
+<p><strong>Thank you!</strong></p>
+</div>
+</div>
+<p><br></p>
+<div class="absolute" style="top: 30%; left: 25%; width: 50%; ">
+<div class="box">
+<div style="font-size: 1em">
+<p><strong>MEGHAN HALL</strong><br> <i class="fa-brands fa-twitter"></i> <a href="https://twitter.com/meghanmhall"><span class="citation" data-cites="MeghanMHall">@MeghanMHall</span></a><br> <i class="fa-brands fa-github"></i> <a href="https://github.com/meghall06">meghall06</a><br> <i class="fa-solid fa-link"></i> <a href="https://meghan.rbind.io/">meghan.rbind.io</a><br> <i class="fa-solid fa-envelope"></i> meghanhall6 AT gmail</p>
+</div>
+</div>
+</div>
+<p><br></p>
+<div style="text-align: center; font-size: 0.5em">
+<div class="absolute" style="top: 85%; left: 38%; ">
+<p>slides made with <a href="https://quarto.org/">Quarto</a> <span class="emoji" data-emoji="tada">🎉</span></p>
+</div>
+</div>
+
+<img src="corgi.png" class="slide-logo r-stretch"><div class="footer footer-default">
+<p><a href="https://meghan.quarto.pub/keeping-it-tidy/">meghan.quarto.pub/keeping-it-tidy</a>&nbsp;&nbsp;&nbsp;</p>
+</div>
+</section>
+    </div>
+  </div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="RLadiesParis_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="RLadiesParis_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="RLadiesParis_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="RLadiesParis_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="RLadiesParis_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="RLadiesParis_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="RLadiesParis_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="RLadiesParis_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="RLadiesParis_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="RLadiesParis_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="RLadiesParis_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': true,
+'smaller': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true,"boardmarkerWidth":5},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: false,
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        function fireSlideChanged(previousSlide, currentSlide) {
+
+          // dispatch for htmlwidgets
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for reveal
+        if (window.Reveal) {
+          window.Reveal.addEventListener("slidechanged", function(event) {
+            fireSlideChanged(event.previousSlide, event.currentSlide);
+          });
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+    window.document.addEventListener("DOMContentLoaded", function (event) {
+      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+      tabsets.forEach(function(tabset) {
+        const tabby = new Tabby('#' + tabset.id);
+      });
+      const clipboard = new window.ClipboardJS('.code-copy-button', {
+        target: function(trigger) {
+          return trigger.previousElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        // button target
+        const button = e.trigger;
+        // don't keep focus
+        button.blur();
+        // flash "checked"
+        button.classList.add('code-copy-button-checked');
+        var currentTitle = button.getAttribute("title");
+        button.setAttribute("title", "Copied!");
+        setTimeout(function() {
+          button.setAttribute("title", currentTitle);
+          button.classList.remove('code-copy-button-checked');
+        }, 1000);
+        // clear code selection
+        e.clearSelection();
+      });
+      function tippyHover(el, contentFn) {
+        const config = {
+          allowHTML: true,
+          content: contentFn,
+          maxWidth: 500,
+          delay: 100,
+          arrow: false,
+          appendTo: function(el) {
+              return el.closest('section.slide') || el.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'quarto-reveal',
+          placement: 'bottom-start'
+        };
+          config['offset'] = [0,0];
+          config['maxWidth'] = 700;
+        window.tippy(el, config); 
+      }
+      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+      for (var i=0; i<noterefs.length; i++) {
+        const ref = noterefs[i];
+        tippyHover(ref, function() {
+          let href = ref.getAttribute('href');
+          try { href = new URL(href).hash; } catch {}
+          const id = href.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          return note.innerHTML;
+        });
+      }
+      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+      for (var i=0; i<bibliorefs.length; i++) {
+        const ref = bibliorefs[i];
+        const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+        tippyHover(ref, function() {
+          var popup = window.document.createElement('div');
+          cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    });
+    </script>
+    
+
+</body></html>

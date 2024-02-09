@@ -1,0 +1,12 @@
+---
+title: "Discrete Defensive Strategies on the Penalty Kill"
+subtitle: "Ottawa Hockey Analytics Conference"
+author: "Meghan Hall"
+date: "2019-11-16"
+summary: Tracking data from the 2018-19 season to discuss broad defensive themes on the penalty kill.
+categories: ["hockey"]
+slides: "https://drive.google.com/file/d/1XjUKQn1yw7K_Rvdtv7h1FKcqkeQfN7q6/view?usp=sharing"
+---
+[{{< fa tv >}} SLIDES](https://drive.google.com/file/d/1XjUKQn1yw7K_Rvdtv7h1FKcqkeQfN7q6/view?usp=sharing){class="btn btn-secondary" target="_blank"} [{{< fa chart-column >}} DATA](https://public.tableau.com/views/DiscreteDefensiveStrategiesonthePenaltyKill/PK?:language=en-US&:display_count=n&:origin=viz_share_link){class="btn btn-secondary" target="_blank"}
+
+Most would agree that a successful penalty kill is one that is able to limit shots against and expected goals against (i.e., the lower the rates per 60 minutes of shots against and expected goals against, the better the penalty kill is performing). However, there are several methods that penalty kill units can employ to reach this goal. They can play good defense in their own zone, they can prevent the power play from spending much time in their offensive zone, and they can generate offense of their own (when by definition the puck is not in their own zone). All of these measures can be represented by metrics–the shot rate and expected goals rate against, per time in the power play offensive zone only; the percentage of time the penalty kill keeps the puck in the neutral zone or their offensive zone; and the shot rate and expected goal rate for the penalty killing team, respectively. Data from over 1100 minutes of penalty kills from the 2018-19 season, spread across 12 teams, will further investigate these methods and their impact on penalty kill success and explore whether different teams employ different methods and showcase varying amounts of skill in each area.

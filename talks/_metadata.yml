@@ -1,0 +1,32 @@
+# Date format
+date-format: "YYYY-MM-DD"
+
+# Enable banner style title blocks
+title-block-banner: true
+
+
+# Add blog-post class to the banner header area
+format: 
+  html:
+    template-partials:
+      - title-block.html
+    #code-tools: true
+    #quarto-template-params:
+     # banner-header-class: "blog-post"
+    css: talks.css
+    knitr:
+      opts_chunk:
+        dev: png
+        dev.args:
+          bg: transparent
+
+# Default for table of contents
+#toc: true
+#toc-title: CONTENTS
+#toc-location: left
+
+#freeze: true
+
+# Default author
+#author:
+#  - name: Meghan Hall

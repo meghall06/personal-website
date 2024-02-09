@@ -1,0 +1,21 @@
+```{=html}
+<ul class="pub-list list">
+<% for (const item of items) { %>
+  <div class="li2" "li" <%= metadataAttrs(item) %>>
+    <a href="<%- item.path %>" target="_blank" rel="noopener noreferrer" style="text-decoration: none">
+      <span class="post-title"><%= item.title %></span><span style="float:right;"><span class="main-date"> <%= item.date %></span></span></a> <br />
+    <% if (item.categories) { %>
+            <span class="post-categories listing-categories">
+                <% for (const category of item.categories) { %>
+                <div class="post-category listing-category" onclick="window.quartoListingCategory('<%=category%>'); return false;">
+                    <%= category %>
+                </div>
+                <% } %>
+            </span>
+            <% } %>
+    <span class="summary-text"><%= item.summary %></span><br /><br />
+  </div>
+<% } %>
+</ul>
+
+```

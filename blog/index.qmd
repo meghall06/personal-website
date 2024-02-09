@@ -1,0 +1,18 @@
+---
+title: <p class="center-text">Blog Posts</p>
+author: ""
+comments: false
+listing:
+  contents: "index.qmd"
+  sort: "date desc"
+  type: "default"
+  date-format: "iso"
+  fields: [image, date, title, subtitle, author, summary, description]  
+  page-size: 6
+  template: blog-listing.ejs
+page-layout: full
+title-block-banner: true
+format:
+  html:
+    css: blog.css
+---

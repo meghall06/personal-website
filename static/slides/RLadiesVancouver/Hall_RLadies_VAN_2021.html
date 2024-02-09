@@ -1,0 +1,1861 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>How Hockey Taught Me R</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Meghan Hall" />
+    <script src="libs_RLadies_VAN/header-attrs/header-attrs.js"></script>
+    <link href="libs_RLadies_VAN/font-awesome/css/fontawesome-all.min.css" rel="stylesheet" />
+    <script src="libs_RLadies_VAN/kePrint/kePrint.js"></script>
+    <link href="libs_RLadies_VAN/lightable/lightable.css" rel="stylesheet" />
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="test.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+class: inverse, center, middle
+
+&lt;img src="figs/RLadies_VAN/RLad_VAN.png" width="250px"/&gt;
+
+# How Hockey Taught Me R
+
+Meghan Hall &lt;br&gt; <i class="fab  fa-twitter "></i> [@MeghanMHall](https://www.twitter.com/MeghanMHall) &lt;br&gt; <i class="fas  fa-link "></i> [meghan.rbind.io](https://meghan.rbind.io/) &lt;br&gt; R-Ladies Vancouver &lt;br&gt; Mar 25, 2021
+
+---
+background-image: url(figs/RLadies_VAN/RLad_VAN.png)
+background-position: 98% 2%
+background-size: 102px 115px
+padding-right: 10px
+layout: true
+&lt;div class="my-footer"&gt;&lt;span&gt;tinyurl.com/rladies-van&lt;/span&gt;&lt;/div&gt;
+---
+
+class: middle, center
+
+# Housekeeping
+
+--
+
+🖥&amp;nbsp; 
+&lt;br&gt;[tinyurl.com/rladies-van](https://tinyurl.com/rladies-van)
+
+&lt;br&gt;
+
+--
+
+📦&amp;nbsp; 
+
+```r
+devtools::install_github("meghall06/betweenthepipes")
+```
+&lt;br&gt;
+
+--
+
+⏰&amp;nbsp; 
+
+&lt;br&gt;
+
+--
+
+❓&amp;nbsp; 
+
+---
+
+class: middle, center
+
+# The Land Before R
+
+--
+
+🎓&amp;nbsp; 
+&lt;br&gt;
+the perils of Excel in a reporting-heavy office
+
+&lt;br&gt;
+--
+
+🏒&amp;nbsp;
+&lt;br&gt;
+the problem of "big" data and constantly having *more* data
+
+---
+
+class: middle, center
+
+# Why R?
+--
+
+🔓&amp;nbsp; 
+&lt;br&gt;
+open source = free
+
+&lt;br&gt;
+
+--
+
+<i class="fab  fa-twitter "></i>&amp;nbsp; 
+&lt;br&gt;
+community through `#rstats` and `R-Ladies`
+
+&lt;br&gt;
+
+---
+
+class: middle, center
+
+# Post-R
+
+--
+
+🎓&amp;nbsp; 
+&lt;br&gt;
+*everything* is streamlined
+
+&lt;br&gt;
+--
+
+🏒&amp;nbsp;
+&lt;br&gt;
+more analysis, more opportunities, more helping!
+
+---
+class: inverse, middle, center
+
+# What you're all here for
+
+---
+
+## Method endorsed by multiple professionals!
+
+&lt;br&gt;
+&lt;br&gt;
+.center[&lt;img src="figs/RLadies_VAN/tweet.png" width="585px" height="285px"/&gt;]
+
+---
+
+# Where does the data come from?
+
+&lt;img src="figs/CMSAC/pipes_logo.png" width="180" style="display: block; margin: auto;" /&gt;
+
+
+```r
+# install the package from github
+devtools::install_github("meghall06/betweenthepipes")
+
+# load the libraries
+library(betweenthepipes)
+*library(tidyverse)
+
+# add the data from the package to the global environment
+pbp &lt;- pbp_example
+```
+
+--
+*scrape for yourself using the [Evolving Hockey](https://evolving-hockey.com/) [R scraper](https://github.com/evolvingwild/evolving-hockey/blob/master/EH_scrape_functions.R)*
+
+---
+
+# Tonight's exercises
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+.center[.large[**goalie save percentage**]]
+
+&lt;br&gt;
+.center[team faceoff percentage]
+
+&lt;br&gt;
+.center[individual plus-minus]
+
+---
+
+# Goalie save percentage
+
+What is this data? How do we find saves??
+
+--
+
+
+```r
+pbp %&gt;% 
+  count(game_id, game_date, home_team, away_team)
+```
+
+&lt;table class="table" style="font-size: 16px; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; game_id &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; game_date &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; home_team &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; away_team &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; n &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2019020336 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 2019-11-21 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 586 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2019020349 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 2019-11-23 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CGY &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 682 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2019020367 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 2019-11-25 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; VAN &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 606 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2019020384 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 2019-11-27 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CBJ &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 627 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Goalie save percentage
+
+What is this data? How do we find saves??
+
+
+```r
+pbp %&gt;% 
+  count(event_type)
+```
+
+&lt;table class="table" style="font-size: 15px; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; event_type &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; n &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; CHANGE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1300 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; FAC &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 237 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; SHOT &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 211 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; STOP &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 190 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HIT &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 134 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; BLOCK &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 118 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; GIVE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 101 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; MISS &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 71 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; TAKE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 44 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; PENL &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 25 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; GOAL &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 21 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Goalie save percentage
+
+What is this data? How do we find saves??
+
+
+```r
+pbp %&gt;% 
+  count(event_type)
+```
+
+&lt;table class="table" style="font-size: 15px; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; event_type &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; n &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; CHANGE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1300 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; FAC &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 237 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; SHOT &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; 211 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; STOP &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 190 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HIT &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 134 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; BLOCK &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 118 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; GIVE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 101 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; MISS &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 71 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; TAKE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 44 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; PENL &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 25 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; GOAL &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; 21 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Goalie save percentage
+
+`save percentage = SHOTs / (SHOTs + GOALs)`
+--
+
+```r
+pbp %&gt;% 
+  filter(event_type `%in%` c("SHOT","GOAL")) %&gt;% 
+  select(event_type, `contains("goalie")`, 
+         event_team, event_description)
+```
+
+&lt;table class="table" style="font-size: 14px; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; event_type &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; home_goalie &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; away_goalie &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; event_team &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; event_description &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; GOAL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PETR.MRAZEK &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; BRIAN.ELLIOTT &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR #20 AHO(11), Wrist, Off. Zone, 16 ft.Assists: #86 TERAVAINEN(15); #22 PESCE(6) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; GOAL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PETR.MRAZEK &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; BRIAN.ELLIOTT &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR #86 TERAVAINEN(6), Snap, Off. Zone, 32 ft.Assists: #37 SVECHNIKOV(14); #18 DZINGEL(11) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; SHOT &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PETR.MRAZEK &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; BRIAN.ELLIOTT &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR ONGOAL - #13 FOEGELE, Wrist, Off. Zone, 6 ft. &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; SHOT &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PETR.MRAZEK &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; BRIAN.ELLIOTT &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR ONGOAL - #13 FOEGELE, Wrist, Off. Zone, 5 ft. &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; SHOT &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PETR.MRAZEK &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; BRIAN.ELLIOTT &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR ONGOAL - #13 FOEGELE, Deflected, Off. Zone, 4 ft. &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Goalie save percentage
+
+.large[what structure is my data in?]
+&lt;br&gt;
+&lt;br&gt;
+    *both goalies listed on the row*
+
+&lt;br&gt;
+--
+.large[what structure does my data **need** to be in?]
+&lt;br&gt;
+&lt;br&gt;
+    *the actual event goalie specified on the row*
+    
+&lt;br&gt;
+--
+.large[how do I get from point A to point B?]
+&lt;br&gt;
+&lt;br&gt;
+    *create a new variable*
+    
+---
+
+# Goalie save percentage
+
+
+```r
+pbp %&gt;% 
+  filter(event_type %in% c("GOAL","SHOT")) %&gt;% 
+  mutate(event_goalie = `case_when`(
+                          event_team == home_team ~ away_goalie,
+                          event_team == away_team ~ home_goalie)) %&gt;% 
+  select(event_goalie, event_type)
+```
+
+--
+
+&lt;table class="table" style="font-size: 15px; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; event_goalie &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; event_type &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; BRIAN.ELLIOTT &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; GOAL &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; BRIAN.ELLIOTT &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; GOAL &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; BRIAN.ELLIOTT &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; SHOT &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; BRIAN.ELLIOTT &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; SHOT &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; BRIAN.ELLIOTT &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; SHOT &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; PETR.MRAZEK &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; SHOT &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; PETR.MRAZEK &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; GOAL &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; BRIAN.ELLIOTT &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; SHOT &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Goalie save percentage
+
+
+```r
+pbp %&gt;% 
+  filter(event_type %in% c("GOAL","SHOT")) %&gt;% 
+  mutate(event_goalie = case_when(
+                          event_team == home_team ~ away_goalie,
+                          event_team == away_team ~ home_goalie),
+         save = `ifelse`(event_type == "SHOT", 1, 0)) %&gt;% 
+  select(event_goalie, event_type, save)
+```
+
+--
+
+&lt;table class="table" style="font-size: 15px; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; event_goalie &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; event_type &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; save &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; BRIAN.ELLIOTT &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; GOAL &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; BRIAN.ELLIOTT &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; GOAL &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; BRIAN.ELLIOTT &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; SHOT &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; BRIAN.ELLIOTT &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; SHOT &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; BRIAN.ELLIOTT &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; SHOT &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; PETR.MRAZEK &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; SHOT &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; PETR.MRAZEK &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; GOAL &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; BRIAN.ELLIOTT &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; SHOT &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Goalie save percentage
+
+
+```r
+pbp %&gt;% 
+  filter(event_type %in% c("GOAL","SHOT")) %&gt;% 
+  mutate(event_goalie = case_when(
+                          event_team == home_team ~ away_goalie,
+                          event_team == away_team ~ home_goalie),
+         save = ifelse(event_type == "SHOT", 1, 0)) %&gt;% 
+  select(event_goalie, event_type, save) %&gt;% 
+  `group_by`(event_goalie) %&gt;% 
+  `summarize`(saves = sum(save),
+              all_shots = n()) %&gt;% 
+  `arrange`(desc(all_shots))
+```
+
+--
+
+&lt;table class="table" style="font-size: 15px; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; event_goalie &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; saves &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; all_shots &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; BRIAN.ELLIOTT &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 61 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 66 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; CARTER.HART &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 42 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 46 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; DAVID.RITTICH &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 39 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 41 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; THATCHER.DEMKO &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 32 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 34 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Goalie save percentage
+
+
+```r
+pbp %&gt;% 
+  filter(event_type %in% c("GOAL","SHOT")) %&gt;% 
+  mutate(event_goalie = case_when(
+                          event_team == home_team ~ away_goalie,
+                          event_team == away_team ~ home_goalie),
+         save = ifelse(event_type == "SHOT", 1, 0)) %&gt;% 
+  select(event_goalie, event_type, save) %&gt;% 
+  group_by(event_goalie) %&gt;% 
+  summarize(saves = sum(save),
+              all_shots = n()) %&gt;% 
+  arrange(desc(all_shots)) %&gt;% 
+  `mutate(save_perc = saves / all_shots)`
+```
+
+--
+
+&lt;table class="table" style="font-size: 15px; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; event_goalie &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; saves &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; all_shots &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; save_perc &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; BRIAN.ELLIOTT &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 61 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 66 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9242424 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; CARTER.HART &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 42 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 46 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9130435 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; DAVID.RITTICH &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 39 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 41 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9512195 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; THATCHER.DEMKO &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 32 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 34 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9411765 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Tonight's exercises
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+.center[goalie save percentage]
+
+&lt;br&gt;
+.center[.large[**team faceoff percentage**]]
+
+&lt;br&gt;
+.center[individual plus-minus]
+
+---
+
+# Team faceoff percentage
+
+
+```r
+pbp %&gt;% 
+  count(event_type)
+```
+
+&lt;table class="table" style="font-size: 16px; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; event_type &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; n &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; CHANGE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1300 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; FAC &lt;/td&gt;
+   &lt;td style="text-align:right;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; 237 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; SHOT &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 211 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; STOP &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 190 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HIT &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 134 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; BLOCK &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 118 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; GIVE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 101 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; MISS &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 71 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; TAKE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 44 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; PENL &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 25 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Team faceoff percentage
+
+
+```r
+pbp %&gt;% 
+  filter(event_type == "FAC") %&gt;% 
+  select(event_index, event_type, event_player_1, event_player_2, 
+         event_team, event_description)
+```
+
+&lt;table class="table" style="font-size: 14px; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; event_index &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; event_type &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; event_player_1 &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; event_player_2 &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; event_team &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; event_description &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; FAC &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CLAUDE.GIROUX &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; SEBASTIAN.AHO &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI won Neu. Zone - PHI #28 GIROUX vs CAR #20 AHO &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 14 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; FAC &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; SEAN.COUTURIER &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; JORDAN.STAAL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI won Neu. Zone - PHI #14 COUTURIER vs CAR #11 STAAL &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 23 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; FAC &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; KEVIN.HAYES &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; LUCAS.WALLMARK &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI won Def. Zone - PHI #13 HAYES vs CAR #71 WALLMARK &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 37 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; FAC &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; SEAN.COUTURIER &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; RYAN.DZINGEL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI won Neu. Zone - PHI #14 COUTURIER vs CAR #18 DZINGEL &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 41 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; FAC &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CLAUDE.GIROUX &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; RYAN.DZINGEL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI won Def. Zone - PHI #28 GIROUX vs CAR #18 DZINGEL &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Team faceoff percentage
+
+
+```r
+pbp %&gt;% 
+  filter(event_type == "FAC") %&gt;% 
+  mutate(loser = case_when(event_team == home_team ~ away_team,
+                           event_team == away_team ~ home_team)) %&gt;% 
+  select(event_index, event_type, `winner = event_team`, loser)
+```
+
+&lt;table class="table" style="font-size: 14px; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; event_index &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; event_type &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; winner &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; loser &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; FAC &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 14 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; FAC &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 23 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; FAC &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 37 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; FAC &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 41 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; FAC &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 50 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; FAC &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 60 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; FAC &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 66 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; FAC &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 71 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; FAC &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 75 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; FAC &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Team faceoff percentage
+
+.large[what structure is my data in?]
+&lt;br&gt;
+&lt;br&gt;
+    *one row per faceoff—which is actually two data points (the winner and the loser)*
+
+&lt;br&gt;
+--
+.large[what structure does my data **need** to be in?]
+&lt;br&gt;
+&lt;br&gt;
+    *one row per each **team** in the faceoff (one row per data point!)*
+    
+&lt;br&gt;
+--
+.large[how do I get from point A to point B?]
+&lt;br&gt;
+&lt;br&gt;
+    *pivot!*
+    
+---
+
+# Team Faceoff Percentage
+
+.center[&lt;img src="figs/RLadies_VAN/pivot.png" width="574px" height="236px"/&gt;]
+.center[*[from R for Data Science](https://r4ds.had.co.nz/)*]
+
+--
+
+.center[&lt;img src="figs/RLadies_VAN/pivot2.png" width="380px" height="202px"/&gt;]
+
+---
+
+# Team faceoff percentage
+
+
+```r
+pbp %&gt;% 
+  filter(event_type == "FAC") %&gt;% 
+  mutate(loser = case_when(event_team == home_team ~ away_team,
+                           event_team == away_team ~ home_team)) %&gt;% 
+  select(event_index, event_type, winner = event_team, loser) %&gt;% 
+* pivot_longer(winner:loser,
+*               names_to = "result", values_to = "team")
+```
+
+&lt;table class="table" style="font-size: 13px; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; event_index &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; event_type &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; result &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; team &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; FAC &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; winner &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; FAC &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; loser &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 14 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; FAC &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; winner &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 14 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; FAC &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; loser &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 23 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; FAC &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; winner &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 23 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; FAC &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; loser &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 37 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; FAC &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; winner &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 37 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; FAC &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; loser &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Team faceoff percentage
+
+
+```r
+pbp %&gt;% 
+  filter(event_type == "FAC") %&gt;% 
+  mutate(loser = case_when(event_team == home_team ~ away_team,
+                           event_team == away_team ~ home_team)) %&gt;% 
+  select(event_index, event_type, winner = event_team, loser) %&gt;% 
+  pivot_longer(winner:loser,
+                names_to = "result", values_to = "team") %&gt;% 
+* mutate(win = ifelse(result == "winner", 1, 0)) %&gt;%
+* group_by(team) %&gt;%
+* summarize(wins = sum(win),
+*           faceoffs = n()) %&gt;%
+* mutate(fo_perc = wins / faceoffs)
+```
+
+&lt;table class="table" style="font-size: 13px; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; team &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; wins &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; faceoffs &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; fo_perc &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 135 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 237 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.5696203 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; CGY &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 30 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 74 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4054054 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 27 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 59 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4576271 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; CBJ &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 25 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 52 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4807692 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Tonight's exercises
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+.center[goalie save percentage]
+
+&lt;br&gt;
+.center[team faceoff percentage]
+
+&lt;br&gt;
+.center[.large[**individual plus-minus**]]
+
+---
+
+# Individual plus-minus
+
+.center[&lt;img src="figs/RLadies_VAN/plusminus.jpg" width="540px" height="462px"/&gt;]
+
+---
+
+# Individual plus-minus
+
+
+```r
+pbp %&gt;% 
+  filter(game_strength_state == "5v5" &amp; event_type == "GOAL") %&gt;% 
+  select(event_index, event_type, event_team, home_team, 
+         away_team, home_goalie, away_goalie, contains("_on_"))
+```
+
+&lt;table class="table" style="font-size: 12px; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; event_index &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; event_type &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; event_team &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; home_team &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; away_team &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; home_on_1 &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; home_on_2 &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; away_on_1 &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; away_on_2 &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 34 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; GOAL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ANDREI.SVECHNIKOV &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; BRETT.PESCE &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; BRIAN.ELLIOTT &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CLAUDE.GIROUX &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 430 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; GOAL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; BRETT.PESCE &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; BROCK.MCGINN &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; BRIAN.ELLIOTT &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CLAUDE.GIROUX &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 503 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; GOAL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ANDREI.SVECHNIKOV &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; BRETT.PESCE &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; BRIAN.ELLIOTT &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CLAUDE.GIROUX &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 364 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; GOAL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CGY &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CARTER.HART &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; JAKUB.VORACEK &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; BRANDON.DAVIDSON &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; DAVID.RITTICH &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 433 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; GOAL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CGY &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CGY &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CARTER.HART &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CLAUDE.GIROUX &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ANDREW.MANGIAPANE &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; DAVID.RITTICH &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 587 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; GOAL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CGY &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CARTER.HART &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; JOEL.FARABEE &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; DAVID.RITTICH &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; DEREK.RYAN &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 123 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; GOAL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; VAN &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; VAN &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CARTER.HART &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; JAMES.VAN RIEMSDYK &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; BO.HORVAT &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; J.T..MILLER &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 257 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; GOAL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; VAN &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CARTER.HART &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; JAKUB.VORACEK &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ALEX.EDLER &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; BO.HORVAT &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 509 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; GOAL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; VAN &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CARTER.HART &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; JAKUB.VORACEK &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CHRIS.TANEV &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ELIAS.PETTERSSON &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 60 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; GOAL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CBJ &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CBJ &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; DEAN.KUKAN &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; EMIL.BEMSTROM &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; BRIAN.ELLIOTT &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CLAUDE.GIROUX &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Team faceoff percentage
+
+.large[what structure is my data in?]
+&lt;br&gt;
+&lt;br&gt;
+    *one row per goal—which contains **many** data points*
+
+&lt;br&gt;
+--
+.large[what structure does my data **need** to be in?]
+&lt;br&gt;
+&lt;br&gt;
+    *one row per each player on the ice*
+    
+&lt;br&gt;
+--
+.large[how do I get from point A to point B?]
+&lt;br&gt;
+&lt;br&gt;
+    *pivot again, with a twist*
+    
+---
+
+# Individual plus-minus
+
+
+```r
+pbp %&gt;% 
+  filter(game_strength_state == "5v5" &amp; event_type == "GOAL") %&gt;% 
+  select(event_index, event_type, event_team, home_team, 
+         away_team, home_goalie, away_goalie, contains("_on_")) %&gt;% 
+* rename_at(vars(contains("_on_")), ~str_replace(., "on_", ""))
+```
+
+&lt;table class="table" style="font-size: 12px; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; event_index &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; event_type &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; event_team &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; home_team &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; away_team &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; home_goalie &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; away_goalie &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; home_1 &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; home_2 &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; away_1 &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; away_2 &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 34 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; GOAL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PETR.MRAZEK &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; BRIAN.ELLIOTT &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ANDREI.SVECHNIKOV &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; BRETT.PESCE &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; BRIAN.ELLIOTT &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CLAUDE.GIROUX &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 430 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; GOAL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PETR.MRAZEK &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; BRIAN.ELLIOTT &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; BRETT.PESCE &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; BROCK.MCGINN &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; BRIAN.ELLIOTT &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CLAUDE.GIROUX &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 503 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; GOAL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PETR.MRAZEK &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; BRIAN.ELLIOTT &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ANDREI.SVECHNIKOV &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; BRETT.PESCE &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; BRIAN.ELLIOTT &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CLAUDE.GIROUX &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 364 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; GOAL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CGY &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CARTER.HART &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; DAVID.RITTICH &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CARTER.HART &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; JAKUB.VORACEK &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; BRANDON.DAVIDSON &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; DAVID.RITTICH &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 433 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; GOAL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CGY &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CGY &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CARTER.HART &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; DAVID.RITTICH &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CARTER.HART &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CLAUDE.GIROUX &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ANDREW.MANGIAPANE &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; DAVID.RITTICH &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+    
+---
+
+# Individual plus-minus
+
+
+```r
+pbp %&gt;% 
+  filter(game_strength_state == "5v5" &amp; event_type == "GOAL") %&gt;% 
+  select(event_index, event_type, event_team, home_team, 
+         away_team, home_goalie, away_goalie, contains("_on_")) %&gt;% 
+  rename_at(vars(contains("_on_")), ~str_replace(., "on_", "")) %&gt;%
+* pivot_longer(-c(starts_with("event")),
+*         names_to = c("home_away", ".value"), names_sep = "_")
+```
+
+&lt;table class="table" style="font-size: 12px; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; event_index &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; event_type &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; event_team &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; home_away &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; team &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; goalie &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; 1 &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; 2 &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; 3 &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 34 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; GOAL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; home &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PETR.MRAZEK &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ANDREI.SVECHNIKOV &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; BRETT.PESCE &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; JOEL.EDMUNDSON &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 34 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; GOAL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; away &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; BRIAN.ELLIOTT &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; BRIAN.ELLIOTT &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CLAUDE.GIROUX &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; MATT.NISKANEN &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 430 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; GOAL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; home &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PETR.MRAZEK &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; BRETT.PESCE &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; BROCK.MCGINN &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; JOEL.EDMUNDSON &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 430 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; GOAL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; away &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; BRIAN.ELLIOTT &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; BRIAN.ELLIOTT &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CLAUDE.GIROUX &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; MORGAN.FROST &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 503 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; GOAL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; home &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PETR.MRAZEK &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ANDREI.SVECHNIKOV &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; BRETT.PESCE &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; JOEL.EDMUNDSON &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Individual plus-minus
+
+
+```r
+pbp %&gt;% 
+  filter(game_strength_state == "5v5" &amp; event_type == "GOAL") %&gt;% 
+  select(event_index, event_type, event_team, home_team, 
+         away_team, home_goalie, away_goalie, contains("_on_")) %&gt;% 
+  rename_at(vars(contains("_on_")), ~str_replace(., "on_", "")) %&gt;%
+  pivot_longer(-c(starts_with("event")),
+        names_to = c("home_away", ".value"), names_sep = "_") %&gt;% 
+* pivot_longer(`1`:`7`, names_to = NULL, values_to = "player",
+*              values_drop_na = TRUE)
+```
+
+&lt;table class="table" style="font-size: 13px; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; event_index &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; event_type &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; event_team &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; home_away &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; team &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; goalie &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; player &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 34 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; GOAL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; home &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PETR.MRAZEK &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ANDREI.SVECHNIKOV &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 34 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; GOAL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; home &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PETR.MRAZEK &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; BRETT.PESCE &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 34 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; GOAL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; home &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PETR.MRAZEK &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; JOEL.EDMUNDSON &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 34 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; GOAL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; home &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PETR.MRAZEK &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PETR.MRAZEK &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 34 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; GOAL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; home &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PETR.MRAZEK &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; SEBASTIAN.AHO &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Individual plus-minus
+
+
+```r
+pbp %&gt;% 
+  filter(game_strength_state == "5v5" &amp; event_type == "GOAL") %&gt;% 
+  select(event_index, event_type, event_team, home_team, 
+         away_team, home_goalie, away_goalie, contains("_on_")) %&gt;% 
+  rename_at(vars(contains("_on_")), ~str_replace(., "on_", "")) %&gt;%
+  pivot_longer(-c(starts_with("event")),
+        names_to = c("home_away", ".value"), names_sep = "_") %&gt;% 
+  pivot_longer(`1`:`7`, names_to = NULL, values_to = "player",
+               values_drop_na = TRUE) %&gt;% 
+* filter(player != goalie) %&gt;%
+* mutate(plus_minus = ifelse(event_team == team, 1, -1))
+```
+
+&lt;table class="table" style="font-size: 13px; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; event_index &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; event_type &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; event_team &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; home_away &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; team &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; goalie &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; player &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; plus_minus &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 34 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; GOAL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; home &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PETR.MRAZEK &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ANDREI.SVECHNIKOV &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 34 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; GOAL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; home &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PETR.MRAZEK &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; BRETT.PESCE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 34 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; GOAL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; home &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PETR.MRAZEK &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; JOEL.EDMUNDSON &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 34 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; GOAL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; home &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PETR.MRAZEK &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; SEBASTIAN.AHO &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 34 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; GOAL &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; home &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; CAR &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PETR.MRAZEK &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; TEUVO.TERAVAINEN &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Individual plus-minus
+
+
+```r
+pbp %&gt;% 
+  filter(game_strength_state == "5v5" &amp; event_type == "GOAL") %&gt;% 
+  select(event_index, event_type, event_team, home_team, 
+         away_team, home_goalie, away_goalie, contains("_on_")) %&gt;% 
+  rename_at(vars(contains("_on_")), ~str_replace(., "on_", "")) %&gt;% 
+  pivot_longer(-c(starts_with("event")), 
+        names_to = c("home_away", ".value"), names_sep = "_") %&gt;% 
+  pivot_longer(`1`:`7`, names_to = NULL, values_to = "player", 
+               values_drop_na = TRUE) %&gt;% 
+  filter(player != goalie) %&gt;% 
+  mutate(plus_minus = ifelse(event_team == team, 1, -1)) %&gt;% 
+* group_by(player, team) %&gt;%
+* summarize(plus_minus = sum(plus_minus)) %&gt;%
+* arrange(desc(abs(plus_minus)))
+```
+
+&lt;table class="table" style="font-size: 13px; width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; player &lt;/th&gt;
+   &lt;th style="text-align:left;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; team &lt;/th&gt;
+   &lt;th style="text-align:right;font-weight: bold;color: white !important;background-color: #5C164E !important;"&gt; plus_minus &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; CLAUDE.GIROUX &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -3 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; JAKUB.VORACEK &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; JUSTIN.BRAUN &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; PHI &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Even more exercises
+
+&lt;br&gt;
+
+.large[which players got the most points in these games?]
+&lt;br&gt;
+&lt;br&gt;
+
+&lt;br&gt;
+
+.large[how many standings points did each team get per game?]
+&lt;br&gt;
+&lt;br&gt;
+    
+&lt;br&gt;
+
+.large[which player had the highest average time on ice?]
+&lt;br&gt;
+&lt;br&gt;
+    
+&lt;br&gt;
+
+*all code available [here](https://github.com/meghall06/personal-website/blob/master/static/RLadies_VAN_code.R)*
+
+---
+
+# Tiny tips for success
+
+.large[code, code, code!]
+&lt;br&gt;
+&lt;br&gt;
+    *a little bit each day, constantly iterate*
+
+&lt;br&gt;
+--
+.large[use data you find interesting]
+&lt;br&gt;
+&lt;br&gt;
+    *[Data is Plural](https://www.data-is-plural.com/) is a weekly newsletter with interesting datasets*&lt;br&gt;
+    *[nflfastr](https://github.com/mrcaseb/nflfastR), [baseballr](http://billpetti.github.io/baseballr/)*
+    
+&lt;br&gt;
+--
+.large[focus first on the problems you have]
+&lt;br&gt;
+&lt;br&gt;
+    *RMarkdown templates, ggplot themes, internal packages*
+
+---
+
+class: center, middle, inverse
+
+# Thank you!
+
+Slides created via the R package [xaringan](https://github.com/yihui/xaringan).
+&lt;br&gt;
+<i class="fab  fa-twitter "></i> [@MeghanMHall](https://www.twitter.com/MeghanMHall)
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"highlightSpans": true,
+"countIncrementalSlides": false,
+"slideNumberFormat": "%current%"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

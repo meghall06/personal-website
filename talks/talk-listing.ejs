@@ -1,0 +1,41 @@
+```{=html}
+<ul class="pub-list list">
+<% for (const item of items) { %>
+  <div class="li2" "li" <%= metadataAttrs(item) %>>
+    <a href="<%- item.path %>" target="_blank" rel="noopener noreferrer" style="text-decoration: none">
+      <span class="h2"><%= item.subtitle %></span><span style="float:right;"><span class="main-date"> <%= item.date %></span></span><br />
+    </a>
+    <span class="h4"><%= item.title %></span><br />
+       <% if (item.categories) { %>
+            <span class="post-categories listing-categories">
+                <% for (const category of item.categories) { %>
+                <div class="post-category listing-category" onclick="window.quartoListingCategory('<%=category%>'); return false;">
+                    <%= category %>
+                </div>
+                <% } %>
+            </span>
+            <% } %>
+    <span class="listing-author"><%= item.summary %></span><br />
+    <a href="<%- item.path %>" class="btn btn-secondary">
+      <i class="bi bi-plus-square"></i>&nbsp;&nbsp;Details
+    </a>
+    <% if (item.slides) { %>
+    <a href="<%- item.slides %>" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">
+      <i class="bi bi-tv"></i>&nbsp;&nbsp;Slides
+    </a>
+    <% } %>
+    <% if (item.extsite) { %>
+    <a href="<%- item.extsite %>" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">
+      <i class="bi bi-link-45deg"></i>&nbsp;&nbsp;Website
+    </a>
+    <% } %>
+    <% if (item.repo) { %>
+    <a href="<%- item.repo %>" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">
+      <i class="bi bi-github"></i>&nbsp;&nbsp;Repo
+    </a>
+    <% } %>
+  </div>
+<% } %>
+</ul>
+
+```
