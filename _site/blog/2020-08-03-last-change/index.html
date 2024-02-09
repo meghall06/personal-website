@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.549">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Meghan Hall">
+<meta name="dcterms.date" content="2020-08-03">
+
+<title>Meghan Hall</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../icon-32.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>
+
+      .quarto-title-block .quarto-title-banner {
+        background: #1F2041;
+      }
+</style>
+
+
+<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="../blog.css">
+</head>
+
+<body class="floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">meghan<br>hall</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog/index.html"> 
+<span class="menu-text">BLOG</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../talks/index.html"> 
+<span class="menu-text">TALKS</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Examining the Effect of the Last Change in Hockey</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">hockey analysis</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Meghan Hall </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">2020-08-03</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">CONTENTS</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#league-averages" id="toc-league-averages" class="nav-link" data-scroll-target="#league-averages">League Averages</a></li>
+  <li><a href="#teams-and-players" id="toc-teams-and-players" class="nav-link" data-scroll-target="#teams-and-players">Teams and Players</a></li>
+  <li><a href="#coaches" id="toc-coaches" class="nav-link" data-scroll-target="#coaches">Coaches</a></li>
+  <li><a href="#special-teams" id="toc-special-teams" class="nav-link" data-scroll-target="#special-teams">Special Teams</a></li>
+  <li><a href="#playoffs" id="toc-playoffs" class="nav-link" data-scroll-target="#playoffs">Playoffs</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<p>I keep a running list of hockey things that I want to look into, and now that playoff bubble hockey has begun, with many people discussing what “home field” advantage looks like in a different building with no fans, it seems like a good time to cross off “last change” from the list. My curiosity about the effect of this advantage spawned some analysis that led to the Twitter thread linked <a href="https://twitter.com/MeghanMHall/status/1288983649795420161">here</a> and now this article!</p>
+<p><strong>A brief review of NHL rules:</strong> At the beginning of each period and after each stoppage, play resumes with a faceoff. There are, on average, 60 faceoffs in a game. One advantage for the home team is that they get the last line change, thus determining the player matchup until one of the teams makes another change. They control the matchup beginning at every faceoff, except those following an icing by the home team (when a player dumps the puck, untouched, over the center line and then the goal line), which happens, on average, four times per game.</p>
+<p><em>All data is from the 2015-2019 seasons and references 5v5 play by the home team in the regular season, unless otherwise indicated.</em></p>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>Home teams have historically had a slight advantage over away teams in terms of offense generation. (Throughout, as a proxy for offense generation, I’m using the rate of unblocked shot attempts—i.e., goals, shots on goals, and missed shots—per 60 minutes.) In the 6081 regular season games that form the basis of this analysis, home teams generated 42.6 unblocked shot attempts per 60 minutes at 5v5, while away teams generated 40.7. This difference holds for every season and is a slight but consistent advantage. (When you see “adjusted” statistics in hockey, <a href="https://hockeyviz.com/txt/senstats">they’re adjusted for venue as well as score state</a>.)</p>
+<p>How much of this advantage might be attributed to the fact that the home team gets the last change and gets to control the matchups for a certain part of the game? To address this, we first need to know how much of the game this actually affects. That is, what percent of the game involves a line matchup orchestrated by the home team? Since every game second can be classified as a “controlled matchup” (i.e., all seconds after a home-team-controlled faceoff, until there is a change) or not, we can calculate this, and it turns out to be pretty consistent across seasons at around 38 percent.</p>
+<p><img src="time.png" class="img-fluid"></p>
+<p>The variation is fairly small, as well: if you separate out this calculation per team, it only varies from 35 to 41 percent. (And if you isolate the matched line to just forward lines or just defense pairs, the matchup time increases to 42 percent.) So this means a majority of the game still involves line matchups that are created on the fly. However, 38% of game play at 5v5—which is, on average, just over 18 minutes per game—is still a significant amount, and having this information means that we can assess the home team in two ways.</p>
+<ul>
+<li><strong>Compare the team to itself</strong>: How does a team generate offense when the matchup is controlled versus when it is not? Is the home team better when it gets to pick the lines?</li>
+<li><strong>Compare the team to the other team</strong>: When the matchup is controlled, how does the home team generate offense compared to the away team? How much of an advantage do they actually have?</li>
+</ul>
+</section>
+<section id="league-averages" class="level2">
+<h2 class="anchored" data-anchor-id="league-averages">League Averages</h2>
+<p>Both of those questions, at the league level, can be answered by the graph below.</p>
+<p><img src="league.png" class="img-fluid"></p>
+<p>Both the home and away teams do a bit better here, in that their shot rates are higher, when the matchups aren’t controlled. But when they <em>are</em>, as logic might dictate, the home team does better, at 41.1 unblocked shot attempts per 60 minutes compared to 35.6 for the away team. In other words, about 15 percent more offense. (It’s worth noting that these numbers do not change much if you consider a “line matchup” to be either just forward lines or just defense pairs, rather than the entire five-skater group.)</p>
+<p>We can also break this down further by the event zone of the faceoff that kicked off the controlled matchup.</p>
+<p><img src="zone.png" class="img-fluid"></p>
+<p>The graph above shows the shot attempt rate when the matchup is controlled. As to be expected, it’s highest when the faceoff is in the offensive zone, and also as to be expected, the home team sees an advantage when compared to the away team: they generate 60.5 shot attempts (per 60 minutes) from an offensive zone faceoff, while the away team generates 55.2 (an advantage of about 10 percent). The home team sees this advantage when the faceoff is in the neutral and the defensive zones, as well, even though less offense overall is generated from starts in those areas. And by shifting the perspective, it’s of course true that the home team also does a better job <em>suppressing</em> shots, as well, when they control the matchup.</p>
+</section>
+<section id="teams-and-players" class="level2">
+<h2 class="anchored" data-anchor-id="teams-and-players">Teams and Players</h2>
+<p>With the league averages as a comparison, we can evaluate individual team-seasons on these same metrics. First, within each team, we can compare controlled matchup game play to game play that doesn’t involve a controlled matchup, for games in which they are the home team. As shown in the earlier graph, home teams do slightly worse when the matchups are controlled, in that their shot rate is depressed by a little over five percent compared to when the matchups are not controlled. Let’s look at the teams that have the biggest difference in their shot rates between those states of play.</p>
+<p><img src="team_fen_good.png" class="img-fluid"> <img src="team_fen_bad.png" class="img-fluid"></p>
+<p>In both graphs, the league average of -5.5 percent is shown with a dashed line. The first graph shows the 10 teams who have the biggest positive difference, while the second shows the 10 teams who have the biggest negative difference. That is, teams like Carolina and Columbus from this season played better than we might expect when they were able to control the matchup, while teams like Chicago and the Islanders (over multiple seasons) played worse.</p>
+<p>Next, we can look at team-level data <em>when the matchup is controlled</em>. We already saw that the home team has the advantage there (the league average is 15 percent more offense, as shown above), but we can find out which teams have the largest advantage and which have the smallest. This likely correlates well to overall offensive performance—that is, even when a bad team has control of the matchup, they’re still not very good. And vice versa for the good teams. Shown below are the top 10 and bottom 10 teams, those who have the biggest and smallest advantage over the away team when they control the matchup as the home team. The dashed line is the league average at 15 percent.</p>
+<p><img src="team_fen_good_matchup.png" class="img-fluid"> <img src="team_fen_bad_matchup.png" class="img-fluid"></p>
+<p>Lastly, mostly just for fun, we can take a look at which players—forward lines and defense pairs—in this time frame have been used most often when the home team has control of the matchup.</p>
+<p><img src="off_F.png" class="img-fluid"> <img src="off_D.png" class="img-fluid"></p>
+<p>Shown above are the players trusted for offensive zone faceoffs, and shown below are the lines and pairs most commonly used for defensive zone faceoffs, when the home teams want to suppress offense by the away team.</p>
+<p><img src="def_F.png" class="img-fluid"> <img src="def_D.png" class="img-fluid"></p>
+</section>
+<section id="coaches" class="level2">
+<h2 class="anchored" data-anchor-id="coaches">Coaches</h2>
+<p>To take this one step further, we can look at <em>coaches</em> instead of just individual team-seasons, as the head coach is generally in charge of the line matchups. The data for each coach includes all home games for which he was the head coach over this time frame, possibly combining seasons and teams.</p>
+<p><img src="coach_good.png" class="img-fluid"></p>
+<p>Similar to what we saw previously, the graphs above and below show the top and bottom 10 coaches, respectively, with the greatest difference in controlled play versus uncontrolled. Some coaches, like Rod Brind’Amour, show a greater positive difference with line matching than we might expect, while others, like Jeremy Colliton and Joel Quenneville, are below league average when comparing controlled matchup time to non-controlled matchup time.</p>
+<p><img src="coach_bad.png" class="img-fluid"></p>
+</section>
+<section id="special-teams" class="level2">
+<h2 class="anchored" data-anchor-id="special-teams">Special Teams</h2>
+<p>The home team’s technical advantage of the last line change still applies during special teams play, but we might hypothesize that the effect would be smaller since special teams units are usually fairly standard—each team generally has two units each for the power play and penalty kill, and teams are often prepared for these matchups in advance.</p>
+<p><img src="special.png" class="img-fluid"></p>
+<p>Still, we can explore the effect similarly to how we did so in the first section. In contrast to play at 5v5, in which home teams generate a little less offense when matchups are controlled versus when they are not, at 5v4 home teams generate much more here. This makes sense considering that power plays start with a faceoff, generally in the offensive zone and generally with the top unit, and the initial line matchup likely lasts longer. We can also see that the home team does have a slight overall advantage of around five percent (84.4 unblocked shot attempts per 60 minutes versus 80.1) when the matchup is controlled.</p>
+</section>
+<section id="playoffs" class="level2">
+<h2 class="anchored" data-anchor-id="playoffs">Playoffs</h2>
+<p><img src="playoffs.png" class="img-fluid"></p>
+<p>Lastly, we can take a look at playoff games, from the 2015 through 2018 seasons, and compare to what we saw at the beginning with regular season play (both at 5v5). Overall, the difference is not tremendous. In the regular season, home teams saw about a five percent decrease in offense when the matchup was controlled as compared to when it was not; that difference is slightly smaller in the playoffs with a three percent decrease. The home team advantage when the matchup <em>is</em> controlled was shown to be around 15 percent in the regular season, while it increases to about 23 percent in the playoffs (41.3 unblocked shot attempts per 60 minutes for the home team versus 33.6 for the away team).</p>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>Since the 2020 playoffs have started in the bubble, with “home” teams playing with no fans and often in a building that is not actually their home building, many fans, writers, and analysts have been publicly wondering about the value of being the home team. These home teams in the bubble are certainly missing some advantages of being in their own arenas (the routine, the energy of the fans, the possible penalty implications), but the advantage of having the last line change—and therefore controlling the matchups for an average of 18 5v5 minutes per game—cannot be discounted.</p>
+<p><em>Play-by-play data sourced via the <a href="https://evolving-hockey.com">Evolving-Hockey</a> scraper, position data sourced from their website. Coach data sourced from <a href="https://naturalstattrick.com">Natural Stat Trick</a>.</em></p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

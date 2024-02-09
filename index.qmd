@@ -1,0 +1,27 @@
+---
+title: "Meghan Hall"
+subtitle: "Technical Product Manager"
+image: headshot.jpeg 
+toc: false 
+about: 
+  template: jolla 
+  image-shape: round
+  image-width: 20em
+  links:
+    - icon: twitter
+      text: Twitter
+      href: https://twitter.com/MeghanMHall
+    - icon: github
+      text: GitHub
+      href: https://github.com/meghall06
+    - icon: envelope
+      text: Email
+      href: mailto:meghanhall6@gmail.com
+format:
+  html:
+    link-external-newwindow: true
+---
+
+Hi! I am currently the technical product manager of the hockey group at [Zelus Analytics](https://zelusanalytics.com/){target="_blank"}. Prior to moving into sports analytics, I spent nearly a decade working in data management in higher education. I use & teach R, with a particular love for `ggplot2` and `quarto`.
+
+I love helping people learn R, particularly by teaching the `tidyverse` to beginners. I've given several talks and workshops, many focused on sports analytics and all available [here](talks/index.qmd), and in summer 2021, I taught the Statistical Graphics & Visualization course through the Department of Statistics & Data Science at Carnegie Mellon University. The course focused on data visualization using R and ggplot2, and the public-facing course website (built with `distill`) is [here](https://cmu-36315.netlify.app/){target="_blank"}.

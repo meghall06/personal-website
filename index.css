@@ -1,0 +1,176 @@
+div#quarto-content {
+  display: block;
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+div#quarto-margin-sidebar {
+    display: none;
+}
+
+section {
+ display: grid;
+ grid-template-columns: 1fr 1fr;
+ gap: 50px;
+ width: 100%;
+ padding-right: 15px;
+ padding-left: 15px;
+ margin-right: auto;
+ margin-left: auto;
+ justify-content: center;
+ align-items: center;
+}
+
+.bio {
+  line-height: 1.7rem;
+  margin-left: 130px;
+  text-align: right;
+  font-size: 1.3rem;
+}
+
+@media (max-width: 1220px) {
+  section {
+    margin: 0 auto;
+    padding-top: 100px;
+    grid-row: 1;
+    grid-column: 2;
+    grid-template-columns: 1fr;
+  }
+  
+  img {
+    border-radius: 50%;
+  }
+  
+  i {
+  color: var(--accent-pink);
+}
+  
+.icon {
+  grid-area: icon;
+  margin-right: 20px;
+  fill: var(--accent-pink);
+}
+
+
+.icon:hover {
+  fill: var(--blue);
+}
+
+.degree {
+  grid-area: deg;
+  font-weight: 500;
+}
+
+.school {
+  grid-area: school;
+  opacity: 0.6;
+}
+
+.education, .interests {
+  margin-top: 30px;
+}
+.education-element {
+  width: 100%;
+  display: grid;
+  justify-content: start;
+  align-items: center;
+  grid-template-areas: 
+    "icon deg"
+    "icon school";
+}
+
+}
+
+.img-bio {
+  text-align: center;
+}
+
+.anchorjs-link {
+  display: none;
+}
+
+@media (min-width: 992px) {
+body .page-columns {
+  display: block;
+}
+
+.author-photo {
+ border-radius: 50% !important;
+ margin-bottom: 0px;
+ margin-top: 50px;
+ width: 50%;
+}
+
+.activity {
+  font-family: var(--subheader-font);
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.activities {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+i {
+  color: var(--accent-pink);
+}
+
+.icon {
+  grid-area: icon;
+  margin-right: 20px;
+  fill: var(--accent-pink);
+}
+
+
+.icon:hover {
+  fill: var(--blue);
+}
+
+.degree {
+  grid-area: deg;
+  font-weight: 500;
+}
+
+.school {
+  grid-area: school;
+  opacity: 0.6;
+}
+
+.education-element {
+  width: 100%;
+  display: grid;
+  justify-content: start;
+  align-items: center;
+  grid-template-areas: 
+    "icon deg"
+    "icon school";
+}
+
+img {
+  border-radius: 50% !important;
+}
+
+.social svg {
+    height: 30px;
+    fill: var(--accent-pink)
+}
+
+.social svg:hover {
+  fill: var(--blue);
+}
+
+.social .cell {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.img-bio h2 {
+  font-size: 2.3rem !important;
+}

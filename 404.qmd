@@ -1,0 +1,5 @@
+---
+title: Whoops!
+---
+
+Looks like you may have found a broken link! You can check my [list of blog posts](blog/index.qmd) or my [list of talks](talks/index.qmd), and I bet you'll find it!

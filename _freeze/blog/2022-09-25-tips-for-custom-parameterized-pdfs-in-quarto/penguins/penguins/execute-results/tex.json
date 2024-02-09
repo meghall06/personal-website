@@ -1,0 +1,20 @@
+{
+  "hash": "043d5f54d450d268627d6d52de8c6c23",
+  "result": {
+    "markdown": "---\nformat: \n  pdf: \n    mainfont: \"Avenir\"\n    sansfont: \"Avenir\"\n    geometry:\n      - top=0.75in\n      - right=0.75in\n      - bottom=0.75in\n      - left=0.75in\n      - heightrounded\n    number-sections: true\n    include-in-header: \n      - \"penguin-header.tex\"\n    toc: false\neditor: source\nexecute:\n  warning: false\n  echo: false\nparams:\n  species: 'Adelie'\n  year: 2009\n---\n\n\\sffamily\n\\thispagestyle{empty}\n\\color{Adelie}\n\\includegraphics[width=4cm]{penguins.png}\\hfill\\large\\texttt{palmerpenguins}\\textbf{: Adelie penguins in 2009}\\normalsize\n\\vspace{-0.2in}\n\\rule{17.78cm}{0.5mm}\n\n\n::: {.cell}\n\n:::\n\n\n\\color{black}\n\nThe Adelie penguins can be found on the island(s) of: Biscoe, Dream, and Torgersen. In 2009 there were 52 penguins measured.\n\n\\color{Adelie}\n# Mass\n\n\\color{black}\n\n::: {.cell}\n::: {.cell-output-display}\n\\begin{longtable}[t]{llc}\n\\toprule\n\\textbf{Species} & \\textbf{Sex} & \\textbf{Avg Mass (g)}\\\\\n\\midrule\n\\textcolor[HTML]{FF6600}{\\textbf{Adelie}} & \\textcolor[HTML]{FF6600}{\\textbf{female}} & \\textcolor[HTML]{FF6600}{\\textbf{3334.6}}\\\\\n\\textcolor[HTML]{FF6600}{\\textbf{Adelie}} & \\textcolor[HTML]{FF6600}{\\textbf{male}} & \\textcolor[HTML]{FF6600}{\\textbf{3995.2}}\\\\\nChinstrap & female & 3522.9\\\\\nChinstrap & male & 3927.1\\\\\nGentoo & female & 4786.2\\\\\nGentoo & male & 5510.7\\\\\n\\bottomrule\n\\end{longtable}\n:::\n:::\n\n\n\\color{Adelie}\n# Bills\n\n\n::: {.cell layout-align=\"center\"}\n::: {.cell-output-display}\n![](penguins_files/figure-pdf/scatter-1.pdf){fig-align='center'}\n:::\n:::\n\n\n\\vfill\n\\textcolor{Adelie}{\\rule{17.78cm}{0.5mm}}\n\n\\center\\small\\emph{Created 2024-01-28. Artwork by @allison\\_horst.}\n",
+    "supporting": [
+      "penguins_files/figure-pdf"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {
+      "include-in-header": [
+        "\\usepackage{booktabs}\n\\usepackage{longtable}\n\\usepackage{array}\n\\usepackage{multirow}\n\\usepackage{wrapfig}\n\\usepackage{float}\n\\usepackage{colortbl}\n\\usepackage{pdflscape}\n\\usepackage{tabu}\n\\usepackage{threeparttable}\n\\usepackage{threeparttablex}\n\\usepackage[normalem]{ulem}\n\\usepackage{makecell}\n\\usepackage{xcolor}\n"
+      ]
+    },
+    "engineDependencies": {},
+    "preserve": null,
+    "postProcess": false
+  }
+}

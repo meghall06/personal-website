@@ -1,0 +1,127 @@
+.main-date {
+    color: #E9D2C0;
+    background-color: #1F2041;
+    border-color: #1F2041;
+    border-radius: 15px;
+    text-align: center;
+    vertical-align: middle;
+    padding: 0.375rem 0.75rem;
+}
+
+/*
+ul.pub-list.list {
+  border-left: 1px solid #1F2041;
+}
+*/
+
+h1.title, .title.h1 {
+    color: #E9D2C0;
+    text-align: left;
+}
+
+.center-text {
+  text-align: center;
+}
+
+p.subtitle {
+    margin-top: 0em;
+    color: #E9D2C0;
+    text-transform: uppercase;
+    font-size: 1.4em;
+    font-family: 'Phudu';
+}
+
+/*
+.quarto-post.image-right {
+    padding: 15px;
+    background: white;
+}
+*/
+
+/*
+div.quarto-post {
+    border-bottom: 1px solid white;
+}
+*/
+
+h2, .h2 {
+    border-bottom: none;
+}
+
+.page-item.active .page-link {
+    background-color: #1f2041;
+    border-color: #1f2041;
+    border-radius: 12px;
+}
+
+.page-item .page-link {
+  /*  border-radius: 12px; */
+    border: none;
+    background-color: #E9D2C0;
+}
+
+.quarto-title .quarto-categories .quarto-category {
+    font-size: 0.75em;
+    opacity: 1;
+    color: #E9D2C0;
+}
+
+.post-categories {
+            display: flex;
+            flex-wrap: wrap;
+            row-gap: 0.4em;
+            column-gap: 0.4em;
+            margin: 0.5em 0;
+
+            .post-category {
+                color: #E9D2C0;
+                background-color: #1F2041;
+                border: 1px solid #1F2041;
+                border-radius: 5px;
+                text-transform: uppercase;
+                font-size: 0.85em;
+                padding: 0.15em 0.5em;
+                cursor: pointer;
+            }
+        }
+
+/*
+.page-item:not(:first-child) .page-link {
+    border-radius: 12px;
+}
+*/
+
+ol, dl {
+    list-style-type: none;
+}
+
+
+.li2 {
+    margin-bottom: 30px;
+    border: 3px solid #1F2041;
+    padding: 10px;
+}
+
+#title-block-header {
+    margin-block-end: 1.5rem;
+}
+
+.btn-secondary {
+    color: #E9D2C0;
+    background-color: #1F2041;
+    border-color: #1F2041;
+    border-radius: 15px;
+    margin-right: 8px;
+    margin-top: 10px;
+}
+
+/*
+.project-container {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    flex: 0 0 33%;
+    flex-wrap: wrap;
+    margin-right: 100px;
+}
+*/

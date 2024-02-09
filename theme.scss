@@ -1,0 +1,236 @@
+@import"https://fonts.googleapis.com/css?family=Phudu:500";
+@import"https://fonts.googleapis.com/css?family=DM+Sans:400,700,400italic,700italic";
+
+/*-- scss:defaults --*/
+
+$primary-color: #E9D2C0;
+$body-bg: #E9D2C0;
+$body-color: #1F2041;
+$navbar-bg: #1F2041;
+$link-color: $navbar-bg;
+$navbar-font-family: "Phudu";
+$headings-font-family: "Phudu";
+$headings-color: $navbar-bg;
+$font-family-base: "DM Sans";
+$code-block-bg: #F8F2F3;
+$code-block-border: true;
+$code-block-border-right: $navbar-bg !important;
+$code-block-border-radius: 10px;
+$code-color: $navbar-bg;
+$code-bg: $code-block-bg;
+$code-border-radius: 25px; 
+$tabset-border-color: $navbar-bg;
+$border-color: $navbar-bg;
+
+/*-- scss:rules --*/
+
+div.quarto-about-jolla main {
+  border-top: solid 3px $navbar-bg;
+  border-bottom: solid 3px $navbar-bg;
+  border-radius: 0;
+  padding-top: 20px;
+}
+
+div.quarto-about-jolla {
+  margin-top: 5%;
+}
+
+#title-block-header {
+  margin-block-end: 0rem;
+}
+
+/* navbar */
+
+.navbar-title {
+  font-family: $headings-font-family;
+}
+
+.navbar-dark .navbar-brand {
+  color: $primary-color;
+  text-align: center !important;
+}
+
+.navbar-brand {
+  color: $primary-color;
+  text-align: center !important;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: $primary-color;
+}
+
+.nav-link {
+  color: $primary-color;
+}
+
+.nav-link.active {
+    color: #E9D2C0 !important;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+.navbar-dark .navbar-nav .nav-link.active {
+    color: #E9D2C0;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+.navbar #quarto-search.type-overlay .aa-Autocomplete svg.aa-SubmitIcon {
+  color: $primary-color;
+}
+
+div.quarto-about-jolla .about-sep {
+  width: 0%;
+}
+
+hr {
+  margin: 0rem 0;
+}
+
+ /*.fixed-top {
+  top: 10px;
+  right: 10px;
+  left: 10px;
+}
+
+*, *::before, *::after {
+  border-radius: 15px;
+}*/
+
+.btn-primary {
+  color: $body-bg;
+  background-color: #6A395B;
+  border: 1px solid transparent;
+  width: 25%;
+  margin-bottom: 0;
+  text-align: center;
+  padding: 0px 2px;
+  border-radius: 25px;
+  vertical-align: middle;
+}
+
+.btn-primary:hover {
+  color: #ffffff;
+  background-color: #978e83;
+  border-color: white;
+}
+
+.btn-primary:focus {
+  color: #ffffff;
+  background-color: #978e83;
+  border-color: white;
+}
+
+.panel-tabset [role="tablist"] {
+  border-bottom: 5px solid $tabset-border-color;
+  list-style: none;
+  margin: 0;
+  padding-bottom: 5px;
+  width: 100%;
+}
+
+.panel-tabset [role="tab"] {
+  border: 1px solid $tabset-border-color;
+  border-top-color: $tabset-border-color;
+  display: block;
+  padding: 1em 1em;
+  text-decoration: none;
+  font-size: 0.75em;
+  border-radius: 10px;
+  background-color: #ffffff;
+  color: $navbar-bg;
+  margin: 2px;
+}
+
+.panel-tabset [role="tab"][aria-selected="true"] {
+  background-color: $navbar-bg;
+  color: $body-bg;
+}
+
+details > summary {
+  color: $navbar-bg;
+  font-size: 1em;
+  border-radius: 20px;
+  background-color: $code-bg;
+  padding-left: 10px;
+  margin-bottom: 10px;
+  font-family: $font-family-monospace;
+}
+
+details {
+  margin-bottom: 0px;
+}
+
+.sidebar nav[role=doc-toc] ul>li>a.active {
+    border-left: 5px solid $navbar-bg;
+    color: $navbar-bg !important;
+    font-weight: bold !important;
+}
+
+.sidebar nav[role=doc-toc] ul>li>ul>li>a.active {
+    border-left: 5px solid $navbar-bg;
+    color: $navbar-bg !important;
+}
+
+.sidebar nav[role=doc-toc]>ul a {
+    border-left: 1px solid $navbar-bg;
+    padding-left: 0.6rem;
+    background-color: $code-bg;
+}
+
+/* formats the title of the table of contents */
+.sidebar nav[role=doc-toc]>h2, .sidebar nav[role=doc-toc]>.h2 {
+    font-size: 1rem;
+    border-bottom: 1px solid $navbar-bg;
+    padding-bottom: 0.6rem;
+    font-weight: bold !important;
+}
+
+div.sourceCode {
+    background-color: #f8f2f3;
+    border-right: 8px solid $navbar-bg;
+    border-radius: 0.25rem;
+    margin-right: 10px;
+}
+
+/* gets rid of the border and reduces padding in tables */
+thead, tbody, tfoot, tr, td, th {
+    border-style: none;
+    padding-bottom: 2px !important;
+}
+
+/* changes border color of note callout */
+div.callout-note.callout {
+    border-left-color: $navbar-bg;
+}
+
+/* changes header background of note callout */
+div.callout-note.callout-style-default>.callout-header {
+    background-color: $code-bg;
+    color: $navbar-bg;
+}
+
+/* makes the font size for the subheadings in the TOC a little smaller */
+.sidebar nav[role=doc-toc] ul>li>ul>li{
+		font-size: 0.85em;
+}
+
+/* css styles */
+
+blockquote {
+  border-left: 5px solid $navbar-bg !important;
+  text-align: left;
+  background-color: $code-bg !important;
+  color: $body-color !important;
+  padding: 5px;
+  font-size: 0.65em;
+  font-style: italic !important;
+  border-radius: 2px;
+}
+
+
+/*
+.sidebar nav[role=doc-toc] ul {
+    border-top: 1px solid $navbar-bg;
+}
+*/

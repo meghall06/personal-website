@@ -1,0 +1,20 @@
+{
+  "hash": "043d5f54d450d268627d6d52de8c6c23",
+  "result": {
+    "markdown": "---\nformat: \n  pdf: \n    mainfont: \"Avenir\"\n    sansfont: \"Avenir\"\n    geometry:\n      - top=0.75in\n      - right=0.75in\n      - bottom=0.75in\n      - left=0.75in\n      - heightrounded\n    number-sections: true\n    include-in-header: \n      - \"penguin-header.tex\"\n    toc: false\neditor: source\nexecute:\n  warning: false\n  echo: false\nparams:\n  species: 'Adelie'\n  year: 2009\n---\n\n\n\\sffamily\n\\thispagestyle{empty}\n\\color{Adelie}\n\\includegraphics[width=4cm]{penguins.png}\\hfill\\large\\texttt{palmerpenguins}\\textbf{: Adelie penguins in 2009}\\normalsize\n\\vspace{-0.2in}\n\\rule{17.78cm}{0.5mm}\n\n\n\n::: {.cell}\n\n:::\n\n\n\n\\color{black}\n\nThe Adelie penguins can be found on the island(s) of: Biscoe, Dream, and Torgersen. In 2009 there were 52 penguins measured.\n\n\\color{Adelie}\n# Mass\n\n\\color{black}\n\n\n::: {.cell}\n::: {.cell-output-display}\n`````{=html}\n<table class=\" lightable-classic table\" style='font-family: \"Arial Narrow\", \"Source Sans Pro\", sans-serif; width: auto !important; margin-left: auto; margin-right: auto; margin-left: auto; margin-right: auto;'>\n <thead>\n  <tr>\n   <th style=\"text-align:left;font-weight: bold;\"> Species </th>\n   <th style=\"text-align:left;font-weight: bold;\"> Sex </th>\n   <th style=\"text-align:center;font-weight: bold;\"> Avg Mass (g) </th>\n  </tr>\n </thead>\n<tbody>\n  <tr>\n   <td style=\"text-align:left;font-weight: bold;color: #FF6600 !important;\"> Adelie </td>\n   <td style=\"text-align:left;font-weight: bold;color: #FF6600 !important;\"> female </td>\n   <td style=\"text-align:center;font-weight: bold;color: #FF6600 !important;\"> 3334.6 </td>\n  </tr>\n  <tr>\n   <td style=\"text-align:left;font-weight: bold;color: #FF6600 !important;\"> Adelie </td>\n   <td style=\"text-align:left;font-weight: bold;color: #FF6600 !important;\"> male </td>\n   <td style=\"text-align:center;font-weight: bold;color: #FF6600 !important;\"> 3995.2 </td>\n  </tr>\n  <tr>\n   <td style=\"text-align:left;\"> Chinstrap </td>\n   <td style=\"text-align:left;\"> female </td>\n   <td style=\"text-align:center;\"> 3522.9 </td>\n  </tr>\n  <tr>\n   <td style=\"text-align:left;\"> Chinstrap </td>\n   <td style=\"text-align:left;\"> male </td>\n   <td style=\"text-align:center;\"> 3927.1 </td>\n  </tr>\n  <tr>\n   <td style=\"text-align:left;\"> Gentoo </td>\n   <td style=\"text-align:left;\"> female </td>\n   <td style=\"text-align:center;\"> 4786.2 </td>\n  </tr>\n  <tr>\n   <td style=\"text-align:left;\"> Gentoo </td>\n   <td style=\"text-align:left;\"> male </td>\n   <td style=\"text-align:center;\"> 5510.7 </td>\n  </tr>\n</tbody>\n</table>\n\n`````\n:::\n:::\n\n\n\n\\color{Adelie}\n# Bills\n\n\n\n::: {.cell layout-align=\"center\"}\n::: {.cell-output-display}\n![](penguins_files/figure-html/scatter-1.png){fig-align='center' width=672}\n:::\n:::\n\n\n\n\\vfill\n\\textcolor{Adelie}{\\rule{17.78cm}{0.5mm}}\n\n\\center\\small\\emph{Created 2024-01-28. Artwork by @allison\\_horst.}\n",
+    "supporting": [
+      "penguins_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {
+      "include-in-header": [
+        "<script src=\"../../../site_libs/kePrint-0.0.1/kePrint.js\"></script>\n<link href=\"../../../site_libs/lightable-0.0.1/lightable.css\" rel=\"stylesheet\" />\n"
+      ]
+    },
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

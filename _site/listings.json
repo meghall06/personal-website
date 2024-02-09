@@ -1,0 +1,38 @@
+[
+  {
+    "listing": "/talks/index.html",
+    "items": [
+      "/talks/2022-09-08-rladies-paris/index.html",
+      "/talks/2022-07-28-conf/index.html",
+      "/talks/2022-07-12-neair/index.html",
+      "/talks/2022-04-13-rstudio/index.html",
+      "/talks/2021-07-15-ucsas/index.html",
+      "/talks/2021-06-15-rstudio/index.html",
+      "/talks/2021-03-25-rladies-vancouver/index.html",
+      "/talks/2021-02-18-hanic/index.html",
+      "/talks/2020-10-25-cmsac/index.html",
+      "/talks/2020-04-18-hanic/index.html",
+      "/talks/2020-02-08-cbjhac/index.html",
+      "/talks/2019-11-16-otthac/index.html",
+      "/talks/2019-09-14-ritsac/index.html",
+      "/talks/2019-03-10-seahac/index.html"
+    ]
+  },
+  {
+    "listing": "/blog/index.html",
+    "items": [
+      "/blog/2022-10-11-creating-custom-color-palettes-with-ggplot2/index.html",
+      "/blog/2022-09-25-tips-for-custom-parameterized-pdfs-in-quarto/index.html",
+      "/blog/2022-07-12-making-slides-in-quarto-with-revealjs/index.html",
+      "/blog/2022-06-28-a-beginners-guide-to-mixed-effects-models/index.html",
+      "/blog/2022-02-22-increasing-the-flexibility-and-robustness-of-plots-in-ggplot2/index.html",
+      "/blog/2021-08-21-an-introduction-to-cowplot/index.html",
+      "/blog/2021-07-20-alternatives-to-simple-color-legends-in-ggplot2/index.html",
+      "/blog/2021-02-23-fogo-penalty-kill/index.html",
+      "/blog/2020-12-03-functions-nhl-standings-points/index.html",
+      "/blog/2020-08-17-shot-locations/index.html",
+      "/blog/2020-08-03-last-change/index.html",
+      "/blog/2020-05-18-goalie-pulling/index.html"
+    ]
+  }
+]

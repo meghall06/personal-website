@@ -1,0 +1,38 @@
+project:
+  type: website
+  render:
+    - "blog/**/*.qmd"
+    - "talks/**/*.qmd"
+    - "index.qmd"
+    - "blog/index.qmd"
+    - "talks/index.qmd"
+    - "404.qmd"
+  post-render:
+    - "cp -r static/. _site/"
+  resources:
+    - "_redirects.txt"
+
+website:
+  title: "Meghan Hall"
+  navbar:
+    title: "meghan<br>hall"
+    right:
+      - href: blog/index.qmd
+        text: BLOG
+      - href: talks/index.qmd
+        text: TALKS
+  favicon: icon-32.png
+        
+format:
+  html:
+    theme: [cosmo, theme.scss]
+    css: styles.css
+    toc: true
+    link-external-newwindow: true
+    metadata:
+      pagetitle: "Meghan Hall"
+
+editor: source
+
+execute:
+  freeze: auto
