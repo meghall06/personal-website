@@ -5,9 +5,9 @@ author: "Meghan Hall"
 date: "2020-10-25"
 summary: Level up your R programming in this workshop targeted to beginner and intermediate R users.
 categories: ["R", "tidyverse", "hockey"]
-slides: "https://meghan.rbind.io/slides/hall_cmsac#1"
+slides: "https://meghan.rbind.io/slides/cmsac/hall_cmsac#1"
 ---
-[{{< fa tv >}} SLIDES](https://meghan.rbind.io/slides/hall_cmsac#1){class="btn btn-secondary" target="_blank"} [{{< fa brands github >}} CODE](https://github.com/meghall06/personal-website/blob/master/static/CMSAC_code.R){class="btn btn-secondary" target="_blank"}
+[{{< fa tv >}} SLIDES](https://meghan.rbind.io/slides/cmsac/hall_cmsac#1){class="btn btn-secondary" target="_blank"} [{{< fa brands github >}} CODE](https://github.com/meghall06/personal-website/blob/master/static/CMSAC_code.R){class="btn btn-secondary" target="_blank"}
 
 In this 90-minute workshop targeted to beginner and intermediate R users, we’ll go through a sample hockey analysis question and discuss techniques from the `tidyverse` and beyond (including user-defined functions, RMarkdown, custom `ggplot2` themes, and data manipulation with `tidyr` and `dplyr`) to learn how to level up your R programming and make your analysis more efficient and more reproducible.
 
