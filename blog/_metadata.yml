@@ -7,9 +7,6 @@ title-block-banner: "#1F2041"
 # Add blog-post class to the banner header area
 format: 
   html:
-    #code-tools: true
-    #quarto-template-params:
-     # banner-header-class: "blog-post"
     css: blog.css
     knitr:
       opts_chunk:

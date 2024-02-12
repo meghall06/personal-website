@@ -1,13 +1,8 @@
 ---
-aliases: 
-  - /blog/custom-color-palettes
 title: Creating Custom Color Palettes with ggplot2
 date: '2022-10-13'
-slug: []
 summary: 'How to define custom colors and color palettes in R and create your own scale_color and scale_fill functions to use in ggplot2.'
 categories: ["R", "ggplot2", "data viz"]
-tags: ["test"]
-#layout: single-sidebar
 ---
 
 ```{r options, include=FALSE}

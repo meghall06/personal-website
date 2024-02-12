@@ -1,8 +1,5 @@
 ---
 date: "2022-07-12"
-diagram: true
-markup: markdown
-featured: yes 
 categories: ["R", "quarto"]
 summary: 'Some tips from my first experience making a presentation in Quarto instead of R Markdown.'
 title: Making Slides in Quarto with reveal.js

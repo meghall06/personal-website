@@ -1,8 +1,5 @@
 ---
 date: "2020-08-03"
-diagram: true
-markup: markdown
-featured: yes 
 categories: ["hockey analysis"]
 summary: 'Exploring the possible benefit of the home team having the last change in hockey.'
 title: Examining the Effect of the Last Change in Hockey

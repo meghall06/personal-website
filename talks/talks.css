@@ -8,12 +8,6 @@
     padding: 0.375rem 0.75rem;
 }
 
-/*
-ul.pub-list.list {
-  border-left: 1px solid #1F2041;
-}
-*/
-
 h1.title, .title.h1 {
     color: #E9D2C0;
     text-align: left;
@@ -31,18 +25,6 @@ p.subtitle {
     font-family: 'Phudu';
 }
 
-/*
-.quarto-post.image-right {
-    padding: 15px;
-    background: white;
-}
-*/
-
-/*
-div.quarto-post {
-    border-bottom: 1px solid white;
-}
-*/
 
 h2, .h2 {
     border-bottom: none;
@@ -85,11 +67,6 @@ h2, .h2 {
             }
         }
 
-/*
-.page-item:not(:first-child) .page-link {
-    border-radius: 12px;
-}
-*/
 
 ol, dl {
     list-style-type: none;
@@ -114,14 +91,3 @@ ol, dl {
     margin-right: 8px;
     margin-top: 10px;
 }
-
-/*
-.project-container {
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-    flex: 0 0 33%;
-    flex-wrap: wrap;
-    margin-right: 100px;
-}
-*/

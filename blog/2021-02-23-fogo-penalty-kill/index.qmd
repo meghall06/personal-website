@@ -1,8 +1,5 @@
 ---
 date: "2021-02-23"
-diagram: true
-markup: markdown
-featured: yes 
 categories: ["hockey analysis"]
 summary: 'Examining the FOGO "trend" and quantifying the impact of faceoffs on the penalty kill.'
 title: The FOGO Trend and the Importance of Faceoffs on the Penalty Kill

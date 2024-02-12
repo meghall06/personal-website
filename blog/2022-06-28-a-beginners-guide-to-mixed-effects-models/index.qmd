@@ -1,8 +1,5 @@
 ---
 date: "2022-06-28"
-diagram: true
-markup: markdown
-featured: yes 
 categories: ["R"]
 summary: 'A brief introduction to mixed effects models and how to run them in R, with a silly hockey example'
 title: A Beginner's Introduction to Mixed Effects Models

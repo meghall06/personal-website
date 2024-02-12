@@ -6,10 +6,6 @@ h1 {
     color: white;
 }
 
-bi {
-    color: white !important;
-}
-
 h1.title, .title.h1 {
     color: #E9D2C0;
     text-align: left;
@@ -24,12 +20,6 @@ h1.title, .title.h1 {
     border: 3px solid #1F2041;
     padding: 10px;
 }
-
-/*
-.quarto-title-banner .quarto-title .title {
-    text-align: left;
-}
-*/
 
 .main-date {
     color: #E9D2C0;
@@ -94,57 +84,3 @@ h1.title, .title.h1 {
     border: none;
     background-color: #E9D2C0;
 }
-
-/*
-.quarto-post.image-right {
-    padding: 15px;
-    background: white;
-}
-
-div.quarto-post {
-    border-bottom: 1px solid white;
-}
-
-h1.title, .title.h1 {
-    text-align: center;
-}
-
-h2, .h2 {
-    border-bottom: none;
-}
-
-.page-item.active .page-link {
-    background-color: #1f2041;
-    border-color: #1f2041;
-}
-
-ol, ul, dl {
-    list-style-type: none;
-}
-
-.li2 {
-    margin-bottom: 30px;
-}
-
-#title-block-header {
-    margin-block-end: 1.5rem;
-}
-
-.btn-secondary {
-    color: #E9D2C0;
-    background-color: #1F2041;
-    border-color: #1F2041;
-    border-radius: 15px;
-    margin-right: 8px;
-    margin-top: 10px;
-}
-
-.project-container {
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-    flex: 0 0 33%;
-    flex-wrap: wrap;
-    margin-right: 100px;
-} 
-*/

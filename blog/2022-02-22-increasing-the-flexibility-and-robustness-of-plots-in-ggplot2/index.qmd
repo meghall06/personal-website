@@ -1,8 +1,5 @@
 ---
 date: "2022-02-22"
-diagram: true
-markup: markdown
-featured: yes 
 categories: ["R","ggplot2","data viz"]
 summary: 'Techniques in ggplot2 to make your plots more flexible and robust to changing data.'
 title: Increasing the Flexibility and Robustness of Plots in ggplot2

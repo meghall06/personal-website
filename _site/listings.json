@@ -21,6 +21,7 @@
   {
     "listing": "/blog/index.html",
     "items": [
+      "/blog/2024-02-11-moving-to-quarto/index.html",
       "/blog/2022-10-11-creating-custom-color-palettes-with-ggplot2/index.html",
       "/blog/2022-09-25-tips-for-custom-parameterized-pdfs-in-quarto/index.html",
       "/blog/2022-07-12-making-slides-in-quarto-with-revealjs/index.html",

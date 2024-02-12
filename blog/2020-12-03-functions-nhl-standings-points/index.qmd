@@ -1,8 +1,5 @@
 ---
 date: "2020-12-03"
-diagram: true
-markup: markdown
-featured: yes 
 categories: ["R"]
 summary: 'Writing a user-defined function and applying it iteratively: an example with NHL standings points.'
 title: Learning Iterative User-Defined Functions with NHL Standings Points

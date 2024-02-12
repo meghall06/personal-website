@@ -1,8 +1,5 @@
 ---
 date: "2020-08-17"
-diagram: true
-markup: markdown
-featured: yes 
 categories: ["hockey analysis"]
 summary: 'Examining NHL shot locations by arena to look for possible systematic error.'
 title: NHL Shot Locations by Arena

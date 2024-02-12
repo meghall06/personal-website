@@ -1,8 +1,5 @@
 ---
 date: "2020-05-18"
-diagram: true
-markup: markdown
-featured: yes 
 categories: ["hockey analysis"]
 summary: 'A broad analysis of when NHL teams pull their goalie.'
 title: The State of Goalie Pulling in the NHL

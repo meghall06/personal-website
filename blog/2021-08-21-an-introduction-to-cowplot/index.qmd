@@ -1,8 +1,5 @@
 ---
 date: "2021-08-26"
-diagram: true
-markup: markdown
-featured: yes 
 categories: ["R","ggplot2","data viz"]
 summary: 'An introduction to the basic functions of the cowplot package for arranging plots together.'
 title: An Introduction to cowplot

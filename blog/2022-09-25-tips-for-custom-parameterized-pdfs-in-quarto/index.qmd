@@ -1,14 +1,9 @@
 ---
 date: "2022-09-25"
-diagram: true
-markup: markdown
-featured: yes 
 categories: ["R", "quarto"]
 summary: 'Tips and tricks for creating parameterized reports with R and Quarto and customizing the PDFs with LaTeX.'
 title: Tips for Custom Parameterized PDFs in Quarto
 from: markdown+emoji
-aliases:
-  - blog/quarto-pdfs
 ---
 
 ## Parameterized reports in R (and Quarto!)
