@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.549">
+<meta name="generator" content="quarto-1.4.555">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -655,7 +655,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 </style>
 
-<table class="gt_table table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead>
 <tr class="header gt_col_headings">
 <th id="<strong>Season</strong>" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" style="background-color: #E9D2C0" scope="col"><strong>Season</strong></th>
@@ -1242,7 +1242,7 @@ toi       -0.932  0.358</code></pre>
 }
 </style>
 
-<table class="gt_table table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead>
 <tr class="header gt_col_headings">
 <th id="grpvar" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" style="background-color: #E9D2C0" scope="col">grpvar</th>
@@ -1387,7 +1387,7 @@ Fixed Effects:
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>jtools<span class="sc">::</span><span class="fu">summ</span>(m0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="table-responsive">
-<table class="table table-striped table-hover table-condensed table-sm small" data-quarto-postprocess="true">
+<table class="table table-striped table-hover table-condensed caption-top table-sm small" data-quarto-postprocess="true">
 <tbody>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">Observations</td>
@@ -1405,7 +1405,7 @@ Fixed Effects:
 </table>
 </div>
 <div class="table-responsive">
-<table class="table table-striped table-hover table-condensed table-sm small" data-quarto-postprocess="true">
+<table class="table table-striped table-hover table-condensed caption-top table-sm small" data-quarto-postprocess="true">
 <tbody>
 <tr class="odd">
 <td style="text-align: left; font-weight: bold;">AIC</td>
@@ -1427,7 +1427,7 @@ Fixed Effects:
 </table>
 </div>
 <div class="table-responsive">
-<table class="table table-striped table-hover table-condensed table-sm small" data-quarto-postprocess="true">
+<table class="table table-striped table-hover table-condensed caption-top table-sm small" data-quarto-postprocess="true">
 <colgroup>
 <col style="width: 25%">
 <col style="width: 25%">
@@ -1458,7 +1458,7 @@ Fixed Effects
 </table>
 </div>
 <div class="table-responsive">
-<table class="table table-striped table-hover table-condensed table-sm small" data-quarto-postprocess="true">
+<table class="table table-striped table-hover table-condensed caption-top table-sm small" data-quarto-postprocess="true">
 <colgroup>
 <col style="width: 33%">
 <col style="width: 33%">
@@ -1491,7 +1491,7 @@ Random Effects
 </table>
 </div>
 <div class="table-responsive">
-<table class="table table-striped table-hover table-condensed table-sm small" data-quarto-postprocess="true">
+<table class="table table-striped table-hover table-condensed caption-top table-sm small" data-quarto-postprocess="true">
 <colgroup>
 <col style="width: 33%">
 <col style="width: 33%">
@@ -1639,6 +1639,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
           // target, if specified
           link.setAttribute("target", "_blank");
           if (link.getAttribute("rel") === null) {
@@ -1680,7 +1685,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');
